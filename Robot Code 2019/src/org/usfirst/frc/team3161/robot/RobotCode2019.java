@@ -120,5 +120,5 @@ public class RobotCode2019 {
 			leftStickX = 0;
 		}
 		//Calls upon the mecanumDrive_Cartesian method that sends specific power to the talons
-		drivetrain.driveCartesian (leftStickX, leftStickY, rightStickY);
+		drivetrain.driveCartesian (leftStickX, leftStickY, rightStickX);
 	}
