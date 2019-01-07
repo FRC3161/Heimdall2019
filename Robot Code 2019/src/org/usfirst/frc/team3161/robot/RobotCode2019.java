@@ -105,8 +105,7 @@ public class RobotCode2019 {
 		leftStickY = driverPad.getValue(LogitechDualAction.LogitechControl.LEFT_STICK, LogitechDualAction.LogitechAxis.Y);
 		rightStickX = driverPad.getValue(LogitechDualAction.LogitechControl.RIGHT_STICK, LogitechDualAction.LogitechAxis.X);
 		
-		//Calls upon the mecanumDrive_Cartesian method that sends specific power to the talons
-		drivetrain.driveCartesian (leftStickX, leftStickY, currentRotationRate * 0.75, -angle);
+
 		
 		if (Math.abs(rightStickX) < 0.05)
 		{
@@ -120,4 +119,6 @@ public class RobotCode2019 {
 		{
 			leftStickX = 0;
 		}
+		//Calls upon the mecanumDrive_Cartesian method that sends specific power to the talons
+		drivetrain.driveCartesian (leftStickX, leftStickY, rightStickY);
 	}
