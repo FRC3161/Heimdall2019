@@ -31,14 +31,7 @@ public class robotcode2019 {
 		private WPI_TalonSRX frontRightDrive;
 		private WPI_TalonSRX backLeftDrive;
 		private WPI_TalonSRX backRightDrive;
-		private VictorSP IntakeL = new VictorSP (3);
-		private VictorSP IntakeR = new VictorSP (2);
-		private VictorSP pivot = new VictorSP (1);
-		private WPI_TalonSRX leftElevator = new WPI_TalonSRX (4);
-		private VictorSP leftElevatorSlave = new VictorSP(0);
-		private WPI_TalonSRX rightElevator = new WPI_TalonSRX (6);
-		private DigitalInput topLimitSwitch = new DigitalInput(0);
-		private DigitalInput bottomLimitSwitch = new DigitalInput(1);
+
 
 		//Variables to be used when waiting
 		boolean isWaiting = false;
@@ -57,13 +50,6 @@ public class robotcode2019 {
 		double leftStickX;
 		double leftStickY;	 
 		double rightStickX;
-		double rightStickY;
-		boolean getButtonSTART;
-		boolean getButtonY;
-		boolean getButtonX;
-		boolean getButtonA;
-		boolean getButtonB;
-		boolean getButtonRT;
 
 	private LogitechDualAction driverPad = new LogitechDualAction(0);
 	public void robotInit() 
@@ -119,14 +105,6 @@ public class robotcode2019 {
 		leftStickX = driverPad.getValue(LogitechDualAction.LogitechControl.LEFT_STICK, LogitechDualAction.LogitechAxis.X);
 		leftStickY = driverPad.getValue(LogitechDualAction.LogitechControl.LEFT_STICK, LogitechDualAction.LogitechAxis.Y);
 		rightStickX = driverPad.getValue(LogitechDualAction.LogitechControl.RIGHT_STICK, LogitechDualAction.LogitechAxis.X);
-		getButtonSTART = driverPad.getButton(LogitechDualAction.LogitechButton.START);
-		getButtonY = driverPad.getButton(LogitechDualAction.LogitechButton.Y);
-		getButtonX = driverPad.getButton(LogitechDualAction.LogitechButton.X);
-		getButtonA = driverPad.getButton(LogitechDualAction.LogitechButton.A);
-		getButtonRT = driverPad.getButton(LogitechDualAction.LogitechButton.RIGHT_TRIGGER);
-		getButtonB = driverPad.getButton(LogitechDualAction.LogitechButton.B);
-		getButtonRB = driverPad.getButton(LogitechDualAction.LogitechButton.RIGHT_BUMPER);
-		
 		
 		
 			
@@ -143,43 +121,4 @@ public class robotcode2019 {
 		{
 			leftStickX = 0;
 		}
-
-		//Preset angles for the robot - to be called with buttons A, B, X, Y
-		rotateToAngle = false;
-		if (getButtonSTART) 
-		{
-			ahrs.reset();
-		}
-		//Look Forward
-				if (getButtonY) 
-				{
-					currentRotationRate = gyroPID(0.0);
-					rotateToAngle = true;
-				}
-				//Look Right
-				else if (getButtonB) 
-				{
-					currentRotationRate = gyroPID(90.0);
-					rotateToAngle = true;
-				}
-				//Look Backward
-				else if (getButtonA) 
-				{
-					currentRotationRate = gyroPID(180.0);
-					rotateToAngle = true;
-				}
-				//Look Left
-				else if (getButtonX) 
-				{
-					currentRotationRate = gyroPID(-90.0);
-					rotateToAngle = true;
-				}
-
-				if(!rotateToAngle)
-				{
-					turnController.disable();
-					currentRotationRate = rightStickX;
-				}
-				
-	}
 	}
