@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class robotcode2019 {
+public class RobotCode2019 {
 	//This is declaring the motors with the corresponding Controllers
 		private WPI_TalonSRX frontLeftDrive;
 		private WPI_TalonSRX frontRightDrive;
@@ -90,7 +90,6 @@ public class robotcode2019 {
 	public void teleopInit()
 	{
 		drivetrain.setSafetyEnabled(true);
-		resetWheelEncoders();
 		FLController.disable();
 		FRController.disable();
 		BLController.disable();
@@ -106,8 +105,8 @@ public class robotcode2019 {
 		leftStickY = driverPad.getValue(LogitechDualAction.LogitechControl.LEFT_STICK, LogitechDualAction.LogitechAxis.Y);
 		rightStickX = driverPad.getValue(LogitechDualAction.LogitechControl.RIGHT_STICK, LogitechDualAction.LogitechAxis.X);
 		
-		
-			
+		//Calls upon the mecanumDrive_Cartesian method that sends specific power to the talons
+		drivetrain.driveCartesian (leftStickX, leftStickY, currentRotationRate * 0.75, -angle);
 		
 		if (Math.abs(rightStickX) < 0.05)
 		{
