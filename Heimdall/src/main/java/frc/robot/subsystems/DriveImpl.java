@@ -22,8 +22,19 @@ public class DriveImpl implements Drive {
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
     }
 
+    @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
+    }
+
+    @Override
+    public void setCenterWheelsDeployed(boolean deployed) {
+        // TODO
+    }
+
+    @Override
+    public boolean getCenterWheelsDeployed() {
+        return false;
     }
 }
 
