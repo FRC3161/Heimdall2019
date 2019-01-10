@@ -13,7 +13,7 @@ public class Drive {
     private Talon backLeftDrive;
     private Talon backRightDrive;
 
-    public void driveInit() {
+    public Drive() {
         this.frontLeftDrive = new Talon(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         this.frontRightDrive = new Talon(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         this.backLeftDrive = new Talon(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
