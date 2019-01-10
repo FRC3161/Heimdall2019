@@ -22,8 +22,8 @@ public class Drive {
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
     }
 
-    public void driveRobot(double leftStickX, double leftStickY, double rightStickX) {
-        this.drivetrain.driveCartesian(leftStickX, leftStickY, rightStickX);
+    public void driveRobot(double forwardRate, double strafeRate, double turnRate) {
+        this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
     }
 
 }
