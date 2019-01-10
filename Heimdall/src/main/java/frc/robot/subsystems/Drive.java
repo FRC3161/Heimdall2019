@@ -1,5 +1,5 @@
 package frc.robot.subsystems;
 
-interface Drive {
+public interface Drive {
     void drive(double forwardRate, double strafeRate, double turnRate);
 }
