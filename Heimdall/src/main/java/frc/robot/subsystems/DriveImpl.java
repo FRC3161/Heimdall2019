@@ -24,6 +24,7 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
+        // TODO make this field-centric?
         this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
     }
 
