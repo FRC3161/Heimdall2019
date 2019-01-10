@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.Talon;
 //TODO: Change it from the wpi talons to the CTRE
 
 public class Drive {
-    private MecanumDrive drivetrain;
-    private Talon frontLeftDrive;
-    private Talon frontRightDrive;
-    private Talon backLeftDrive;
-    private Talon backRightDrive;
+    private final MecanumDrive drivetrain;
+    private final Talon frontLeftDrive;
+    private final Talon frontRightDrive;
+    private final Talon backLeftDrive;
+    private final Talon backRightDrive;
 
     public Drive() {
         this.frontLeftDrive = new Talon(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
