@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import ca.team3161.lib.utils.controls.Gamepad;
+import ca.team3161.lib.utils.controls.LogitechDualAction;
+import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
+import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,11 +33,7 @@ public class Robot extends TimedRobot {
 
   private Drive drive;
 
-  //Stick variables
-  double leftStickX;
-  double leftStickY;
-  double rightStickX;
-  double rightStickY;
+  private Gamepad driverPad;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    this.driverPad = new LogitechDualAction(0);
+
     this.drive = new DriveImpl();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -100,8 +102,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // TODO: get actual stick values
-    this.drive.drive(this.leftStickY, this.leftStickX, this.rightStickX);
+    this.drive.drive(
+      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
+      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
+      this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
+    );
   }
 
   /**
