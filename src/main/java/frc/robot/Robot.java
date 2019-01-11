@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
@@ -14,6 +15,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
 
@@ -31,6 +33,10 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  //Declaring the AHRS class to get gyro headings
+  private AHRS ahrs;
+  private double angle;
+
   private Drive drive;
 
   private Gamepad driverPad;
@@ -42,6 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
+    this.ahrs = new AHRS(SPI.Port.kMXP);
 
     this.drive = new DriveImpl();
 
