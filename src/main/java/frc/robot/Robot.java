@@ -33,9 +33,12 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  //Declaring the AHRS class to get gyro headings
+  //For gyro
   private AHRS ahrs;
   private double angle;
+
+  //TODO: Not sure which file this should go in, we can always move it later
+  private double currentRotationRate;
 
   private Drive drive;
 
@@ -49,6 +52,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
     this.ahrs = new AHRS(SPI.Port.kMXP);
+    ahrs.reset();
 
     this.drive = new DriveImpl();
 
