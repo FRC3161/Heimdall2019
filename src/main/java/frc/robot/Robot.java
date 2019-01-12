@@ -26,7 +26,7 @@ import frc.robot.subsystems.DriveImpl;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-// TODO evalute switching to TitanBot for autonomous "script" style
+// TODO evaluate switching to TitanBot for autonomous "script" style
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -71,6 +71,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //Get gyro angle for field-centric drive
+    angle = ahrs.getYaw();
   }
 
   /**
