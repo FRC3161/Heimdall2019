@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.PIDController;
+import com.kauailabs.navx.frc.AHRS;
 import frc.robot.RobotMap;
 import java.lang.Math;
 
@@ -12,6 +14,13 @@ public class DriveImpl implements Drive {
     private final WPI_TalonSRX backLeftDrive;
     private final WPI_TalonSRX backRightDrive;
 
+    //PID
+    double Kp;
+    double Ki;
+    double Kd;
+    double Kf;
+    PIDController pidcontrol;
+
     public DriveImpl() {
         this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
@@ -19,6 +28,8 @@ public class DriveImpl implements Drive {
         this.backRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
+
+        this.pidcontrol = new PIDController(Kp, Ki, Kd, frc.robot.Robot.ahrs, this::gyroPIDWrite);
     }
 
     @Override

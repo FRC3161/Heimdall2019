@@ -33,16 +33,16 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  //For gyro
-  private AHRS ahrs;
-  private double angle;
-
-  //TODO: Not sure which file this should go in, we can always move it later
-  private double currentRotationRate;
-
   private Drive drive;
 
   private Gamepad driverPad;
+
+  //For gyro
+  public AHRS ahrs;
+  private double angle;
+    
+  //TODO: Not sure which file this should go in, we can always move it later
+  private double currentRotationRate;
 
   /**
    * This function is run when the robot is first started up and should be
