@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
+import java.lang.Math;
 
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
@@ -22,6 +23,19 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
+        //Stick deadzone
+        if (java.lang.Math.abs(forwardRate) <= 0.05) {
+                forwardRate = 0;
+        }
+
+        if (java.lang.Math.abs(strafeRate) <= 0.05) {
+            strafeRate = 0;
+        }
+
+        if (java.lang.Math.abs(forwardRate) <= 0.05) {
+            turnRate = 0;
+        }  
+        
         // TODO make this field-centric?
         this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
     }
