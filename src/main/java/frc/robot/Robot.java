@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
@@ -15,7 +14,6 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.SPI;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
 
@@ -37,13 +35,6 @@ public class Robot extends TimedRobot {
 
   private Gamepad driverPad;
 
-  //For gyro
-  public AHRS ahrs;
-  private double angle;
-    
-  //TODO: Not sure which file this should go in, we can always move it later
-  private double currentRotationRate;
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -51,8 +42,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
-    this.ahrs = new AHRS(SPI.Port.kMXP);
-    ahrs.reset();
 
     this.drive = new DriveImpl();
 
@@ -72,7 +61,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //Get gyro angle for field-centric drive
-    angle = ahrs.getYaw();
+    
   }
 
   /**

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.RobotMap;
 import java.lang.Math;
@@ -21,6 +22,12 @@ public class DriveImpl implements Drive {
     double Kf;
     PIDController pidcontrol;
 
+    //For gyro
+    private AHRS ahrs;
+    private double angle;
+    
+    private double currentRotationRate;
+
     public DriveImpl() {
         this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
@@ -29,7 +36,7 @@ public class DriveImpl implements Drive {
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
-        this.pidcontrol = new PIDController(Kp, Ki, Kd, frc.robot.Robot.ahrs, this::gyroPIDWrite);
+        //this.pidcontrol = new PIDController(Kp, Ki, Kd, ahrs, this::gyroPIDWrite);
     }
 
     @Override
@@ -59,6 +66,15 @@ public class DriveImpl implements Drive {
     @Override
     public boolean getCenterWheelsDeployed() {
         return false;
+    }
+
+    public void resetGyro() {
+        this.ahrs = new AHRS(SPI.Port.kMXP);
+        ahrs.reset();
+    }
+
+    public double getAngle() {
+        return ahrs.getYaw();
     }
 }
 
