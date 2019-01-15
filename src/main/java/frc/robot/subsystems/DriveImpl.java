@@ -36,6 +36,8 @@ public class DriveImpl implements Drive {
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
+        this.ahrs = new AHRS(SPI.Port.kMXP);
+
         //Setting PID Values so they aren't empty
         this.Kp = 0.001;
         this.Ki = 0.001;
@@ -75,7 +77,6 @@ public class DriveImpl implements Drive {
 
     @Override
     public void resetGyro() {
-        this.ahrs = new AHRS(SPI.Port.kMXP);
         ahrs.reset();
     }
 }
