@@ -5,5 +5,4 @@ public interface Drive {
     void setCenterWheelsDeployed(boolean deployed);
     boolean getCenterWheelsDeployed();
     void resetGyro();
-    double getAngle();
 }

@@ -72,11 +72,5 @@ public class DriveImpl implements Drive {
     public void resetGyro() {
         this.ahrs = new AHRS(SPI.Port.kMXP);
         ahrs.reset();
-    }
-
-    @Override
-    public double getAngle() {
-        return ahrs.getYaw();
-    }
 }
 
