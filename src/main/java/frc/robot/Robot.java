@@ -60,8 +60,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //Get gyro angle for field-centric drive
-    this.drive.getAngle();
   }
 
   /**
