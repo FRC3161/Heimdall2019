@@ -72,5 +72,6 @@ public class DriveImpl implements Drive {
     public void resetGyro() {
         this.ahrs = new AHRS(SPI.Port.kMXP);
         ahrs.reset();
+    }
 }
 
