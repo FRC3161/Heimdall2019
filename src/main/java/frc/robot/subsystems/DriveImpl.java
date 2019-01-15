@@ -36,6 +36,11 @@ public class DriveImpl implements Drive {
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
+        //Setting PID Values so they aren't empty
+        this.Kp = 0.001;
+        this.Ki = 0.001;
+        this.Kd = 0.001;
+
         //this.pidcontrol = new PIDController(Kp, Ki, Kd, ahrs, this::gyroPIDWrite);
     }
 
