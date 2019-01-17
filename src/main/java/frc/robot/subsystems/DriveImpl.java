@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.TalonPIDSource;
 import java.lang.Math;
 
 public class DriveImpl implements Drive {
@@ -43,13 +44,13 @@ public class DriveImpl implements Drive {
         this.Ki = 0.001;
         this.Kd = 0.001;
 
-        //this.pidcontrol = new PIDController(Kp, Ki, Kd, ahrs, this::gyroPIDWrite);
+        this.pidcontrol = new PIDController(Kp, Ki, Kd, ahrs, );
     }
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         //Stick deadzone
-        if (Math.abs(forwardRate) <= 0.05) {
+        /*if (Math.abs(forwardRate) <= 0.05) {
                 forwardRate = 0;
         }
 
@@ -59,7 +60,7 @@ public class DriveImpl implements Drive {
 
         if (Math.abs(forwardRate) <= 0.05) {
             turnRate = 0;
-        }  
+        } */ 
         
         // TODO make this field-centric?
         this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
