@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     this.drive.drive(
-      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
+      -this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
