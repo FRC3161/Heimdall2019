@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
     // autoSelected = SmartDashboard.getString("Auto Selector",
     // defaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    ahrs.reset();
+    drive.resetGyro();
   }
 
   /**
