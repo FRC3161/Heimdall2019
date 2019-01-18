@@ -16,8 +16,7 @@ public class PIDImpl implements PID {
     double Ki;
     double Kd; 
 
-    @Override
-    public void PIDInit() {
+    public PIDImpl() {
         this.Kp = 0.001;
         this.Ki = 0.001;
         this.Kd = 0.001;
