@@ -18,8 +18,8 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.DriveImpl;
+import frc.robot.subsystems.drivetrain.Drive;
+import frc.robot.subsystems.drivetrain.DriveImpl;
 
 /**
  * The VM is configured to automatically run this class, and to call the

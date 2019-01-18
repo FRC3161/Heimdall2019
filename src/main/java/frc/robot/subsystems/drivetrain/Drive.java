@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.drivetrain;
 
 public interface Drive {
     void drive(double forwardRate, double strafeRate, double turnRate);
