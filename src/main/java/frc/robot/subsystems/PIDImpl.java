@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 public class PIDImpl implements PID {
 
     PIDController pidcontrol;
+    TalonPIDSource talonPID;
     PIDSource pidsource;
     PIDOutput pidoutput;
     
@@ -20,6 +21,8 @@ public class PIDImpl implements PID {
         this.Kp = 0.001;
         this.Ki = 0.001;
         this.Kd = 0.001;
+
+        this.talonPID = new TalonPIDSource()
         
         this.pidcontrol = new PIDController(Kp, Ki, Kd, pidsource, pidoutput);
     }
