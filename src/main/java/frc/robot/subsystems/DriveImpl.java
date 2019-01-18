@@ -33,13 +33,13 @@ public class DriveImpl implements Drive {
     public DriveImpl() {
         // TODO two of these need to be inverted
         this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
-        // frontLeftDrive.setInverted(false); 
+        frontLeftDrive.setInverted(false); 
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
-        // frontRightDrive.setInverted(true);
+        frontRightDrive.setInverted(true);
         this.backLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
-        // backLeftDrive.setInverted(true);
+        backLeftDrive.setInverted(true);
         this.backRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
-        // backRightDrive.setInverted(false);
+        backRightDrive.setInverted(false);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
