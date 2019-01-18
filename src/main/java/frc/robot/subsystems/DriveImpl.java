@@ -31,7 +31,6 @@ public class DriveImpl implements Drive {
     private double currentRotationRate;
 
     public DriveImpl() {
-        // TODO two of these need to be inverted
         this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         frontLeftDrive.setInverted(false); 
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
