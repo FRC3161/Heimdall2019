@@ -61,6 +61,9 @@ public class DriveImpl implements Drive {
             strafeRate = 0;
         }
 
+        if (Math.abs(turnRate) <= 0.05) {
+            turnRate = 0;
+        }
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
         
