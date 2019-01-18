@@ -42,12 +42,6 @@ public class DriveImpl implements Drive {
         this.ahrs = new AHRS(SPI.Port.kMXP);
         this.ahrs.reset();
 
-        //Setting PID Values so they aren't empty
-        this.Kp = 0.001;
-        this.Ki = 0.001;
-        this.Kd = 0.001;
-
-        //this.pidcontrol = new PIDController(Kp, Ki, Kd, ahrs, );
     }
 
     @Override
