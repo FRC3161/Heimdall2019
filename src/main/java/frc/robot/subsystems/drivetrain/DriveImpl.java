@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
-    private final WPI_TalonSRX frontLeftDrive;
+    private final OmniPod frontLeftDrive;
     private final WPI_TalonSRX frontRightDrive;
     private final WPI_TalonSRX backLeftDrive;
     private final WPI_TalonSRX backRightDrive;
@@ -21,7 +21,7 @@ public class DriveImpl implements Drive {
     private double currentRotationRate;
 
     public DriveImpl() {
-        this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
+        this.frontLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         frontLeftDrive.setInverted(false); 
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         frontRightDrive.setInverted(true);
