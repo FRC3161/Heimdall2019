@@ -1,11 +1,20 @@
 package frc.robot.subsystems;
 
-public class PIDImpl implements PID {
-     
-    //Setting PID Values so they aren't empty
-     this.Kp = 0.001;
-     this.Ki = 0.001;
-     this.Kd = 0.001;
+import frc.robot.subsystems.TalonPIDSource;
+import edu.wpi.first.wpilibj.PIDController;
 
+public class PIDImpl implements PID {
+
+    double rotate;
+
+    PIDController pidcontrol;
     
+    double Kp;
+    double Ki;
+    double Kd; 
+
+     @Override
+    public void gyroPidWrite(double output) {
+        rotate = output;
+    }
 }

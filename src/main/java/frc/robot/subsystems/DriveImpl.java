@@ -2,12 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.RobotMap;
-import frc.robot.subsystems.TalonPIDSource;
-import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveImpl implements Drive {
@@ -16,13 +13,6 @@ public class DriveImpl implements Drive {
     private final WPI_TalonSRX frontRightDrive;
     private final WPI_TalonSRX backLeftDrive;
     private final WPI_TalonSRX backRightDrive;
-
-    //PID
-    double Kp;
-    double Ki;
-    double Kd;
-    double Kf;
-    PIDController pidcontrol;
 
     //For gyro
     private AHRS ahrs;
