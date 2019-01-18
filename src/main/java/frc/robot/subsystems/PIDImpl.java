@@ -22,7 +22,7 @@ public class PIDImpl implements PID {
         this.Ki = 0.001;
         this.Kd = 0.001;
 
-        this.talonPID = new TalonPIDSource()
+        //this.talonPID = new TalonPIDSource()
         
         this.pidcontrol = new PIDController(Kp, Ki, Kd, pidsource, pidoutput);
     }
