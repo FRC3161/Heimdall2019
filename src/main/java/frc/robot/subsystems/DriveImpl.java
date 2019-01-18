@@ -52,18 +52,6 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
-        //Stick deadzone
-        if (Math.abs(forwardRate) <= 0.05) {
-            forwardRate = 0;
-        }
-
-        if (Math.abs(strafeRate) <= 0.05) {
-            strafeRate = 0;
-        }
-
-        if (Math.abs(turnRate) <= 0.05) {
-            turnRate = 0;
-        }
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
         
