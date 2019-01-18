@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.TalonPIDSource;
 import java.lang.Math;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
@@ -38,6 +39,7 @@ public class DriveImpl implements Drive {
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
         this.ahrs = new AHRS(SPI.Port.kMXP);
+        this.ahrs.reset();
 
         //Setting PID Values so they aren't empty
         this.Kp = 0.001;
@@ -61,6 +63,8 @@ public class DriveImpl implements Drive {
         if (Math.abs(turnRate) <= 0.05) {
             turnRate = 0;
         }
+        double angle = this.ahrs.getYaw();
+        SmartDashboard.putNumber("Gyro:", angle);
         
         // TODO make this field-centric?
         this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
@@ -78,7 +82,7 @@ public class DriveImpl implements Drive {
 
     @Override
     public void resetGyro() {
-        ahrs.reset();
+        this.ahrs.reset();
     }
 }
 
