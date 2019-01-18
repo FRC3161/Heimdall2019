@@ -63,11 +63,10 @@ public class DriveImpl implements Drive {
         if (Math.abs(turnRate) <= 0.05) {
             turnRate = 0;
         }
-        double angle = this.ahrs.getYaw();
+        double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
         
-        // TODO make this field-centric?
-        this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate);
+        this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate, angle);
     }
 
     @Override
