@@ -19,14 +19,7 @@ public class OmniPodImpl implements OmniPod {
     //PIDOutput talonPIDOutput;
 
     public OmniPodImpl(int talonCANPort) {
-        this.Kp = 0.001;
-        this.Ki = 0.001;
-        this.Kd = 0.001;
-
-        this.talon = new WPI_TalonSRX(talonCANPort);
-
-        this.talonPIDSource = new TalonPIDSource(talon);
-        this.talonPIDController = new PIDController(Kp, Ki, Kd, talonPIDSource, talon);
+        this(talonCANPort, 0.001, 0.001, 0.001);
     }
 
     public OmniPodImpl(int talonCANPort, double Kp, double Ki, double Kd){
