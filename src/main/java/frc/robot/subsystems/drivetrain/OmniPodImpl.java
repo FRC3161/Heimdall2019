@@ -26,7 +26,10 @@ public class OmniPodImpl implements OmniPod {
 
     @Override
     public void set(double speed) {
-        this.talon.set(speed);
+        if (!this.talonPIDController.isEnabled()) {
+            this.talonPIDController.enable();
+        };
+        this.talonPIDController.setSetpoint(speed);
     }
 
     @Override
@@ -37,11 +40,13 @@ public class OmniPodImpl implements OmniPod {
     @Override
     public void disable() {
         this.talon.disable();
+        this.talonPIDController.disable();
     }
 
     @Override
     public void stopMotor() {
         this.talon.stopMotor();
+        this.talonPIDController.disable();
     }
 
     @Override
