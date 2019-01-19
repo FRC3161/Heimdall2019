@@ -3,6 +3,7 @@ package frc.robot.subsystems.drivetrain;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PIDSource;
 import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.TalonRatePIDSource;
 
@@ -11,7 +12,7 @@ public class OmniPodImpl implements OmniPod {
 
     private final WPI_TalonSRX talon;
 
-    private final TalonPIDSource talonPIDSource;
+    private final PIDSource talonPIDSource;
     private final PIDController talonPIDController;
 
     public OmniPodImpl(int talonCANPort) {
