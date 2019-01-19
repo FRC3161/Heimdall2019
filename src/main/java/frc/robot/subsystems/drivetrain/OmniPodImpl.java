@@ -22,7 +22,7 @@ public class OmniPodImpl implements OmniPod {
         this(talonCANPort, 0.001, 0.001, 0.001);
     }
 
-    public OmniPodImpl(int talonCANPort, double Kp, double Ki, double Kd){
+    public OmniPodImpl(int talonCANPort, double Kp, double Ki, double Kd) {
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
