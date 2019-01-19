@@ -4,10 +4,18 @@ public interface Elevator {
     enum Position {
     }
 
-    void setPosition(Position position);
-    Position getPosition();
+    enum Direction {
+        NONE,
+        IN,
+        OUT,
+    }
+
+    void setElevatorPosition(Position position);
+    Position getElevatorPosition();
     void setClawOpen(boolean open);
     void isClawOpen();
+    void setRollers(Direction direction);
+    Direction getRollerDirection();
     void setEnabled(boolean enabled);
     boolean isEnabled();
 }
