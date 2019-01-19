@@ -8,21 +8,21 @@ import frc.robot.subsystems.TalonPIDSource;
 public class OmniPodImpl implements OmniPod {
 
     private final WPI_TalonSRX talon;
-    
-    //PID
-    private double Kp;
-    private double Ki;
-    private double Kd;
 
-    TalonPIDSource talonPIDSource;
-    PIDController talonPIDController;
+    //PID
+    private final double Kp;
+    private final double Ki;
+    private final double Kd;
+
+    private final TalonPIDSource talonPIDSource;
+    private final PIDController talonPIDController;
     //PIDOutput talonPIDOutput;
 
     public OmniPodImpl(int talonCANPort) {
         this.Kp = 0.001;
         this.Ki = 0.001;
         this.Kd = 0.001;
-        
+
         this.talon = new WPI_TalonSRX(talonCANPort);
 
         this.talonPIDSource = new TalonPIDSource(talon);
@@ -33,7 +33,7 @@ public class OmniPodImpl implements OmniPod {
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
-        
+
         this.talon = new WPI_TalonSRX(talonCANPort);
 
         this.talonPIDSource = new TalonPIDSource(talon);
