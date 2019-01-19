@@ -20,6 +20,7 @@ public class OmniPodImpl implements OmniPod {
     public OmniPodImpl(int talonCANPort, double Kp, double Ki, double Kd) {
         this.talon = new WPI_TalonSRX(talonCANPort);
         this.talonPIDSource = new TalonPIDSource(talon);
+        this.talonPIDSource.setPIDSourceType(PIDSourceType.kRate);
         this.talonPIDController = new PIDController(Kp, Ki, Kd, talonPIDSource, this.talon);
     }
 
