@@ -40,13 +40,13 @@ public class OmniPodImpl implements OmniPod {
     @Override
     public void disable() {
         this.talon.disable();
-        this.talonPIDController.disable();
+        this.talonPIDController.reset();
     }
 
     @Override
     public void stopMotor() {
         this.talon.stopMotor();
-        this.talonPIDController.disable();
+        this.talonPIDController.reset();
     }
 
     @Override
