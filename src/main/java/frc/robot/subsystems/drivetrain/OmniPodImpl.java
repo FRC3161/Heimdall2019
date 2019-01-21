@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PIDSource;
-import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.TalonRatePIDSource;
 
 // TODO implement PID control over the contained Talon with its attached encoder
