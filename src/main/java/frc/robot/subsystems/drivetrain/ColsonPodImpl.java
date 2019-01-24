@@ -18,7 +18,7 @@ public class ColsonPodImpl implements ColsonPod {
 
     @Override
     public double get() {
-        //TODO
+        return 0.0d;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ColsonPodImpl implements ColsonPod {
 
     @Override
     public boolean getInverted() {
-        //TODO
+        return true;
     }
 
     @Override
