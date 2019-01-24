@@ -16,9 +16,6 @@ public class DriveImpl implements Drive {
 
     //For gyro
     private AHRS ahrs;
-    private double angle;
-    
-    private double currentRotationRate;
 
     public DriveImpl() {
         this.frontLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);

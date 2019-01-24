@@ -10,7 +10,6 @@ package frc.robot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
-import ca.team3161.lib.utils.controls.JoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
@@ -18,6 +17,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.drivetrain.Drive;
 import frc.robot.subsystems.drivetrain.DriveImpl;
 
@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
+
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -113,7 +115,7 @@ public class Robot extends TimedRobot {
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
-      this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)   
+      this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
     if(this.driverPad.getButton(LogitechDualAction.LogitechButton.START))
     {
