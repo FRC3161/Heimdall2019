@@ -9,7 +9,6 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.TalonPIDSource;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
