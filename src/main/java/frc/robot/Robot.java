@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 
 /**
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
+    Ultrasonic ultra = new Ultrasonic(1,1);
 
     this.drive = new DriveImpl();
 
@@ -55,6 +57,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
+    	double range = ultra.getRangeInches(); // reads the range on the ultrasonic sensor
+    SmartDashboard.putNumber("distance:", range);
   }
 
   /**
@@ -123,10 +127,6 @@ public class Robot extends TimedRobot {
       this.drive.resetGyro();
     }
 
-    if (this.DriveImpl.range < 5)
-    {
-      // lights on
-    }
   }
 
   /**

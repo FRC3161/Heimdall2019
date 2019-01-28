@@ -78,9 +78,5 @@ public class DriveImpl implements Drive {
     public void resetGyro() {
         this.ahrs.reset();
     }
-    Ultrasonic ultra = new Ultrasonic(1,1);
-    public void ultrasonicsensor() {
-    	double range = ultra.getRangeInches(); // reads the range on the ultrasonic sensor
-    }
 }
 
