@@ -21,6 +21,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -120,6 +121,11 @@ public class Robot extends TimedRobot {
     if(this.driverPad.getButton(LogitechDualAction.LogitechButton.START))
     {
       this.drive.resetGyro();
+    }
+
+    if (this.DriveImpl.range < 5)
+    {
+      // lights on
     }
   }
 

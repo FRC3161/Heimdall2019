@@ -9,6 +9,7 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.TalonPIDSource;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
@@ -27,7 +28,9 @@ public class DriveImpl implements Drive {
     //For gyro
     private AHRS ahrs;
     private double angle;
+    // For ultrasonic sensor
     
+
     private double currentRotationRate;
 
     public DriveImpl() {
@@ -74,6 +77,10 @@ public class DriveImpl implements Drive {
     @Override
     public void resetGyro() {
         this.ahrs.reset();
+    }
+    Ultrasonic ultra = new Ultrasonic(1,1);
+    public void ultrasonicsensor() {
+    	double range = ultra.getRangeInches(); // reads the range on the ultrasonic sensor
     }
 }
 
