@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   private Drive drive;
 
   private Gamepad driverPad;
+  Ultrasonic ultra;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -48,8 +49,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
-    Ultrasonic ultra = new Ultrasonic(1,1);
-
     this.drive = new DriveImpl();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
