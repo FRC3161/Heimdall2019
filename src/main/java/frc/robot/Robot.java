@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
+    // TODO change the values off placeholders
     ultra = new Ultrasonic(1,1);
     double range = ultra.getRangeInches(); // reads the range on the ultrasonic sensor
     SmartDashboard.putNumber("distance:", range);
