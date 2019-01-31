@@ -1,6 +1,5 @@
 package frc.robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
@@ -10,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveImpl implements Drive {
     private final MecanumDrive drivetrain;
     private final OmniPod frontLeftDrive;
-    private final WPI_TalonSRX frontRightDrive;
-    private final WPI_TalonSRX backLeftDrive;
-    private final WPI_TalonSRX backRightDrive;
+    private final OmniPod frontRightDrive;
+    private final OmniPod backLeftDrive;
+    private final OmniPod backRightDrive;
 
     //For gyro
     private AHRS ahrs;
@@ -20,11 +19,11 @@ public class DriveImpl implements Drive {
     public DriveImpl() {
         this.frontLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         frontLeftDrive.setInverted(false); 
-        this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
+        this.frontRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         frontRightDrive.setInverted(true);
-        this.backLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
+        this.backLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
         backLeftDrive.setInverted(true);
-        this.backRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
+        this.backRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(false);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
