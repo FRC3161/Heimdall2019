@@ -13,7 +13,7 @@ public interface Elevator {
     void setElevatorPosition(Position position);
     Position getElevatorPosition();
     void setClawOpen(boolean open);
-    void isClawOpen();
+    boolean isClawOpen();
     void setRollers(Direction direction);
     Direction getRollerDirection();
     void setEnabled(boolean enabled);
