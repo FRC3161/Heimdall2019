@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
     this.driverPad = new LogitechDualAction(0);
     this.drive = new DriveImpl();
     this.rightSight = new RightSight(0);
+    this.rightSight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
@@ -122,7 +123,7 @@ public class Robot extends TimedRobot {
     {
       this.drive.resetGyro();
     }
-    SmartDashboard.putBoolean("rightsight distance", rightSight.get());
+    SmartDashboard.putBoolean("rightsight", rightSight.get());
   }
 
   /**
