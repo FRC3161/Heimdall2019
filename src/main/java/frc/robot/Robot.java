@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import ca.team3161.lib.robot.sensors.RightSight;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -20,8 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
-import edu.wpi.first.wpilibj.Ultrasonic;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,7 +39,7 @@ public class Robot extends TimedRobot {
   private Drive drive;
 
   private Gamepad driverPad;
-  private Ultrasonic ultra;
+  private RightSight rightSight;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -50,7 +49,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
     this.drive = new DriveImpl();
-    this.ultra = new Ultrasonic(0, 1);
+    this.rightSight = new RightSight(0);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
@@ -123,7 +122,7 @@ public class Robot extends TimedRobot {
     {
       this.drive.resetGyro();
     }
-    SmartDashboard.putNumber("distance:", ultra.getRangeInches());
+    SmartDashboard.putBoolean("rightsight distance", rightSight.get());
   }
 
   /**
