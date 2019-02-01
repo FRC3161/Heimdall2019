@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   private Drive drive;
 
   private Gamepad driverPad;
-  Ultrasonic ultra;
+  private Ultrasonic ultra;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -50,15 +50,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
     this.drive = new DriveImpl();
+    this.ultra = new Ultrasonic(0, 1);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
-    // TODO change the values off placeholders
-    ultra = new Ultrasonic(0, 1);
-    double range = ultra.getRangeInches(); // reads the range on the ultrasonic sensor
-    SmartDashboard.putNumber("distance:", range);
   }
 
   /**
@@ -126,7 +123,7 @@ public class Robot extends TimedRobot {
     {
       this.drive.resetGyro();
     }
-
+    SmartDashboard.putNumber("distance:", ultra.getRangeInches());
   }
 
   /**
