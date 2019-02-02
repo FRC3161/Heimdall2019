@@ -1,59 +1,64 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 
 public class ColsonPodImpl implements ColsonPod {
 
     private final SpeedController controller;
+    private final Solenoid solenoid;
 
-    ColsonPodImpl(int controllerPort) {
+    ColsonPodImpl(int controllerPort, Solenoid solenoid) {
         this.controller = new WPI_TalonSRX(controllerPort);
+        this.solenoid = solenoid;
     }
 
     @Override
     public void setDeployed(boolean deployed) {
-        //TODO
+        this.solenoid.set(deployed);
     }
 
     @Override
     public boolean isDeployed() {
-        //TODO
-        return false;
+        return this.solenoid.get();
     }
 
     @Override
     public void set(double speed) {
-        //TODO
+        this.controller.set(speed);
     }
 
     @Override
     public double get() {
-        return 0.0d;
+        return this.controller.get();
     }
 
     @Override
     public void disable() {
-        //TODO
+        this.controller.disable();
+        this.setDeployed(false);
     }
 
     @Override
     public void stopMotor() {
-        //TODO
+        this.controller.stopMotor();
+        this.setDeployed(false);
     }
 
     @Override
     public void setInverted(boolean isInverted) {
-        //TODO
+        this.controller.setInverted(isInverted);
     }
 
     @Override
     public boolean getInverted() {
-        return true;
+        return this.controller.getInverted();
     }
 
     @Override
     public void pidWrite(double output) {
-        //TODO
+        this.controller.pidWrite(output);
     }
 }

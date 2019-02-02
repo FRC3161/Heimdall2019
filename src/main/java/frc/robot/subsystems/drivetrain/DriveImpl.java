@@ -3,6 +3,8 @@ package frc.robot.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
@@ -30,8 +32,10 @@ public class DriveImpl implements Drive {
         backLeftDrive.setInverted(false);
         this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(true);
-        this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON);
-        this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON);
+
+        Solenoid colsonValve = new Solenoid(0);
+        this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve);
+        this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve);
 
         this.holoDrive = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
         this.tankDrive = new DifferentialDrive(
