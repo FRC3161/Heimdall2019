@@ -12,6 +12,8 @@ public class DriveImpl implements Drive {
     private final OmniPod frontRightDrive;
     private final OmniPod backLeftDrive;
     private final OmniPod backRightDrive;
+    private final ColsonPod leftColson;
+    private final ColsonPod rightColson;
 
     private AHRS ahrs;
 
@@ -24,6 +26,8 @@ public class DriveImpl implements Drive {
         backLeftDrive.setInverted(false);
         this.backRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(true);
+        this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON);
+        this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 

@@ -1,11 +1,16 @@
 package frc.robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.SpeedController;
+
 public class ColsonPodImpl implements ColsonPod {
-    
-    ColsonPodImpl(){
-        //TODO
+
+    private final SpeedController controller;
+
+    ColsonPodImpl(int controllerPort) {
+        this.controller = new WPI_TalonSRX(controllerPort);
     }
-    
+
     @Override
     public void setDeployed(boolean deployed) {
         //TODO
