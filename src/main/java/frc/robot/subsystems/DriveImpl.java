@@ -20,13 +20,13 @@ public class DriveImpl implements Drive {
 
     public DriveImpl() {
         this.frontLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
-        frontLeftDrive.setInverted(false); 
+        frontLeftDrive.setInverted(true); 
         this.frontRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         frontRightDrive.setInverted(true);
         this.backLeftDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
         backLeftDrive.setInverted(true);
         this.backRightDrive = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
-        backRightDrive.setInverted(false);
+        backRightDrive.setInverted(true);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
@@ -39,7 +39,7 @@ public class DriveImpl implements Drive {
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
         
-        this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate, angle);
+        this.drivetrain.driveCartesian(strafeRate, forwardRate, turnRate);
     }
 
     @Override
