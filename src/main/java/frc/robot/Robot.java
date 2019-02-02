@@ -15,6 +15,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private Compressor compressor;
   private Drive drive;
   private Tower tower;
 
@@ -54,7 +56,9 @@ public class Robot extends TimedRobot {
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
-    
+
+    this.compressor = new Compressor();
+    this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
     this.tower = new TowerImpl();
     this.rightSight = new RightSight(0);
