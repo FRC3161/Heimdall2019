@@ -1,13 +1,17 @@
 package frc.robot.subsystems.drivetrain;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
+
+import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveImpl implements Drive {
-    private final MecanumDrive drivetrain;
+    private final MecanumDrive holoDrive;
+    private final DifferentialDrive tankDrive;
     private final OmniPod frontLeftDrive;
     private final OmniPod frontRightDrive;
     private final OmniPod backLeftDrive;
@@ -18,18 +22,23 @@ public class DriveImpl implements Drive {
     private AHRS ahrs;
 
     public DriveImpl() {
-        this.frontLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
+        this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         frontLeftDrive.setInverted(true);
-        this.frontRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
+        this.frontRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
         frontRightDrive.setInverted(false);
-        this.backLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
+        this.backLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         backLeftDrive.setInverted(false);
-        this.backRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
+        this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(true);
         this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON);
         this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON);
 
-        this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
+        this.holoDrive = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
+        // TODO scale Omnis down by sqrt(2) when in tank mode
+        this.tankDrive = new DifferentialDrive(
+            new SpeedControllerGroup(frontLeftDrive, leftColson, backLeftDrive),
+            new SpeedControllerGroup(frontRightDrive, rightColson, backRightDrive)
+        );
 
         this.ahrs = new AHRS(SPI.Port.kMXP);
         this.ahrs.reset();
@@ -40,7 +49,11 @@ public class DriveImpl implements Drive {
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
 
-        this.drivetrain.driveCartesian(strafeRate, forwardRate, turnRate, angle);
+        if (this.getCenterWheelsDeployed()) {
+            this.tankDrive.arcadeDrive(forwardRate, turnRate);
+        } else {
+            this.holoDrive.driveCartesian(strafeRate, forwardRate, turnRate, angle);
+        }
     }
 
     @Override
