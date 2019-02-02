@@ -45,15 +45,4 @@ public class TowerImpl implements Tower {
         //TODO
         return null;
     }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        //TODO
-    }
-
-    @Override
-    public boolean isEnabled() {
-        //TODO
-        return false;
-    }
 }

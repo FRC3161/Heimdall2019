@@ -22,15 +22,4 @@ class ArmImpl implements Arm {
         //TODO
         return null;
     }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        //TODO
-    }
-
-    @Override
-    public boolean isEnabled() {
-        //TODO
-        return false;
-    }
 }

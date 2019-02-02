@@ -22,15 +22,4 @@ class ElevatorImpl implements Elevator {
         //TODO
         return null;
     }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        //TODO
-    }
-
-    @Override
-    public boolean isEnabled() {
-        //TODO
-        return false;
-    }
 }
