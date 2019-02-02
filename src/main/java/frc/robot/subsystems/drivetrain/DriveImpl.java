@@ -34,7 +34,6 @@ public class DriveImpl implements Drive {
         this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON);
 
         this.holoDrive = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
-        // TODO scale Omnis down by sqrt(2) when in tank mode
         this.tankDrive = new DifferentialDrive(
             new SpeedControllerGroup(frontLeftDrive, leftColson, backLeftDrive),
             new SpeedControllerGroup(frontRightDrive, rightColson, backRightDrive)
@@ -58,12 +57,19 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setCenterWheelsDeployed(boolean deployed) {
-        // TODO
+        this.leftColson.setDeployed(deployed);
+        this.rightColson.setDeployed(deployed);
+
+        this.frontLeftDrive.setScaledDown(deployed);
+        this.frontRightDrive.setScaledDown(deployed);
+        this.backLeftDrive.setScaledDown(deployed);
+        this.backRightDrive.setScaledDown(deployed);
     }
 
     @Override
     public boolean getCenterWheelsDeployed() {
-        return false;
+        // all pods should be synchronized so just pick one arbitrarily
+        return this.leftColson.isDeployed();
     }
 
     @Override

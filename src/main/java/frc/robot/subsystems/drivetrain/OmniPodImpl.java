@@ -1,15 +1,12 @@
 package frc.robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.robot.subsystems.TalonRatePIDSource;
 
 // TODO implement PID control over the contained Talon with its attached encoder
-public class OmniPodImpl implements OmniPod {
-
-    private final WPI_TalonSRX talon;
+public class OmniPodImpl extends RawOmniPodImpl {
 
     private final PIDSource talonPIDSource;
     private final PIDController talonPIDController;
@@ -19,7 +16,7 @@ public class OmniPodImpl implements OmniPod {
     }
 
     public OmniPodImpl(int talonCANPort, double Kp, double Ki, double Kd, double maxRotationalRate) {
-        this.talon = new WPI_TalonSRX(talonCANPort);
+        super(talonCANPort);
         this.talonPIDSource = new TalonRatePIDSource(talon, maxRotationalRate);
         this.talonPIDSource.setPIDSourceType(PIDSourceType.kRate);
         this.talonPIDController = new PIDController(Kp, Ki, Kd, talonPIDSource, this);
@@ -30,7 +27,7 @@ public class OmniPodImpl implements OmniPod {
         if (!this.talonPIDController.isEnabled()) {
             this.talonPIDController.enable();
         };
-        this.talonPIDController.setSetpoint(speed);
+        this.talonPIDController.setSetpoint(scale(speed));
     }
 
     @Override
@@ -62,7 +59,7 @@ public class OmniPodImpl implements OmniPod {
 
     @Override
     public void pidWrite(double output) {
-        this.talon.pidWrite(output);
+        this.talon.pidWrite(scale(output));
     }
 
 }

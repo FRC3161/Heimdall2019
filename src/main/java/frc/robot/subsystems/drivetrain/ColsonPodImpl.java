@@ -17,6 +17,12 @@ public class ColsonPodImpl implements ColsonPod {
     }
 
     @Override
+    public boolean isDeployed() {
+        //TODO
+        return false;
+    }
+
+    @Override
     public void set(double speed) {
         //TODO
     }

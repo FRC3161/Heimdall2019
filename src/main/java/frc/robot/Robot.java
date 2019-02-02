@@ -123,8 +123,8 @@ public class Robot extends TimedRobot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
-    if(this.driverPad.getButton(LogitechDualAction.LogitechButton.START))
-    {
+    this.drive.setCenterWheelsDeployed(this.driverPad.getButton(LogitechDualAction.LogitechButton.LEFT_TRIGGER));
+    if (this.driverPad.getButton(LogitechDualAction.LogitechButton.START)) {
       this.drive.resetGyro();
     }
     SmartDashboard.putBoolean("rightsight", rightSight.get());
