@@ -25,6 +25,17 @@ public class TowerImpl implements Tower {
     }
 
     @Override
+    public void setBeakOpen(boolean open) {
+        //TODO
+    }
+
+    @Override
+    public boolean isBeakOpen() {
+        //TODO
+        return false;
+    }
+
+    @Override
     public void setRollers(Direction direction) {
         //TODO
     }

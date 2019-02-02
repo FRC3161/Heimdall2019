@@ -19,6 +19,8 @@ public interface Tower {
     Position getTowerPosition();
     void setClawOpen(boolean open);
     boolean isClawOpen();
+    void setBeakOpen(boolean open);
+    boolean isBeakOpen();
     void setRollers(Direction direction);
     Direction getRollerDirection();
     void setEnabled(boolean enabled);
