@@ -13,32 +13,30 @@ public class DriveImpl implements Drive {
     private final OmniPod backLeftDrive;
     private final OmniPod backRightDrive;
 
-    //For gyro
     private AHRS ahrs;
 
     public DriveImpl() {
         this.frontLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
-        frontLeftDrive.setInverted(false); 
-        this.frontRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
-        frontRightDrive.setInverted(true);
-        this.backLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
-        backLeftDrive.setInverted(true);
+        frontLeftDrive.setInverted(true);
+        this.frontRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
+        frontRightDrive.setInverted(false);
+        this.backLeftDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
+        backLeftDrive.setInverted(false);
         this.backRightDrive = new OmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
-        backRightDrive.setInverted(false);
+        backRightDrive.setInverted(true);
 
         this.drivetrain = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
         this.ahrs = new AHRS(SPI.Port.kMXP);
         this.ahrs.reset();
-
     }
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
-        
-        this.drivetrain.driveCartesian(forwardRate, strafeRate, turnRate, angle);
+
+        this.drivetrain.driveCartesian(strafeRate, forwardRate, turnRate, angle);
     }
 
     @Override

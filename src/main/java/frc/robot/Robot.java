@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import ca.team3161.lib.robot.sensors.RightSight;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -20,6 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.drivetrain.Drive;
 import frc.robot.subsystems.drivetrain.DriveImpl;
+import frc.robot.subsystems.tower.Tower;
+import frc.robot.subsystems.tower.TowerImpl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,8 +39,10 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drive drive;
+  private Tower tower;
 
   private Gamepad driverPad;
+  private RightSight rightSight;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -46,9 +51,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
-
     this.drive = new DriveImpl();
-
+    this.tower = new TowerImpl();
+    this.rightSight = new RightSight(0);
+    this.rightSight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
@@ -121,6 +127,7 @@ public class Robot extends TimedRobot {
     {
       this.drive.resetGyro();
     }
+    SmartDashboard.putBoolean("rightsight", rightSight.get());
   }
 
   /**
