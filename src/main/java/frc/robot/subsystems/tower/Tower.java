@@ -1,6 +1,6 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.tower;
 
-public interface Elevator {
+public interface Tower {
     enum Position {
         LOW, // Hatch level 1, cargo level 1, loading
         HATCH_2,
@@ -15,8 +15,8 @@ public interface Elevator {
         OUT,
     }
 
-    void setElevatorPosition(Position position);
-    Position getElevatorPosition();
+    void setTowerPosition(Position position);
+    Position getTowerPosition();
     void setClawOpen(boolean open);
     boolean isClawOpen();
     void setRollers(Direction direction);

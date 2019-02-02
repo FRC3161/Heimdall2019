@@ -1,13 +1,14 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.tower;
 
-public class ElevatorImpl implements Elevator {
+public class TowerImpl implements Tower {
+
     @Override
-    public void setElevatorPosition(Position position) {
+    public void setTowerPosition(Position position) {
         //TODO
     }
 
     @Override
-    public Position getElevatorPosition() {
+    public Position getTowerPosition() {
         //TODO
         return null;
     }

@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.DriveImpl;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorImpl;
+import frc.robot.subsystems.tower.Tower;
+import frc.robot.subsystems.tower.TowerImpl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drive drive;
-  private Elevator elevator;
+  private Tower tower;
 
   private Gamepad driverPad;
   private RightSight rightSight;
@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
     this.drive = new DriveImpl();
-    this.elevator = new ElevatorImpl();
+    this.tower = new TowerImpl();
     this.rightSight = new RightSight(0);
     this.rightSight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
