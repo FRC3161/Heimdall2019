@@ -18,6 +18,9 @@ public class ColsonPodImpl implements ColsonPod {
     @Override
     public void setDeployed(boolean deployed) {
         this.solenoid.set(deployed);
+        if (!deployed) {
+            this.controller.stopMotor();
+        }
     }
 
     @Override
@@ -27,7 +30,9 @@ public class ColsonPodImpl implements ColsonPod {
 
     @Override
     public void set(double speed) {
-        this.controller.set(speed);
+        if (isDeployed()) {
+            this.controller.set(speed);
+        }
     }
 
     @Override
@@ -59,6 +64,8 @@ public class ColsonPodImpl implements ColsonPod {
 
     @Override
     public void pidWrite(double output) {
-        this.controller.pidWrite(output);
+        if (isDeployed()) {
+            this.controller.pidWrite(output);
+        }
     }
 }

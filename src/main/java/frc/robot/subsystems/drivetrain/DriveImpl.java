@@ -25,13 +25,13 @@ public class DriveImpl implements Drive {
 
     public DriveImpl() {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
-        frontLeftDrive.setInverted(true);
+        frontLeftDrive.setInverted(false);
         this.frontRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
         frontRightDrive.setInverted(false);
         this.backLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
         backLeftDrive.setInverted(false);
         this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
-        backRightDrive.setInverted(true);
+        backRightDrive.setInverted(false);
 
         Solenoid colsonValve = new Solenoid(0);
         this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve);
@@ -61,6 +61,9 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setCenterWheelsDeployed(boolean deployed) {
+        this.tankDrive.setSafetyEnabled(deployed);
+        this.holoDrive.setSafetyEnabled(!deployed);
+
         this.leftColson.setDeployed(deployed);
         this.rightColson.setDeployed(deployed);
 
