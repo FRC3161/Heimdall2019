@@ -39,7 +39,7 @@ public class DriveImpl implements Drive {
         double angle = -this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
         
-        this.drivetrain.driveCartesian(strafeRate, forwardRate, turnRate);
+        this.drivetrain.driveCartesian(strafeRate, forwardRate, turnRate, angle);
     }
 
     @Override
