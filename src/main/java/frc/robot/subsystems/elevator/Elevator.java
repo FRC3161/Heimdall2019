@@ -2,6 +2,11 @@ package frc.robot.subsystems.elevator;
 
 public interface Elevator {
     enum Position {
+        LOW, // Hatch level 1, cargo level 1, loading
+        HATCH_2,
+        HATCH_3,
+        CARGO_2,
+        CARGO_3
     }
 
     enum Direction {
