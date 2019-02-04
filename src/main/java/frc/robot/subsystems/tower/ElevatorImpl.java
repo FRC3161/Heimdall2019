@@ -22,4 +22,9 @@ class ElevatorImpl implements Elevator {
         //TODO
         return null;
     }
+    @Override
+    public void setSpeed (){
+        
+    }
+
 }

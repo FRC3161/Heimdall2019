@@ -23,4 +23,5 @@ public interface Tower {
     boolean isBeakOpen();
     void setRollers(Direction direction);
     Direction getRollerDirection();
+    void setElevatorSpeed(double speed);
 }
