@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   private Tower tower;
 
   private Gamepad driverPad;
+  private Gamepad operatorPad;
   private RightSight rightSight;
 
   /**
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
-    this.operatorPad = new LogitechDualAction(1)
+    this.operatorPad = new LogitechDualAction(1);
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
