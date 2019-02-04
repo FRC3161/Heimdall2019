@@ -45,4 +45,7 @@ public class TowerImpl implements Tower {
         //TODO
         return null;
     }
+    public Direction void setElevatorSpeed(double speed){
+        
+    }
 }
