@@ -54,10 +54,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     this.driverPad = new LogitechDualAction(0);
+    this.operatorPad = new LogitechDualAction(1);
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X, new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
-    this.operatorPad = new LogitechDualAction(1);
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
@@ -133,8 +133,8 @@ public class Robot extends TimedRobot {
     if (this.driverPad.getButton(LogitechDualAction.LogitechButton.START)) {
       this.drive.resetGyro();
     }
-    this.tower.Elevator.setSpeed(
-      this.operatorPad.getValue(LogitechDualAction.LEFT_STICK, Logitech.Y)
+    this.tower.setSpeed(
+      this.operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y)
     );
     SmartDashboard.putBoolean("rightsight", rightSight.get());
   }

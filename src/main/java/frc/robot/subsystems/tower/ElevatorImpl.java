@@ -24,7 +24,7 @@ class ElevatorImpl implements Elevator {
     }
     @Override
     public void setSpeed (double speed){
-        controller.set(double speed);        
+        controller.setSpeed(speed);        
     }
 
 }

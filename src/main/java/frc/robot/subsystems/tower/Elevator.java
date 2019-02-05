@@ -5,5 +5,5 @@ import frc.robot.subsystems.tower.Tower.Position;
 interface Elevator {
     void setPosition(Position position);
     Position getPosition();
-    void tower.setElevatorSpeed(double speed)
+    void setElevatorSpeed(double speed);
 }
