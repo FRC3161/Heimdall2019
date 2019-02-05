@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
     if (this.driverPad.getButton(LogitechDualAction.LogitechButton.START)) {
       this.drive.resetGyro();
     }
-    this.tower.setSpeed(
+    this.tower.setElevatorSpeed(
       this.operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y)
     );
     SmartDashboard.putBoolean("rightsight", rightSight.get());
