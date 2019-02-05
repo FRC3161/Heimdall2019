@@ -1,15 +1,15 @@
 package frc.robot.subsystems.tower;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.subsystems.tower.Tower.Position;
 
 class ElevatorImpl implements Elevator {
 
-    private final TalonSRX controller;
+    private final WPI_TalonSRX controller;
 
     ElevatorImpl(int talonPort) {
-        this.controller = new TalonSRX(talonPort);
+        this.controller = new WPI_TalonSRX(talonPort);
     }
 
     @Override
@@ -22,9 +22,26 @@ class ElevatorImpl implements Elevator {
         //TODO
         return null;
     }
+
     @Override
-    public void setSpeed (double speed){
-        controller.setSpeed(speed);        
+    public void setSpeed(double speed) {
+        double output;
+        double maxPower= 0.25;
+
+        if (speed > 0) {
+            if (speed >= maxPower) {
+                output = maxPower;
+            } else {
+                output = speed;
+            }
+        } else {
+            if (Math.abs(speed) >= maxPower) {
+                output = -maxPower;
+            } else {
+                output = speed;
+            }
+        }
+        controller.set(output);        
     }
 
 }

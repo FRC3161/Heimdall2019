@@ -2,6 +2,12 @@ package frc.robot.subsystems.tower;
 import frc.robot.subsystems.tower.Elevator;
 public class TowerImpl implements Tower {
 
+    private final Elevator elevator;
+
+    public TowerImpl() {
+        this.elevator = new ElevatorImpl(8);
+    }
+
     @Override
     public void setTowerPosition(Position position) {
         //TODO
@@ -45,7 +51,8 @@ public class TowerImpl implements Tower {
         //TODO
         return null;
     }
-    public void setElevatorSpeed(double speed){
-        
+
+    public void setElevatorSpeed(double speed) {
+        this.elevator.setSpeed(speed);
     }
 }
