@@ -136,6 +136,9 @@ public class Robot extends TimedRobot {
     this.tower.setElevatorSpeed(
       this.operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y)
     );
+    this.tower.setArmSpeed(
+      this.operatorPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.Y)
+    );
     SmartDashboard.putBoolean("rightsight", rightSight.get());
   }
 

@@ -24,4 +24,5 @@ public interface Tower {
     void setRollers(Direction direction);
     Direction getRollerDirection();
     void setElevatorSpeed(double speed);
+    void setArmSpeed(double speed);
 }

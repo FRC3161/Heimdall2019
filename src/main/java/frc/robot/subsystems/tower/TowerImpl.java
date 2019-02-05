@@ -3,9 +3,11 @@ import frc.robot.subsystems.tower.Elevator;
 public class TowerImpl implements Tower {
 
     private final Elevator elevator;
+    private final Arm arm;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
+        this.arm = new ArmImpl(7);
     }
 
     @Override
@@ -54,5 +56,9 @@ public class TowerImpl implements Tower {
 
     public void setElevatorSpeed(double speed) {
         this.elevator.setSpeed(speed);
+    }
+    
+    public void setArmSpeed(double speed){
+        this.arm.setSpeed(speed);
     }
 }
