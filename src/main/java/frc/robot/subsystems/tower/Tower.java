@@ -2,6 +2,7 @@ package frc.robot.subsystems.tower;
 
 public interface Tower {
     enum Position {
+        STARTING_CONFIG, //Elevator at bottom and arm in
         LOW, // Hatch level 1, cargo level 1, loading
         HATCH_2,
         HATCH_3,
