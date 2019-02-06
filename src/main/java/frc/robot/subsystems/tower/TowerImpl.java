@@ -4,6 +4,7 @@ public class TowerImpl implements Tower {
 
     private final Elevator elevator;
     private final Arm arm;
+    private Position position;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
@@ -12,13 +13,14 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setTowerPosition(Position position) {
-        //TODO
+        this.position = position;
+        this.elevator.setPosition(position);
+        this.arm.setPosition(position);
     }
 
     @Override
     public Position getTowerPosition() {
-        //TODO
-        return null;
+        return position;
     }
 
     @Override
