@@ -1,4 +1,7 @@
 package frc.robot.subsystems.tower;
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.tower.Elevator;
 public class TowerImpl implements Tower {
 
@@ -10,6 +13,7 @@ public class TowerImpl implements Tower {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
         this.position = Position.STARTING_CONFIG;
+        SmartDashboard.putString("Elevator Position", position.toString());
     }
 
     @Override
@@ -17,6 +21,7 @@ public class TowerImpl implements Tower {
         this.position = position;
         this.elevator.setPosition(position);
         this.arm.setPosition(position);
+        SmartDashboard.putString("Elevator Position", position.toString());
     }
 
     @Override
