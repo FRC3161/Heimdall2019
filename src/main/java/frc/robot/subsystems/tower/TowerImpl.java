@@ -9,6 +9,7 @@ public class TowerImpl implements Tower {
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
+        this.position = Position.LOW;
     }
 
     @Override
