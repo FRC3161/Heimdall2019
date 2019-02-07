@@ -11,12 +11,10 @@ public class TowerImpl implements Tower {
     private Position position;
     private Solenoid solenoid;
 
-    solenoid = new Solenoid(1); //Placeholder port
-
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
-        this.solenoid = solenoid;
+        this.solenoid = new Solenoid(1); //Placeholder port
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
