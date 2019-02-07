@@ -39,8 +39,7 @@ public class TowerImpl implements Tower {
 
     @Override
     public boolean isClawOpen() {
-        //TODO
-        return false;
+        return solenoid.get();
     }
 
     @Override
