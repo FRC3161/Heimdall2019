@@ -26,10 +26,11 @@ public class TowerImpl implements Tower {
 
     private final Elevator elevator;
     private final Arm arm;
+    private final Solenoid claw;
+    private final Solenoid beak;
+    private final SpeedControllerGroup roller;
+    private final GamePieceWatcher gamePieceWatcher;
     private Position position;
-    private Solenoid claw;
-    private Solenoid beak;
-    private SpeedControllerGroup roller;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(RobotMap.ELEVATOR_CONTROLLER);
@@ -37,6 +38,8 @@ public class TowerImpl implements Tower {
         this.claw = new Solenoid(RobotMap.CLAW_SOLENOID);
         this.beak = new Solenoid(RobotMap.BEAK_SOLENOID);
         this.roller = new SpeedControllerGroup(new VictorSP(RobotMap.TOWER_ROLLER_1), new VictorSP(RobotMap.TOWER_ROLLER_2));
+        this.gamePieceWatcher = new GamePieceWatcher();
+        this.gamePieceWatcher.start();
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
