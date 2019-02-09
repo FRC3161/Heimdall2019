@@ -1,6 +1,7 @@
 package frc.robot.subsystems.tower;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.tower.Elevator;
 
 import org.apache.commons.collections4.BidiMap;
@@ -32,8 +33,8 @@ public class TowerImpl implements Tower {
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
-        this.claw = new Solenoid(1); //Placeholder port
-        this.roller = new SpeedControllerGroup(new VictorSP(9), new VictorSP(10));  //TODO Placeholder ports
+        this.claw = new Solenoid(RobotMap.CLAW_SOLENOID); //Placeholder port
+        this.roller = new SpeedControllerGroup(new VictorSP(RobotMap.TOWER_ROLLER_1), new VictorSP(RobotMap.TOWER_ROLLER_2));
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
@@ -52,7 +53,6 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setClawOpen(boolean open) {
-        //TODO might need a SpeedController? (see setDeployed in ColsonPodImpl)
         claw.set(open);
     }
 

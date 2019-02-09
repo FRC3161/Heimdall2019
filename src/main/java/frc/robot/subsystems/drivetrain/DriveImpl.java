@@ -33,7 +33,7 @@ public class DriveImpl implements Drive {
         this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(false);
 
-        Solenoid colsonValve = new Solenoid(0);
+        Solenoid colsonValve = new Solenoid(RobotMap.COLSON_SOLENOID);
         this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve);
         this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve);
 
