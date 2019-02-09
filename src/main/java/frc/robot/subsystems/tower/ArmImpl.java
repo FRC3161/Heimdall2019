@@ -1,5 +1,7 @@
 package frc.robot.subsystems.tower;
 
+import static frc.robot.MathUtils.absClamp;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.subsystems.tower.Tower.Position;
@@ -22,24 +24,10 @@ class ArmImpl implements Arm {
         //TODO
         return null;
     }
+
     @Override
-    public void setSpeed(double speed){
-        double output;
+    public void setSpeed(double speed) {
         double maxPower= 0.25;
-    
-        if (speed > 0) {
-            if (speed >= maxPower) {
-                output = maxPower;
-            } else {
-                 output = speed;
-            }
-        } else {
-            if (Math.abs(speed) >= maxPower) {
-                 output = -maxPower;
-            } else {
-                output = speed;
-            }
-        }
-        this.controller.set(output);
+        this.controller.set(absClamp(speed, maxPower));
     }
 }
