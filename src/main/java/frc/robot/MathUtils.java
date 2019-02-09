@@ -4,6 +4,7 @@ public class MathUtils {
     private MathUtils() { }
 
     public static double absClamp(double value, double clamp) {
+        clamp = Math.abs(clamp);
         if (Math.abs(value) <= clamp) {
             return value;
         }
