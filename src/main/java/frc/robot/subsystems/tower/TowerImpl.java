@@ -8,6 +8,7 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
+import ca.team3161.lib.robot.LifecycleEvent;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -100,5 +101,10 @@ public class TowerImpl implements Tower {
 
     public void setArmSpeed(double speed){
         this.arm.setSpeed(speed);
+    }
+
+    @Override
+    public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        this.gamePieceWatcher.lifecycleStatusChanged(previous, current);
     }
 }

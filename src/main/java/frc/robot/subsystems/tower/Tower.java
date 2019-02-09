@@ -1,6 +1,8 @@
 package frc.robot.subsystems.tower;
 
-public interface Tower {
+import ca.team3161.lib.robot.LifecycleListener;
+
+public interface Tower extends LifecycleListener {
     enum Position {
         STARTING_CONFIG, //Elevator at bottom and arm in
         LOW, // Hatch level 1, cargo level 1, loading

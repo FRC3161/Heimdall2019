@@ -80,6 +80,8 @@ public class Robot extends TitanBot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
+    registerLifecycleComponent(this.tower);
+
     CameraServer.getInstance().startAutomaticCapture();
   }
 
