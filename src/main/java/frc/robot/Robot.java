@@ -9,11 +9,11 @@ package frc.robot;
 
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
-import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
+import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -41,8 +41,8 @@ public class Robot extends TitanBot {
   private Drive drive;
   private Tower tower;
 
-  private Gamepad driverPad;
-  private Gamepad operatorPad;
+  private LogitechDualAction driverPad;
+  private LogitechDualAction operatorPad;
 
   @Override
   public int getAutonomousPeriodLengthSeconds() {
@@ -80,6 +80,8 @@ public class Robot extends TitanBot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
+    registerLifecycleComponent(this.driverPad);
+    registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
 
     CameraServer.getInstance().startAutomaticCapture();
@@ -138,7 +140,12 @@ public class Robot extends TitanBot {
    * This function is called once at the start of operator control.
    */
   @Override
-  public void teleopSetup() { }
+  public void teleopSetup() {
+    this.driverPad.bind(LogitechButton.LEFT_TRIGGER, this.drive::setCenterWheelsDeployed);
+    this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
+    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
+    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
+  }
 
   /**
    * This function is called periodically during operator control.
@@ -149,16 +156,6 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
-    );
-    this.drive.setCenterWheelsDeployed(this.driverPad.getButton(LogitechDualAction.LogitechButton.LEFT_TRIGGER));
-    if (this.driverPad.getButton(LogitechDualAction.LogitechButton.START)) {
-      this.drive.resetGyro();
-    }
-    this.tower.setElevatorSpeed(
-      this.operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y)
-    );
-    this.tower.setArmSpeed(
-      this.operatorPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.Y)
     );
   }
 
