@@ -13,6 +13,8 @@ public class RobotMap {
     // Tower controllers
     public static final int TOWER_ROLLER_1 = 9;
     public static final int TOWER_ROLLER_2 = 10;
+    public static final int ARM_CONTROLLER = 7;
+    public static final int ELEVATOR_CONTROLLER = 8;
 
     // Solenoids
     public static final int COLSON_SOLENOID = 0;
