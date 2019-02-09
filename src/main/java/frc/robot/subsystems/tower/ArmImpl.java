@@ -25,6 +25,8 @@ class ArmImpl implements Arm {
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
+    // TODO set up TalonSRX for Position PID:
+    // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/PositionClosedLoop/src/main/java/frc/robot/Robot.java
     private final WPI_TalonSRX controller;
     private Position targetPosition = Position.STARTING_CONFIG;
 
