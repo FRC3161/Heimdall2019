@@ -9,12 +9,12 @@ public class TowerImpl implements Tower {
     private final Elevator elevator;
     private final Arm arm;
     private Position position;
-    private Solenoid solenoid;
+    private Solenoid claw;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
-        this.solenoid = new Solenoid(1); //Placeholder port
+        this.claw = new Solenoid(1); //Placeholder port
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
@@ -33,13 +33,13 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setClawOpen(boolean open) {
-        solenoid.set(open);
+        claw.set(open);
         //TODO might need a SpeedController? (see setDeployed in ColsonPodImpl)
     }
 
     @Override
     public boolean isClawOpen() {
-        return solenoid.get();
+        return claw.get();
     }
 
     @Override
