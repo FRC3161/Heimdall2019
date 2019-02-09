@@ -3,6 +3,9 @@ package frc.robot.subsystems.tower;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.tower.Elevator;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class TowerImpl implements Tower {
 
@@ -10,11 +13,13 @@ public class TowerImpl implements Tower {
     private final Arm arm;
     private Position position;
     private Solenoid claw;
+    private SpeedControllerGroup roller;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(8);
         this.arm = new ArmImpl(7);
         this.claw = new Solenoid(1); //Placeholder port
+        this.roller = new SpeedControllerGroup(new VictorSP(9), new VictorSP(10));  //TODO Placeholder ports
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
