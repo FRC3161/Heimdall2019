@@ -1,5 +1,7 @@
 package frc.robot.subsystems.tower;
 
+import static frc.robot.MathUtils.absClamp;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.subsystems.tower.Tower.Position;
@@ -25,23 +27,8 @@ class ElevatorImpl implements Elevator {
 
     @Override
     public void setSpeed(double speed) {
-        double output;
         double maxPower= 0.25;
-
-        if (speed > 0) {
-            if (speed >= maxPower) {
-                output = maxPower;
-            } else {
-                output = speed;
-            }
-        } else {
-            if (Math.abs(speed) >= maxPower) {
-                output = -maxPower;
-            } else {
-                output = speed;
-            }
-        }
-        controller.set(output);        
+        controller.set(absClamp(speed, maxPower));
     }
 
 }
