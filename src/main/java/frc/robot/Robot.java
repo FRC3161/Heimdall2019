@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.concurrent.TimeUnit;
+
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -23,6 +25,7 @@ import frc.robot.subsystems.drivetrain.Drive;
 import frc.robot.subsystems.drivetrain.DriveImpl;
 import frc.robot.subsystems.tower.Tower;
 import frc.robot.subsystems.tower.TowerImpl;
+import frc.robot.subsystems.tower.Tower.Direction;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,6 +37,7 @@ import frc.robot.subsystems.tower.TowerImpl;
 public class Robot extends TitanBot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+  private static final String kSystemCheckAuto = "System Check";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -78,6 +82,7 @@ public class Robot extends TitanBot {
     this.tower = new TowerImpl();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.addOption("System Check Auto", kSystemCheckAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
 
     registerLifecycleComponent(this.driverPad);
@@ -124,11 +129,26 @@ public class Robot extends TitanBot {
    * "script-like" manner
    */
   @Override
-  public void autonomousRoutine() {
+  public void autonomousRoutine() throws InterruptedException {
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
         break;
+
+      case kSystemCheckAuto:
+        tower.setBeakOpen(true);
+        tower.setClawOpen(true);
+        tower.setRollers(Direction.IN);
+        waitFor(250, TimeUnit.MILLISECONDS);
+        tower.setBeakOpen(false);
+        tower.setClawOpen(false);
+        tower.setRollers(Direction.NONE);
+        waitFor(1, TimeUnit.SECONDS);
+        drive.setCenterWheelsDeployed(true);
+        waitFor(250, TimeUnit.MILLISECONDS);
+        drive.setCenterWheelsDeployed(false);
+        break;
+
       case kDefaultAuto:
       default:
         // Put default auto code here
