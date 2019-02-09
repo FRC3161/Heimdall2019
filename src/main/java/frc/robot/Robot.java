@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.Gamepad;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -15,7 +16,6 @@ import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -31,8 +31,7 @@ import frc.robot.subsystems.tower.TowerImpl;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-// TODO evaluate switching to TitanBot for autonomous "script" style
-public class Robot extends TimedRobot {
+public class Robot extends TitanBot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
@@ -45,12 +44,29 @@ public class Robot extends TimedRobot {
   private Gamepad driverPad;
   private Gamepad operatorPad;
 
+  @Override
+  public int getAutonomousPeriodLengthSeconds() {
+    return 15;
+  }
+
+  /**
+   * This function is called once when the robot is disabled.
+   */
+  @Override
+  public void disabledSetup() { }
+
+  /**
+   * This function is called periodically while the robot is disabled.
+   */
+  @Override
+  public void disabledRoutine() { }
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
-  public void robotInit() {
+  public void robotSetup() {
     this.driverPad = new LogitechDualAction(0);
     this.operatorPad = new LogitechDualAction(1);
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(0.05)));
@@ -91,7 +107,7 @@ public class Robot extends TimedRobot {
    * SendableChooser make sure to add them to the chooser code above as well.
    */
   @Override
-  public void autonomousInit() {
+  public void autonomousSetup() {
     m_autoSelected = m_chooser.getSelected();
     // autoSelected = SmartDashboard.getString("Auto Selector",
     // defaultAuto);
@@ -100,10 +116,11 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called periodically during autonomous.
+   * This function is called at the start of autonomous and runs top-down in a
+   * "script-like" manner
    */
   @Override
-  public void autonomousPeriodic() {
+  public void autonomousRoutine() {
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
@@ -116,10 +133,16 @@ public class Robot extends TimedRobot {
   }
 
   /**
+   * This function is called once at the start of operator control.
+   */
+  @Override
+  public void teleopSetup() { }
+
+  /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public void teleopRoutine() {
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
@@ -138,9 +161,15 @@ public class Robot extends TimedRobot {
   }
 
   /**
+   * This function is called once at the start of test mode.
+   */
+  @Override
+  public void testSetup() { }
+
+  /**
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
+  public void testRoutine() {
   }
 }
