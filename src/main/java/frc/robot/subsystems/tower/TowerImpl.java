@@ -59,13 +59,27 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setRollers(Direction direction) {
-        //TODO
+        if (direction.equals(Direction.IN)) {
+            roller.set(1.0);
+          } else if (direction.equals(Direction.OUT)) {
+            roller.set(-1.0);
+          } else {
+            roller.set(0.0);
+          }
     }
 
     @Override
     public Direction getRollerDirection() {
-        //TODO
-        return null;
+        double rollerSpeed = roller.get();
+        if (rollerSpeed > 0) {
+          return Direction.IN;
+        }
+        else if (rollerSpeed < 0) {
+            return Direction.OUT;
+        }
+        else {
+            return Direction.NONE;
+        }
     }
 
     public void setElevatorSpeed(double speed) {
