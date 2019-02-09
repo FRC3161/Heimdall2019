@@ -19,5 +19,6 @@ public class RobotMap {
     // Solenoids
     public static final int COLSON_SOLENOID = 0;
     public static final int CLAW_SOLENOID = 1;
+    public static final int BEAK_SOLENOID = 2;
 
 }

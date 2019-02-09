@@ -28,12 +28,14 @@ public class TowerImpl implements Tower {
     private final Arm arm;
     private Position position;
     private Solenoid claw;
+    private Solenoid beak;
     private SpeedControllerGroup roller;
 
     public TowerImpl() {
         this.elevator = new ElevatorImpl(RobotMap.ELEVATOR_CONTROLLER);
         this.arm = new ArmImpl(RobotMap.ARM_CONTROLLER);
         this.claw = new Solenoid(RobotMap.CLAW_SOLENOID);
+        this.beak = new Solenoid(RobotMap.BEAK_SOLENOID);
         this.roller = new SpeedControllerGroup(new VictorSP(RobotMap.TOWER_ROLLER_1), new VictorSP(RobotMap.TOWER_ROLLER_2));
         setTowerPosition(Position.STARTING_CONFIG);
     }
@@ -63,13 +65,12 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setBeakOpen(boolean open) {
-        //TODO
+        beak.set(open);
     }
 
     @Override
     public boolean isBeakOpen() {
-        //TODO
-        return false;
+        return beak.get();
     }
 
     @Override
