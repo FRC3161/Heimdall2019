@@ -23,7 +23,7 @@ public class TowerImpl implements Tower {
         this.position = position;
         this.elevator.setPosition(position);
         this.arm.setPosition(position);
-        SmartDashboard.putString("Elevator Position", position.toString());
+        SmartDashboard.putString("Tower Position", position.toString());
     }
 
     @Override
