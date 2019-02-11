@@ -3,6 +3,9 @@ package frc.robot.subsystems.tower;
 import static frc.robot.MathUtils.absClamp;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import edu.wpi.first.wpilibj.Encoder;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -29,9 +32,14 @@ class ArmImpl implements Arm {
     // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/PositionClosedLoop/src/main/java/frc/robot/Robot.java
     private final WPI_TalonSRX controller;
     private Position targetPosition = Position.STARTING_CONFIG;
+    private Encoder armEncoder;
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
+        this.armEncoder = new Encoder(14, 15); //TODO Placeholder channels
+        double motoroutput = this.controller.getMotorOutputPercent();
+        //TODO Finish This
+        //controller.configSelectedFeedbackSensor(armEncoder, pidIdx, timeoutMs);
     }
 
     @Override
