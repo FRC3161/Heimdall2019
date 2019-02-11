@@ -90,6 +90,7 @@ public class Robot extends TitanBot {
     this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
     this.tower = new TowerImpl();
+    this.underLay = new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     m_chooser.addOption("System Check Auto", kSystemCheckAuto);
@@ -98,7 +99,6 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.driverPad);
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
-    this.underLay.setDirection(Relay.Direction.kForward);
     CameraServer.getInstance().startAutomaticCapture();
   }
 
