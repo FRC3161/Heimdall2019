@@ -19,7 +19,9 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -44,6 +46,7 @@ public class Robot extends TitanBot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Compressor compressor;
+  private Relay underLay;
   private Drive drive;
   private Tower tower;
 
@@ -95,7 +98,7 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.driverPad);
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
-
+    this.underLay.setDirection(Relay.Direction.kForward);
     CameraServer.getInstance().startAutomaticCapture();
   }
 
@@ -131,6 +134,7 @@ public class Robot extends TitanBot {
     // defaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     drive.resetGyro();
+    this.underLay.set(Value.kOn);
   }
 
   /**
@@ -176,6 +180,7 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
+    this.underLay.set(Value.kOn);
   }
 
   /**
