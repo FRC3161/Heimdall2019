@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -39,22 +40,34 @@ class ArmImpl implements Arm {
     private final Gains kGains;
     private final int kTimeoutMs;
     private static Boolean kSensorPhase;
+    private static Boolean kMotorInvert;
+    private int absolutePosition;
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
+        
         double motoroutput = this.controller.getMotorOutputPercent();
         this.kPIDLoopIdx = 0;
         this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
         this.kTimeoutMs = 30;
         this.kSensorPhase = true;
-        
+        this.absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
+        this.kMotorInvert = false;
+
         //Set PID values on Talon
         controller.config_kF(kPIDLoopIdx, kGains.kF);
         controller.config_kP(kPIDLoopIdx, kGains.kP);
         controller.config_kI(kPIDLoopIdx, kGains.kI);
         controller.config_kD(kPIDLoopIdx, kGains.kD);
+        
+        absolutePosition &= 0xFFF;
+        if (kSensorPhase) {absolutePosition *= -1;}
+        if (kMotorInvert) {absolutePosition *= -1;}
 
         controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+
+        //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
     }
 
     @Override
@@ -67,6 +80,8 @@ class ArmImpl implements Arm {
             encoderTicks = POSITION_TICKS.get(position);
         }
         // TODO do something useful with encoder ticks
+
+        this.controller.set(ControlMode.Position, position);
     }
 
     @Override
