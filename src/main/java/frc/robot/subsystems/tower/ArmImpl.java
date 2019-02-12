@@ -5,8 +5,6 @@ import static frc.robot.MathUtils.absClamp;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -46,13 +44,10 @@ class ArmImpl implements Arm {
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
         
-        double motoroutput = this.controller.getMotorOutputPercent();
         this.kPIDLoopIdx = 0;
         this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
         this.kTimeoutMs = 30;
-        this.kSensorPhase = true;
         this.absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
-        this.kMotorInvert = false;
 
         //Set PID values on Talon
         controller.config_kF(kPIDLoopIdx, kGains.kF);
@@ -81,7 +76,7 @@ class ArmImpl implements Arm {
         }
         // TODO do something useful with encoder ticks
 
-        this.controller.set(ControlMode.Position, position);
+        this.controller.set(ControlMode.Position, encoderTicks);
     }
 
     @Override
