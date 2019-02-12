@@ -14,7 +14,6 @@ class ElevatorImpl implements Elevator {
     ElevatorImpl(int masterPort, int slavePort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
-        this.controllerSlave.setInverted(true);
     }
 
     @Override
