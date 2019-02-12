@@ -1,9 +1,8 @@
 package frc.robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class ColsonPodImpl implements ColsonPod {
 
@@ -11,7 +10,7 @@ public class ColsonPodImpl implements ColsonPod {
     private final Solenoid solenoid;
 
     ColsonPodImpl(int controllerPort, Solenoid solenoid) {
-        this.controller = new WPI_TalonSRX(controllerPort);
+        this.controller = new VictorSP(controllerPort);
         this.solenoid = solenoid;
     }
 
