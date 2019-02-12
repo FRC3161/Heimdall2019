@@ -38,6 +38,7 @@ class ArmImpl implements Arm {
     private final int kPIDLoopIdx;
     private final Gains kGains;
     private final int kTimeoutMs;
+    private static Boolean kSensorPhase;
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
@@ -45,6 +46,14 @@ class ArmImpl implements Arm {
         this.kPIDLoopIdx = 0;
         this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
         this.kTimeoutMs = 30;
+        this.kSensorPhase = true;
+        
+        //Set PID values on Talon
+        controller.config_kF(kPIDLoopIdx, kGains.kF);
+        controller.config_kP(kPIDLoopIdx, kGains.kP);
+        controller.config_kI(kPIDLoopIdx, kGains.kI);
+        controller.config_kD(kPIDLoopIdx, kGains.kD);
+
         controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
     }
 
