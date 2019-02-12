@@ -8,10 +8,13 @@ import frc.robot.subsystems.tower.Tower.Position;
 
 class ElevatorImpl implements Elevator {
 
-    private final WPI_TalonSRX controller;
+    private final WPI_TalonSRX controllerMaster;
+    private final WPI_TalonSRX controllerSlave;
 
-    ElevatorImpl(int talonPort) {
-        this.controller = new WPI_TalonSRX(talonPort);
+    ElevatorImpl(int masterPort, int slavePort) {
+        this.controllerMaster = new WPI_TalonSRX(masterPort);
+        this.controllerSlave = new WPI_TalonSRX(slavePort);
+        this.controllerSlave.setInverted(true);
     }
 
     @Override
@@ -28,7 +31,8 @@ class ElevatorImpl implements Elevator {
     @Override
     public void setSpeed(double speed) {
         double maxPower= 0.25;
-        controller.set(absClamp(speed, maxPower));
+        controllerMaster.set(absClamp(speed, maxPower));
+        controllerSlave.set(absClamp(speed, maxPower));
     }
 
 }

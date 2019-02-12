@@ -34,7 +34,7 @@ public class TowerImpl implements Tower {
     private Position position;
 
     public TowerImpl() {
-        this.elevator = new ElevatorImpl(RobotMap.ELEVATOR_CONTROLLER);
+        this.elevator = new ElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER);
         this.arm = new ArmImpl(RobotMap.ARM_CONTROLLER);
         this.claw = new Solenoid(RobotMap.CLAW_SOLENOID);
         this.beak = new Solenoid(RobotMap.BEAK_SOLENOID);
