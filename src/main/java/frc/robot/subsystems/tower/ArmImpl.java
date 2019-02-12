@@ -33,20 +33,19 @@ class ArmImpl implements Arm {
     // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/PositionClosedLoop/src/main/java/frc/robot/Robot.java
     private final WPI_TalonSRX controller;
     private Position targetPosition = Position.STARTING_CONFIG;
-    private Encoder armEncoder;
 
     //Arm PID
     private final int kPIDLoopIdx;
     private final Gains kGains;
+    private final int kTimeoutMs;
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
-        this.armEncoder = new Encoder(14, 15); //TODO Placeholder channels
         double motoroutput = this.controller.getMotorOutputPercent();
         this.kPIDLoopIdx = 0;
         this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
-        //TODO Finish This
-        //controller.configSelectedFeedbackSensor(armEncoder, pidIdx, timeoutMs);
+        this.kTimeoutMs = 30;
+        controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
     }
 
     @Override
