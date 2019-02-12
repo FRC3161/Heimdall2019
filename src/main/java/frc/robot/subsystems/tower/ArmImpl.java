@@ -87,9 +87,4 @@ class ArmImpl implements Arm {
         double maxPower = 0.25;
         this.controller.set(absClamp(speed, maxPower));
     }
-
-    @Override
-    public void pidLoop(){
-        
-    }
 }

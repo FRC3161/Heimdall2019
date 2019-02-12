@@ -6,5 +6,4 @@ interface Arm {
     void setPosition(Position position);
     Position getPosition();
     void setSpeed(double speed);
-    void pidLoop();
 }
