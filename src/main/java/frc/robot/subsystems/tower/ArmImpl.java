@@ -76,7 +76,7 @@ class ArmImpl implements Arm {
 
     @Override
     public void setSpeed(double speed) {
-        double maxPower= 0.25;
+        double maxPower = 0.25;
         this.controller.set(absClamp(speed, maxPower));
     }
 
