@@ -16,7 +16,8 @@ public class RobotMap {
     public static final int TOWER_ROLLER_2 = 10;
     // CAN
     public static final int ARM_CONTROLLER = 7;
-    public static final int ELEVATOR_CONTROLLER = 8;
+    public static final int ELEVATOR_MASTER_CONTROLLER = 8;
+    public static final int ELEVATOR_SLAVE_CONTROLLER = 9;
     // Relay
     public static final int LED_SPIKE = 0;
     public static final int UNDERGLOW_SPIKE = 1;
