@@ -7,6 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import frc.robot.subsystems.tower.Tower.Position;
+import frc.robot.subsystems.Gains;
 
 class ArmImpl implements Arm {
 
@@ -28,7 +29,7 @@ class ArmImpl implements Arm {
 
     //Arm PID
     private final int kPIDLoopIdx;
-    private final frc.robot.subsystems.Gains kGains;
+    private final Gains kGains;
     private final int kTimeoutMs;
     private boolean kSensorPhase;
     private boolean kMotorInvert;
@@ -41,7 +42,7 @@ class ArmImpl implements Arm {
         this.controller = new WPI_TalonSRX(talonPort);
         
         this.kPIDLoopIdx = 0;
-        this.kGains = new frc.robot.subsystems.Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
         this.kTimeoutMs = 30;
         this.absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         this.kMotorInvert = false;
