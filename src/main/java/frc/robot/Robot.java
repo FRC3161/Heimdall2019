@@ -198,21 +198,21 @@ public class Robot extends TitanBot {
     }
     // Look Right
     else if (driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(-90.0);
+      drive.setAngleTarget(270.0);
     }
     // Look Backward
     else if (driverPad.getButton(LogitechButton.A)) {
-      drive.setAngleTarget(-180.0);
+      drive.setAngleTarget(180.0);
     }
     // Look Left
     else if (driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(90.0);
     } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(-45.0);
+      drive.setAngleTarget(315.0);
     } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(45.0);
     } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(-135.0);
+      drive.setAngleTarget(255.0);
     } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(135.0);
     }
