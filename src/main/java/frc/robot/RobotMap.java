@@ -15,6 +15,8 @@ public class RobotMap {
     // PWM
     public static final int TOWER_ROLLER_1 = 9;
     public static final int TOWER_ROLLER_2 = 10;
+    public static final int TOP_LIMIT_SWITCH = 7;
+    public static final int BOTTOM_LIMIT_SWITCH = 8;
     // CAN
     public static final int ARM_CONTROLLER = 5;
     public static final int ELEVATOR_MASTER_CONTROLLER = 6;
