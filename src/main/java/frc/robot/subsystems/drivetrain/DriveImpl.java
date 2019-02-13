@@ -87,7 +87,7 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
-        double angle = this.ahrs.getYaw();
+        double angle = this.ahrs.getAngle();
         SmartDashboard.putNumber("Gyro:", angle);
 
         if (this.getCenterWheelsDeployed()) {
