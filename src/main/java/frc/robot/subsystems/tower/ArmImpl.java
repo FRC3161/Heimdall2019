@@ -3,8 +3,6 @@ package frc.robot.subsystems.tower;
 import static frc.robot.MathUtils.absClamp;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -57,7 +55,7 @@ class ArmImpl implements Arm {
         if (kSensorPhase) {absolutePosition *= -1;}
         if (kMotorInvert) {absolutePosition *= -1;}
 
-        controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        controller.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
@@ -74,7 +72,7 @@ class ArmImpl implements Arm {
         }
         // TODO do something useful with encoder ticks
 
-        this.controller.set(ControlMode.Position, encoderTicks);
+        this.controller.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, encoderTicks);
     }
 
     @Override
