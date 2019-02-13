@@ -12,6 +12,8 @@ class ElevatorImpl implements Elevator {
 
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
+    private final DigitalInput limitSwitchTop;
+    private final DigitalInput limitSwitchBottom;
 
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
