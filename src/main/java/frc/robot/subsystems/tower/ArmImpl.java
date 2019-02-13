@@ -6,6 +6,8 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
@@ -55,7 +57,7 @@ class ArmImpl implements Arm {
         if (kSensorPhase) {absolutePosition *= -1;}
         if (kMotorInvert) {absolutePosition *= -1;}
 
-        controller.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //Speed Limiting
