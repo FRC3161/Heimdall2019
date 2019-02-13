@@ -1,7 +1,5 @@
 package frc.robot.subsystems.tower;
 
-import static frc.robot.MathUtils.absClamp;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.apache.commons.collections4.BidiMap;
@@ -9,6 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import frc.robot.subsystems.tower.Tower.Position;
+import frc.robot.subsystems.Gains;
 
 class ArmImpl implements Arm {
 
@@ -25,13 +24,47 @@ class ArmImpl implements Arm {
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
-    // TODO set up TalonSRX for Position PID:
-    // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/PositionClosedLoop/src/main/java/frc/robot/Robot.java
     private final WPI_TalonSRX controller;
     private Position targetPosition = Position.STARTING_CONFIG;
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
+        
+        //Arm PID
+        final int kPIDLoopIdx;
+        final Gains kGains;
+        final int kTimeoutMs;
+        boolean kSensorPhase;
+        boolean kMotorInvert;
+        int absolutePosition;
+        
+        kPIDLoopIdx = 0;
+        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        kTimeoutMs = 30;
+        absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
+        kMotorInvert = false;
+        kSensorPhase = true;
+
+        //Set PID values on Talon
+        controller.config_kF(kPIDLoopIdx, kGains.kF);
+        controller.config_kP(kPIDLoopIdx, kGains.kP);
+        controller.config_kI(kPIDLoopIdx, kGains.kI);
+        controller.config_kD(kPIDLoopIdx, kGains.kD);
+        
+        absolutePosition &= 0xFFF;
+        if (kSensorPhase) {absolutePosition *= -1;}
+        if (kMotorInvert) {absolutePosition *= -1;}
+
+        controller.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+
+        //Speed Limiting
+        double maxPower;
+        maxPower = 0.25;
+        controller.configPeakOutputForward(maxPower);
+        controller.configPeakOutputReverse(maxPower);
+
+        //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
     }
 
     @Override
@@ -44,6 +77,8 @@ class ArmImpl implements Arm {
             encoderTicks = POSITION_TICKS.get(position);
         }
         // TODO do something useful with encoder ticks
+
+        this.controller.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, encoderTicks);
     }
 
     @Override
@@ -53,7 +88,6 @@ class ArmImpl implements Arm {
 
     @Override
     public void setSpeed(double speed) {
-        double maxPower= 0.25;
-        this.controller.set(absClamp(speed, maxPower));
+        this.controller.set(speed);
     }
 }
