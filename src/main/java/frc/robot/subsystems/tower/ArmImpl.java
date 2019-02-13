@@ -27,26 +27,23 @@ class ArmImpl implements Arm {
     private final WPI_TalonSRX controller;
     private Position targetPosition = Position.STARTING_CONFIG;
 
-    //Arm PID
-    private final int kPIDLoopIdx;
-    private final Gains kGains;
-    private final int kTimeoutMs;
-    private boolean kSensorPhase;
-    private boolean kMotorInvert;
-    private int absolutePosition;
-
-    //Speed Limit
-    double maxPower;
-
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
         
-        this.kPIDLoopIdx = 0;
-        this.kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
-        this.kTimeoutMs = 30;
-        this.absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
-        this.kMotorInvert = false;
-        this.kSensorPhase = true;
+        //Arm PID
+        final int kPIDLoopIdx;
+        final Gains kGains;
+        final int kTimeoutMs;
+        boolean kSensorPhase;
+        boolean kMotorInvert;
+        int absolutePosition;
+        
+        kPIDLoopIdx = 0;
+        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        kTimeoutMs = 30;
+        absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
+        kMotorInvert = false;
+        kSensorPhase = true;
 
         //Set PID values on Talon
         controller.config_kF(kPIDLoopIdx, kGains.kF);
@@ -62,7 +59,8 @@ class ArmImpl implements Arm {
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //Speed Limiting
-        this.maxPower = 0.25;
+        double maxPower;
+        maxPower = 0.25;
         controller.configPeakOutputForward(maxPower);
         controller.configPeakOutputReverse(maxPower);
 
