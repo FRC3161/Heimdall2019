@@ -37,7 +37,9 @@ class ElevatorImpl implements Elevator {
     public void setSpeed(double speed) {
         double maxPower= 0.25;
         if(limitSwitchTop.get() == true){
-            maxPower = 0;
+            if (speed > 0){
+                speed = 0; 
+            }
         }
         else if (limitSwitchBottom.get() == true) {
             if (speed < 0){
