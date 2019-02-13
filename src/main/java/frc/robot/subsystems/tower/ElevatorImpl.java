@@ -39,7 +39,7 @@ class ElevatorImpl implements Elevator {
         if(limitSwitchTop.get() == true){
             maxPower = 0;
         }
-        if (limitSwitchBottom.get() == true) {
+        else if (limitSwitchBottom.get() == true) {
             if (speed < 0){
                 speed = 0; 
             }
