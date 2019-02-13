@@ -7,6 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
@@ -78,7 +79,7 @@ class ArmImpl implements Arm {
         } else {
             encoderTicks = POSITION_TICKS.get(position);
         }
-        this.controller.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, encoderTicks);
+        this.controller.set(ControlMode.Position, encoderTicks);
     }
 
     @Override
