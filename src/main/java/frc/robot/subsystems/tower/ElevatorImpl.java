@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
@@ -38,6 +39,8 @@ class ElevatorImpl implements Elevator {
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
+        this.controllerSlave.setInverted(true);
+        this.controllerSlave.follow(controllerMaster);
         this.limitSwitchTop = new DigitalInput(topSwitchPort);
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
@@ -95,19 +98,20 @@ class ElevatorImpl implements Elevator {
 
     @Override
     public void setSpeed(double speed) {
-        double maxPower= 0.25;
-        if(limitSwitchTop.get()){
+        double maxPower= 0.75;
+        if (limitSwitchTop.get()) {
             if (speed > 0){
                 speed = 0; 
             }
-        }
-        else if (limitSwitchBottom.get()) {
+        } else if (limitSwitchBottom.get()) {
             if (speed < 0){
                 speed = 0; 
             }
         }
         controllerMaster.set(speed);
-        //controllerSlave.set(speed);
+        SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
+        SmartDashboard.putNumber("talon speed master", controllerMaster.get());
+        SmartDashboard.putNumber("talon speed slave", controllerSlave.get());
     }
 
 }
