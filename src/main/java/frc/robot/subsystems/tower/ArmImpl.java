@@ -62,8 +62,7 @@ class ArmImpl implements Arm {
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //Speed Limiting
-        double maxPower;
-        maxPower = 0.25;
+        double maxPower = 0.25;
         controller.configPeakOutputForward(maxPower);
         controller.configPeakOutputReverse(maxPower);
 
