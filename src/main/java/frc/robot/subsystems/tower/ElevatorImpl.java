@@ -15,6 +15,8 @@ class ElevatorImpl implements Elevator {
     private final DigitalInput limitSwitchTop;
     private final DigitalInput limitSwitchBottom;
 
+    private Position targetPosition = Position.STARTING_CONFIG;
+
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
@@ -29,8 +31,7 @@ class ElevatorImpl implements Elevator {
 
     @Override
     public Position getPosition() {
-        //TODO
-        return null;
+        return this.targetPosition;
     }
 
     @Override
