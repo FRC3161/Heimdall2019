@@ -39,7 +39,6 @@ class ElevatorImpl implements Elevator {
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
-        this.controllerSlave.setInverted(true);
         this.controllerSlave.follow(controllerMaster);
         this.limitSwitchTop = new DigitalInput(topSwitchPort);
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
