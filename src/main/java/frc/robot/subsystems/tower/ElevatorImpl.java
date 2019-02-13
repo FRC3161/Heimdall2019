@@ -34,15 +34,12 @@ class ElevatorImpl implements Elevator {
     @Override
     public void setSpeed(double speed) {
         double maxPower= 0.25;
-        if (LimitSwitchTop = true){
+        if (LimitSwitchTop == true){
             maxPower = 0;
         }
-        elif (limitSwitchBottom = true) {
+        elif (limitSwitchBottom == true) {
             if (speed < 0){
                 speed = 0; 
-            }
-            else{
-                speed = speed;
             }
         }
         controllerMaster.set(absClamp(speed, maxPower));
