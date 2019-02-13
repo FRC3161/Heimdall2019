@@ -76,8 +76,6 @@ class ArmImpl implements Arm {
         } else {
             encoderTicks = POSITION_TICKS.get(position);
         }
-        // TODO do something useful with encoder ticks
-
         this.controller.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, encoderTicks);
     }
 
