@@ -1,16 +1,17 @@
 package frc.robot.subsystems.tower;
 
-import static frc.robot.MathUtils.absClamp;
-
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.tower.Tower.Position;
+import frc.robot.subsystems.Gains;
 
 class ElevatorImpl implements Elevator {
 
@@ -39,6 +40,39 @@ class ElevatorImpl implements Elevator {
         this.controllerSlave = new WPI_TalonSRX(slavePort);
         this.limitSwitchTop = new DigitalInput(topSwitchPort);
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
+
+        //Arm PID
+        final int kPIDLoopIdx;
+        final Gains kGains;
+        final int kTimeoutMs;
+        boolean kSensorPhase;
+        boolean kMotorInvert;
+        int absolutePosition;
+            
+        kPIDLoopIdx = 1;
+        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        kTimeoutMs = 30;
+        absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
+        kMotorInvert = false;
+        kSensorPhase = true;
+
+        //Set PID values on Talon
+        controllerMaster.config_kF(kPIDLoopIdx, kGains.kF);
+        controllerMaster.config_kP(kPIDLoopIdx, kGains.kP);
+        controllerMaster.config_kI(kPIDLoopIdx, kGains.kI);
+        controllerMaster.config_kD(kPIDLoopIdx, kGains.kD);
+
+        absolutePosition &= 0xFFF;
+        if (kSensorPhase) {absolutePosition *= -1;}
+        if (kMotorInvert) {absolutePosition *= -1;}
+
+        controllerMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        controllerMaster.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+
+        //Speed Limiting
+        double maxPower = 0.75;
+        controllerMaster.configPeakOutputForward(maxPower);
+        controllerMaster.configPeakOutputReverse(maxPower);
     }
 
     @Override
@@ -50,6 +84,8 @@ class ElevatorImpl implements Elevator {
         } else {
             encoderTicks = POSITION_TICKS.get(position);
         }
+
+        this.controllerMaster.set(ControlMode.Position, encoderTicks);
     }
 
     @Override
@@ -70,8 +106,8 @@ class ElevatorImpl implements Elevator {
                 speed = 0; 
             }
         }
-        controllerMaster.set(absClamp(speed, maxPower));
-        controllerSlave.set(absClamp(speed, maxPower));
+        controllerMaster.set(speed);
+        //controllerSlave.set(speed);
     }
 
 }
