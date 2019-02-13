@@ -37,12 +37,12 @@ class ElevatorImpl implements Elevator {
         if (LimitSwitchTop = true){
             maxPower = 0;
         }
-        elif (limitSwitchBottom = true){
+        elif (limitSwitchBottom = true) {
             if (speed < 0){
-                speed = 0 
+                speed = 0; 
             }
             else{
-                speed = speed
+                speed = speed;
             }
         }
         controllerMaster.set(absClamp(speed, maxPower));
