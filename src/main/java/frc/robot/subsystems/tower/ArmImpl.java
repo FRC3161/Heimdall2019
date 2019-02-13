@@ -33,8 +33,8 @@ class ArmImpl implements Arm {
     private final int kPIDLoopIdx;
     private final frc.robot.subsystems.Gains kGains;
     private final int kTimeoutMs;
-    private static Boolean kSensorPhase;
-    private static Boolean kMotorInvert;
+    private boolean kSensorPhase;
+    private boolean kMotorInvert;
     private int absolutePosition;
 
     ArmImpl(int talonPort) {
@@ -44,6 +44,8 @@ class ArmImpl implements Arm {
         this.kGains = new frc.robot.subsystems.Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
         this.kTimeoutMs = 30;
         this.absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
+        this.kMotorInvert = false;
+        this.kSensorPhase = true;
 
         //Set PID values on Talon
         controller.config_kF(kPIDLoopIdx, kGains.kF);
