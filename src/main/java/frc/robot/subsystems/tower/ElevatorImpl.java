@@ -36,10 +36,10 @@ class ElevatorImpl implements Elevator {
     @Override
     public void setSpeed(double speed) {
         double maxPower= 0.25;
-        if (limitSwitchTop == true){
+        while(limitSwitchTop.get() == true){
             maxPower = 0;
         }
-        elif (limitSwitchBottom == true) {
+        while (limitSwitchBottom.get() == true) {
             if (speed < 0){
                 speed = 0; 
             }
