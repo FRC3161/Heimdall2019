@@ -3,6 +3,8 @@ package frc.robot.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -30,9 +32,9 @@ public class DriveImpl implements Drive {
     double angleTarget;
     volatile double computedTurnPID;
 	double rotate;
-	double Pg = 0.02;
+	double Pg = 0.0075;
 	double Ig = 0.00;
-	double Dg = 0.06;
+	double Dg = 0.0;
 	float kToleranceDegrees = 2;
 	boolean rotateToAngle;
     double currentRotationRate;
@@ -56,17 +58,36 @@ public class DriveImpl implements Drive {
             new SpeedControllerGroup(frontLeftDrive, leftColson, backLeftDrive),
             new SpeedControllerGroup(frontRightDrive, rightColson, backRightDrive)
         );
+        this.tankDrive.setSafetyEnabled(false);
+        this.holoDrive.setSafetyEnabled(false);
 
         this.ahrs = new AHRS(SPI.Port.kMXP);
         this.ahrs.reset();
 
-        this.turnController = new PIDController(Pg, Ig, Dg, ahrs, this::gyroPID);
-		turnController.enable();
+        this.turnController = new PIDController(Pg, Ig, Dg, new PIDSource() {
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+                ahrs.setPIDSourceType(pidSource);
+            }
+        
+            @Override
+            public double pidGet() {
+                return -1.f * ahrs.getAngle();
+            }
+        
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                return ahrs.getPIDSourceType();
+            }
+        }, this::gyroPID);
+        turnController.enable();
+        
+        setAngleTarget(0);
     }
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
-        double angle = -this.ahrs.getYaw();
+        double angle = this.ahrs.getYaw();
         SmartDashboard.putNumber("Gyro:", angle);
 
         if (this.getCenterWheelsDeployed()) {
@@ -85,9 +106,6 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setCenterWheelsDeployed(boolean deployed) {
-        this.tankDrive.setSafetyEnabled(deployed);
-        this.holoDrive.setSafetyEnabled(!deployed);
-
         this.leftColson.setDeployed(deployed);
         this.rightColson.setDeployed(deployed);
 
@@ -116,6 +134,7 @@ public class DriveImpl implements Drive {
     //Sets the gyro to make the robot face a cetain angle
 	private void gyroPID(double angle) {
         this.computedTurnPID = angle;
+        SmartDashboard.putNumber("pid value", angle);
     } 
 }
 

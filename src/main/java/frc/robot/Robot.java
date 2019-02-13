@@ -20,7 +20,6 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -181,6 +180,7 @@ public class Robot extends TitanBot {
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
     this.underLay.set(Value.kOn);
+    this.drive.resetGyro();
   }
 
   /**
@@ -198,24 +198,25 @@ public class Robot extends TitanBot {
     }
     // Look Right
     else if (driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(90.0);
+      drive.setAngleTarget(-90.0);
     }
     // Look Backward
     else if (driverPad.getButton(LogitechButton.A)) {
-      drive.setAngleTarget(180.0);
+      drive.setAngleTarget(-180.0);
     }
     // Look Left
     else if (driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(-90.0);
+      drive.setAngleTarget(90.0);
     } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(45.0);
-    } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(-45.0);
+    } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
+      drive.setAngleTarget(45.0);
     } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(135.0);
-    } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(-135.0);
+    } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
+      drive.setAngleTarget(135.0);
     }
+    
   }
 
   /**
