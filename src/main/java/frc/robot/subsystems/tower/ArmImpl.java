@@ -1,7 +1,5 @@
 package frc.robot.subsystems.tower;
 
-import static frc.robot.MathUtils.absClamp;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.apache.commons.collections4.BidiMap;
@@ -9,7 +7,6 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import frc.robot.subsystems.tower.Tower.Position;
-//import frc.robot.subsystems.Gains;
 
 class ArmImpl implements Arm {
 
@@ -37,6 +34,9 @@ class ArmImpl implements Arm {
     private boolean kMotorInvert;
     private int absolutePosition;
 
+    //Speed Limit
+    double maxPower;
+
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
         
@@ -59,6 +59,11 @@ class ArmImpl implements Arm {
 
         controller.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+
+        //Speed Limiting
+        this.maxPower = 0.25;
+        controller.configPeakOutputForward(maxPower);
+        controller.configPeakOutputReverse(maxPower);
 
         //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
     }
@@ -84,7 +89,6 @@ class ArmImpl implements Arm {
 
     @Override
     public void setSpeed(double speed) {
-        double maxPower = 0.25;
-        this.controller.set(absClamp(speed, maxPower));
+        this.controller.set(speed);
     }
 }
