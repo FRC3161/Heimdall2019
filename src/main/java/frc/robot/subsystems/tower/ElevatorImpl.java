@@ -5,8 +5,12 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
+import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
+import java.util.concurrent.TimeUnit;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -15,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
-class ElevatorImpl implements Elevator {
+class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     private static final BidiMap<Position, Integer> POSITION_TICKS;
     static {
@@ -39,6 +43,7 @@ class ElevatorImpl implements Elevator {
     private Position targetPosition = Position.STARTING_CONFIG;
 
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
+        super(50, TimeUnit.MILLISECONDS);
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
         this.controllerSlave.follow(controllerMaster);
@@ -107,9 +112,6 @@ class ElevatorImpl implements Elevator {
         //     }
         // }
         controllerMaster.set(ControlMode.PercentOutput, speed);
-        SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
-        SmartDashboard.putNumber("elevator speed", controllerMaster.get());
-        SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
     }
 
     @Override
@@ -124,5 +126,15 @@ class ElevatorImpl implements Elevator {
         }
         reset();
     }
+
+    @Override
+    public void task() throws Exception {
+        SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
+        SmartDashboard.putNumber("elevator speed", controllerMaster.get());
+        SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
+    }
+
+    @Override
+    public void defineResources() { }
 
 }
