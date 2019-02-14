@@ -42,7 +42,7 @@ class ArmImpl implements Arm {
         int absolutePosition;
 
         kPIDLoopIdx = 0;
-        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 0.25); //TODO Placeholder values
+        kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.25); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
