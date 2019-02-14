@@ -69,19 +69,21 @@ public class DriveImpl implements Drive {
             public void setPIDSourceType(PIDSourceType pidSource) {
                 ahrs.setPIDSourceType(pidSource);
             }
-        
+
             @Override
             public double pidGet() {
                 return -1.f * ahrs.getAngle();
             }
-        
+
             @Override
             public PIDSourceType getPIDSourceType() {
                 return ahrs.getPIDSourceType();
             }
         }, this::gyroPID);
+        turnController.setInputRange(0, 360);
+        turnController.setContinuous();
         turnController.enable();
-        
+
         setAngleTarget(0);
     }
 
@@ -135,6 +137,6 @@ public class DriveImpl implements Drive {
 	private void gyroPID(double angle) {
         this.computedTurnPID = angle;
         SmartDashboard.putNumber("pid value", angle);
-    } 
+    }
 }
 
