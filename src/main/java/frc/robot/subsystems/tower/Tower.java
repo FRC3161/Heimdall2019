@@ -28,4 +28,5 @@ public interface Tower extends LifecycleListener {
     Direction getRollerDirection();
     void setElevatorSpeed(double speed);
     void setArmSpeed(double speed);
+    void reset();
 }

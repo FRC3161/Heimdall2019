@@ -4,6 +4,8 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
+import ca.team3161.lib.robot.LifecycleEvent;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -20,16 +22,17 @@ class ElevatorImpl implements Elevator {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.LOW, 1);
-        positionTicks.put(Position.CARGO_2, 2);
-        positionTicks.put(Position.CARGO_3, 3);
-        positionTicks.put(Position.HATCH_2, 4);
-        positionTicks.put(Position.HATCH_3, 5);
+        positionTicks.put(Position.LOW, 10000);
+        positionTicks.put(Position.CARGO_2, 14000);
+        positionTicks.put(Position.CARGO_3, 16000);
+        positionTicks.put(Position.HATCH_2, 18000);
+        positionTicks.put(Position.HATCH_3, 20000);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
+    private final int kPIDLoopIdx = 0;
     private final DigitalInput limitSwitchTop;
     private final DigitalInput limitSwitchBottom;
 
@@ -43,7 +46,6 @@ class ElevatorImpl implements Elevator {
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
         //Arm PID
-        final int kPIDLoopIdx = 1;
         final Gains kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.75); //TODO Placeholder values
         final int kTimeoutMs = 30;
         final boolean kSensorPhase = true;
@@ -92,20 +94,32 @@ class ElevatorImpl implements Elevator {
 
     @Override
     public void setSpeed(double speed) {
-        if (limitSwitchTop.get()) {
-            if (speed > 0){
-                speed = 0;
-            }
-        } else if (limitSwitchBottom.get()) {
-            if (speed < 0){
-                speed = 0;
-            }
-        }
+        // if (limitSwitchTop.get()) {
+        //     if (speed > 0){
+        //         speed = 0;
+        //     }
+        // } else if (limitSwitchBottom.get()) {
+        //     if (speed < 0){
+        //         speed = 0;
+        //     }
+        // }
         controllerMaster.set(speed);
         SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
-        SmartDashboard.putNumber("talon speed master", controllerMaster.get());
-        SmartDashboard.putNumber("talon speed slave", controllerSlave.get());
+        SmartDashboard.putNumber("elevator speed", controllerMaster.get());
         SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
+    }
+
+    @Override
+    public void reset() {
+        controllerMaster.setSelectedSensorPosition(0);
+    }
+
+    @Override
+    public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)){
+            return;
+        }
+        reset();
     }
 
 }

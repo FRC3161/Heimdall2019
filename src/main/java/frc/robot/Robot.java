@@ -177,6 +177,7 @@ public class Robot extends TitanBot {
         () -> this.drive.setCenterWheelsDeployed(!this.drive.getCenterWheelsDeployed()));
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
+    this.operatorPad.bind(LogitechButton.START, this.tower::reset);
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
     this.underLay.set(Value.kOn);
@@ -197,23 +198,28 @@ public class Robot extends TitanBot {
       drive.setAngleTarget(0.0);
     }
     // Look Right
-    else if (driverPad.getButton(LogitechButton.B)) {
+    if (driverPad.getButton(LogitechButton.B)) {
       drive.setAngleTarget(270.0);
     }
     // Look Backward
-    else if (driverPad.getButton(LogitechButton.A)) {
+    if (driverPad.getButton(LogitechButton.A)) {
       drive.setAngleTarget(180.0);
     }
     // Look Left
-    else if (driverPad.getButton(LogitechButton.X)) {
+    if (driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(90.0);
-    } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
+    }
+    //combo directions
+    if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
       drive.setAngleTarget(315.0);
-    } else if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
+    } 
+    if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(45.0);
-    } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
+    } 
+    if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
       drive.setAngleTarget(255.0);
-    } else if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
+    }
+    if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(135.0);
     }
     

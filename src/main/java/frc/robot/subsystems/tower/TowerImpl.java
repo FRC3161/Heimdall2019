@@ -107,4 +107,8 @@ public class TowerImpl implements Tower {
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
         this.gamePieceWatcher.lifecycleStatusChanged(previous, current);
     }
+    @Override
+    public void reset(){
+        this.elevator.reset();
+    }
 }
