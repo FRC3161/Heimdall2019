@@ -27,17 +27,13 @@ public class DriveImpl implements Drive {
 
     private AHRS ahrs;
 
-    PIDController turnController;
-    boolean fieldCentric = true;
-    double angleTarget;
-    volatile double computedTurnPID;
-	double rotate;
-	double Pg = 0.0075;
-	double Ig = 0.00;
-	double Dg = 0.0;
-	float kToleranceDegrees = 2;
-	boolean rotateToAngle;
-    double currentRotationRate;
+    private final PIDController turnController;
+    private boolean fieldCentric = true;
+    private double angleTarget;
+    private volatile double computedTurnPID;
+    private final double Pg = 0.0075;
+    private final double Ig = 0.00;
+    private final double Dg = 0.0;
 
     public DriveImpl() {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
