@@ -179,7 +179,7 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
-    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
+    // this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
