@@ -32,7 +32,7 @@ class ArmImpl implements Arm {
 
     ArmImpl(int talonPort) {
         this.controller = new WPI_TalonSRX(talonPort);
-        
+
         //Arm PID
         final int kPIDLoopIdx;
         final Gains kGains;
@@ -40,9 +40,9 @@ class ArmImpl implements Arm {
         boolean kSensorPhase;
         boolean kMotorInvert;
         int absolutePosition;
-        
+
         kPIDLoopIdx = 0;
-        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 0.25); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
@@ -53,7 +53,7 @@ class ArmImpl implements Arm {
         controller.config_kP(kPIDLoopIdx, kGains.kP);
         controller.config_kI(kPIDLoopIdx, kGains.kI);
         controller.config_kD(kPIDLoopIdx, kGains.kD);
-        
+
         absolutePosition &= 0xFFF;
         if (kSensorPhase) {absolutePosition *= -1;}
         if (kMotorInvert) {absolutePosition *= -1;}
@@ -62,9 +62,8 @@ class ArmImpl implements Arm {
         controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //Speed Limiting
-        double maxPower = 0.25;
-        controller.configPeakOutputForward(maxPower);
-        controller.configPeakOutputReverse(maxPower);
+        controller.configPeakOutputForward(kGains.kPeakOutput);
+        controller.configPeakOutputReverse(-kGains.kPeakOutput);
 
         //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
     }
