@@ -57,8 +57,12 @@ class ElevatorImpl implements Elevator {
         controllerMaster.config_kD(kPIDLoopIdx, kGains.kD);
 
         absolutePosition &= 0xFFF;
-        if (kSensorPhase) {absolutePosition *= -1;}
-        if (kMotorInvert) {absolutePosition *= -1;}
+        if (kSensorPhase) {
+            absolutePosition *= -1;
+        }
+        if (kMotorInvert) {
+            absolutePosition *= -1;
+        }
 
         controllerMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
         controllerMaster.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
