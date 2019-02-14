@@ -3,8 +3,6 @@ package frc.robot.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import com.kauailabs.navx.frc.AHRS;
 
 import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
+import frc.robot.InvertiblePIDSource;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,7 +24,7 @@ public class DriveImpl implements Drive {
     private final ColsonPod leftColson;
     private final ColsonPod rightColson;
 
-    private AHRS ahrs;
+    private InvertiblePIDSource<AHRS> angleSensor;
 
     private final PIDController turnController;
     private boolean fieldCentric = true;
@@ -57,25 +56,9 @@ public class DriveImpl implements Drive {
         this.tankDrive.setSafetyEnabled(false);
         this.holoDrive.setSafetyEnabled(false);
 
-        this.ahrs = new AHRS(SPI.Port.kMXP);
-        this.ahrs.reset();
+        this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::getAngle);
 
-        this.turnController = new PIDController(kP, kI, kD, new PIDSource() {
-            @Override
-            public void setPIDSourceType(PIDSourceType pidSource) {
-                ahrs.setPIDSourceType(pidSource);
-            }
-
-            @Override
-            public double pidGet() {
-                return -1.f * ahrs.getAngle();
-            }
-
-            @Override
-            public PIDSourceType getPIDSourceType() {
-                return ahrs.getPIDSourceType();
-            }
-        }, this::gyroPID);
+        this.turnController = new PIDController(kP, kI, kD, angleSensor, this::gyroPID);
         turnController.setInputRange(0, 360);
         turnController.setContinuous();
         turnController.enable();
@@ -85,14 +68,14 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
-        double angle = this.ahrs.getAngle();
-        SmartDashboard.putNumber("Gyro:", angle);
+        double currentAngle = this.angleSensor.pidGet();
+        SmartDashboard.putNumber("Gyro:", currentAngle);
 
         if (this.getCenterWheelsDeployed()) {
             this.tankDrive.arcadeDrive(forwardRate, turnRate);
         } else {
             this.setAngleTarget(this.angleTarget + turnRate * 180 * TimedRobot.kDefaultPeriod); // 180 degrees per second, divided by update rate
-            this.holoDrive.driveCartesian(strafeRate, forwardRate, computedTurnPID, fieldCentric ? angle : 0);
+            this.holoDrive.driveCartesian(strafeRate, forwardRate, computedTurnPID, fieldCentric ? currentAngle : 0);
         }
     }
 
@@ -121,7 +104,7 @@ public class DriveImpl implements Drive {
 
     @Override
     public void resetGyro() {
-        this.ahrs.reset();
+        this.angleSensor.getDevice().reset();
     }
 
     @Override

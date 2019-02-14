@@ -38,4 +38,8 @@ public class InvertiblePIDSource<T extends PIDSource> implements PIDSource {
     public PIDSourceType getPIDSourceType() {
         return t.getPIDSourceType();
     }
+
+    public T getDevice() {
+        return this.t;
+    }
 }
