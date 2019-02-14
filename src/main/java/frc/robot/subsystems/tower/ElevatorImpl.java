@@ -129,7 +129,6 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void task() throws Exception {
-        SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
         SmartDashboard.putNumber("elevator speed", controllerMaster.getMotorOutputPercent());
         SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
     }
