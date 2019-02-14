@@ -57,6 +57,7 @@ public class DriveImpl implements Drive {
         this.holoDrive.setSafetyEnabled(false);
 
         this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::getAngle);
+        this.angleSensor.setInverted(true);
 
         this.turnController = new PIDController(kP, kI, kD, angleSensor, this::gyroPID);
         turnController.setInputRange(0, 360);
