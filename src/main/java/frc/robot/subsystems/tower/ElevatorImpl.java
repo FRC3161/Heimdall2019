@@ -106,7 +106,7 @@ class ElevatorImpl implements Elevator {
         //         speed = 0;
         //     }
         // }
-        controllerMaster.set(speed);
+        controllerMaster.set(ControlMode.PercentOutput, speed);
         SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
         SmartDashboard.putNumber("elevator speed", controllerMaster.get());
         SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
