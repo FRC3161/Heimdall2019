@@ -44,7 +44,7 @@ class ElevatorImpl implements Elevator {
 
         //Arm PID
         final int kPIDLoopIdx = 1;
-        final Gains kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        final Gains kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.75); //TODO Placeholder values
         final int kTimeoutMs = 30;
         final boolean kSensorPhase = true;
         final boolean kMotorInvert = false;
@@ -68,9 +68,8 @@ class ElevatorImpl implements Elevator {
         controllerMaster.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
         //Speed Limiting
-        double maxPower = 0.75;
-        controllerMaster.configPeakOutputForward(maxPower);
-        controllerMaster.configPeakOutputReverse(maxPower);
+        controllerMaster.configPeakOutputForward(kGains.kPeakOutput);
+        controllerMaster.configPeakOutputReverse(-kGains.kPeakOutput);
     }
 
     @Override
