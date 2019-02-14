@@ -30,7 +30,7 @@ public class DriveImpl implements Drive {
     private boolean fieldCentric = true;
     private double angleTarget;
     private volatile double computedTurnPID;
-    private final double kP = 0.0075;
+    private final double kP = 0.005;
     private final double kI = 0.0;
     private final double kD = 0.0;
 

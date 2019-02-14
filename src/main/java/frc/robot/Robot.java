@@ -29,6 +29,7 @@ import frc.robot.subsystems.drivetrain.DriveImpl;
 import frc.robot.subsystems.tower.Tower;
 import frc.robot.subsystems.tower.TowerImpl;
 import frc.robot.subsystems.tower.Tower.Direction;
+import frc.robot.subsystems.tower.Tower.Position;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -222,6 +223,14 @@ public class Robot extends TitanBot {
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(135.0);
     }
+
+    if (operatorPad.getButton(LogitechButton.Y)) {
+      tower.setTowerPosition(Position.HATCH_2);
+    }
+    if (operatorPad.getButton(LogitechButton.A)) {
+      tower.setTowerPosition(Position.LOW);
+    }
+
     
   }
 

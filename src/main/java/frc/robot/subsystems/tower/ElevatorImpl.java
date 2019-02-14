@@ -22,11 +22,11 @@ class ElevatorImpl implements Elevator {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.LOW, 10000);
-        positionTicks.put(Position.CARGO_2, 14000);
-        positionTicks.put(Position.CARGO_3, 16000);
-        positionTicks.put(Position.HATCH_2, 18000);
-        positionTicks.put(Position.HATCH_3, 20000);
+        positionTicks.put(Position.LOW, -10000);
+        positionTicks.put(Position.CARGO_2, -15000);
+        positionTicks.put(Position.CARGO_3, -25000);
+        positionTicks.put(Position.HATCH_2, -30000);
+        positionTicks.put(Position.HATCH_3, -40000);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
@@ -46,28 +46,31 @@ class ElevatorImpl implements Elevator {
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
         //Arm PID
-        final Gains kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.75); //TODO Placeholder values
+        final Gains kGains = new Gains(0.75, 0.08, 0.25, 0.0, 0, 0.75); //TODO Placeholder values
         final int kTimeoutMs = 30;
-        final boolean kSensorPhase = true;
-        final boolean kMotorInvert = false;
-        int absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
+        // final boolean kSensorPhase = true;
+        // final boolean kMotorInvert = false;
+        // int absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
 
         //Set PID values on Talon
         controllerMaster.config_kF(kPIDLoopIdx, kGains.kF);
         controllerMaster.config_kP(kPIDLoopIdx, kGains.kP);
         controllerMaster.config_kI(kPIDLoopIdx, kGains.kI);
         controllerMaster.config_kD(kPIDLoopIdx, kGains.kD);
+        controllerMaster.setInverted(false);
+        controllerMaster.setSensorPhase(false);
+        controllerMaster.configAllowableClosedloopError(kPIDLoopIdx, 150);
 
-        absolutePosition &= 0xFFF;
-        if (kSensorPhase) {
-            absolutePosition *= -1;
-        }
-        if (kMotorInvert) {
-            absolutePosition *= -1;
-        }
+        // absolutePosition &= 0xFFF;
+        // if (kSensorPhase) {
+        //     absolutePosition *= -1;
+        // }
+        // if (kMotorInvert) {
+        //     absolutePosition *= -1;
+        // }
 
         controllerMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-        controllerMaster.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+        controllerMaster.setSelectedSensorPosition(0, 0, 0);
 
         //Speed Limiting
         controllerMaster.configPeakOutputForward(kGains.kPeakOutput);
