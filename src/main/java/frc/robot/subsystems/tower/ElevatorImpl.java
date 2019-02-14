@@ -27,7 +27,7 @@ class ElevatorImpl implements Elevator {
         positionTicks.put(Position.HATCH_3, 5);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
-    
+
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
     private final DigitalInput limitSwitchTop;
@@ -43,19 +43,12 @@ class ElevatorImpl implements Elevator {
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
         //Arm PID
-        final int kPIDLoopIdx;
-        final Gains kGains;
-        final int kTimeoutMs;
-        boolean kSensorPhase;
-        boolean kMotorInvert;
-        int absolutePosition;
-            
-        kPIDLoopIdx = 1;
-        kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
-        kTimeoutMs = 30;
-        absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
-        kMotorInvert = false;
-        kSensorPhase = true;
+        final int kPIDLoopIdx = 1;
+        final Gains kGains = new Gains(0.15, 0.17, 0.16, 0.0, 0, 1.0); //TODO Placeholder values
+        final int kTimeoutMs = 30;
+        final boolean kSensorPhase = true;
+        final boolean kMotorInvert = false;
+        int absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
 
         //Set PID values on Talon
         controllerMaster.config_kF(kPIDLoopIdx, kGains.kF);
@@ -98,11 +91,11 @@ class ElevatorImpl implements Elevator {
     public void setSpeed(double speed) {
         if (limitSwitchTop.get()) {
             if (speed > 0){
-                speed = 0; 
+                speed = 0;
             }
         } else if (limitSwitchBottom.get()) {
             if (speed < 0){
-                speed = 0; 
+                speed = 0;
             }
         }
         controllerMaster.set(speed);
