@@ -110,6 +110,7 @@ class ElevatorImpl implements Elevator {
         SmartDashboard.putBoolean("bottom elevator limit", limitSwitchBottom.get());
         SmartDashboard.putNumber("talon speed master", controllerMaster.get());
         SmartDashboard.putNumber("talon speed slave", controllerSlave.get());
+        SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
     }
 
 }
