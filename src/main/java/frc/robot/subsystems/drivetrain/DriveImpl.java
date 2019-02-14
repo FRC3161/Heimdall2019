@@ -31,9 +31,9 @@ public class DriveImpl implements Drive {
     private boolean fieldCentric = true;
     private double angleTarget;
     private volatile double computedTurnPID;
-    private final double Pg = 0.0075;
-    private final double Ig = 0.00;
-    private final double Dg = 0.0;
+    private final double kP = 0.0075;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
 
     public DriveImpl() {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
@@ -60,7 +60,7 @@ public class DriveImpl implements Drive {
         this.ahrs = new AHRS(SPI.Port.kMXP);
         this.ahrs.reset();
 
-        this.turnController = new PIDController(Pg, Ig, Dg, new PIDSource() {
+        this.turnController = new PIDController(kP, kI, kD, new PIDSource() {
             @Override
             public void setPIDSourceType(PIDSourceType pidSource) {
                 ahrs.setPIDSourceType(pidSource);
