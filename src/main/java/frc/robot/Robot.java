@@ -204,6 +204,7 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
+    // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
       drive.setAngleTarget(0.0);
     }
