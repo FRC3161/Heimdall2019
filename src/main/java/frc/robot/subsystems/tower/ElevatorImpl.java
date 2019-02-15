@@ -132,8 +132,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void task() throws Exception {
-        SmartDashboard.putNumber("elevator speed", controllerMaster.getMotorOutputPercent());
+        SmartDashboard.putNumber("elevator motor output", controllerMaster.getMotorOutputPercent());
+        SmartDashboard.putNumber("elevator speed", controllerMaster.getSelectedSensorVelocity());
         SmartDashboard.putNumber("elevator encoder ticks", controllerMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("elevator integral windup", controllerMaster.getIntegralAcculator());
     }
 
     @Override
