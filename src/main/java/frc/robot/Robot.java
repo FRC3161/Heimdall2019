@@ -42,6 +42,7 @@ public class Robot extends TitanBot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private static final String kSystemCheckAuto = "System Check";
+  private static final double GAMEPAD_DEADBAND = 0.05;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -81,11 +82,11 @@ public class Robot extends TitanBot {
     this.driverPad = new LogitechDualAction(0);
     this.operatorPad = new LogitechDualAction(1);
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y,
-        new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(0.05)));
+        new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X,
-        new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
+        new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X,
-        new SquaredJoystickMode().andThen(new DeadbandJoystickMode(0.05)));
+        new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
@@ -179,8 +180,16 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
-    // this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, this.tower::setElevatorSpeed);
-    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, this.tower::setArmSpeed);
+    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x -> {
+      if (Math.abs(x) > GAMEPAD_DEADBAND) {
+        this.tower.setElevatorSpeed(x);
+      }
+    });
+    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x -> {
+      if (Math.abs(x) > GAMEPAD_DEADBAND) {
+        this.tower.setArmSpeed(x);
+      }
+    });
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
