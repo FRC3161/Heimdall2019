@@ -40,7 +40,6 @@ public class TowerImpl implements Tower {
         this.beak = new Solenoid(RobotMap.BEAK_SOLENOID);
         this.roller = new SpeedControllerGroup(new VictorSP(RobotMap.TOWER_ROLLER_1), new VictorSP(RobotMap.TOWER_ROLLER_2));
         this.gamePieceWatcher = new GamePieceWatcher();
-        this.gamePieceWatcher.start();
         setTowerPosition(Position.STARTING_CONFIG);
     }
 
@@ -105,6 +104,9 @@ public class TowerImpl implements Tower {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        if (current.equals(LifecycleEvent.ON_INIT)) {
+            this.gamePieceWatcher.start();
+        }
         this.gamePieceWatcher.lifecycleStatusChanged(previous, current);
         this.elevator.lifecycleStatusChanged(previous, current);
         this.arm.lifecycleStatusChanged(previous, current);
