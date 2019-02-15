@@ -89,7 +89,7 @@ class ArmImpl implements Arm {
 
     @Override
     public void setSpeed(double speed) {
-        this.controller.set(speed);
+        this.controller.set(ControlMode.PercentOutput, speed);
     }
 
     @Override
