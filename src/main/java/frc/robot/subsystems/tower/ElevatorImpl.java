@@ -117,6 +117,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
     @Override
     public void reset() {
         controllerMaster.setSelectedSensorPosition(0);
+        controllerMaster.setIntegralAccumulator(0);
     }
 
     @Override
