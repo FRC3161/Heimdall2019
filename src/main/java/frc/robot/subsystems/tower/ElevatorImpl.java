@@ -92,6 +92,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
             encoderTicks = POSITION_TICKS.get(position);
         }
 
+        this.controllerMaster.setIntegralAccumulator(0);
         this.controllerMaster.set(ControlMode.Position, encoderTicks);
     }
 
