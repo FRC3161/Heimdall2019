@@ -6,6 +6,8 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
+import ca.team3161.lib.robot.LifecycleEvent;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -88,5 +90,18 @@ class ArmImpl implements Arm {
     @Override
     public void setSpeed(double speed) {
         this.controller.set(speed);
+    }
+
+    @Override
+    public void reset() {
+        this.controller.setIntegralAccumulator(0);
+    }
+
+    @Override
+    public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)) {
+            return;
+        }
+        reset();
     }
 }
