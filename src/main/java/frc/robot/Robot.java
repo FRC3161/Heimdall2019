@@ -234,6 +234,7 @@ public class Robot extends TitanBot {
       drive.setAngleTarget(135.0);
     }
 
+    // TODO properly map out all tower positions
     if (operatorPad.getButton(LogitechButton.Y)) {
       tower.setTowerPosition(Position.HATCH_2);
     }
