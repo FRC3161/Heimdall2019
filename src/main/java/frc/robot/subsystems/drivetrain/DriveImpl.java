@@ -33,6 +33,8 @@ public class DriveImpl implements Drive {
     private final double kP = 0.005;
     private final double kI = 0.0;
     private final double kD = 0.0;
+    float kToleranceDegrees = 2;
+
 
     public DriveImpl() {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
@@ -60,8 +62,9 @@ public class DriveImpl implements Drive {
         this.angleSensor.setInverted(true);
 
         this.turnController = new PIDController(kP, kI, kD, angleSensor, this::gyroPID);
-        turnController.setInputRange(0, 360);
+        turnController.setInputRange(-180.0f, 180.0f);
         turnController.setContinuous();
+        turnController.setAbsoluteTolerance(kToleranceDegrees);
         turnController.enable();
 
         setAngleTarget(0);
