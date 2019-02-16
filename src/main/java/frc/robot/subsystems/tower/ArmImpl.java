@@ -21,6 +21,7 @@ class ArmImpl implements Arm {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
+        positionTicks.put(Position.GROUND, 1);
         positionTicks.put(Position.LOW, 1);
         positionTicks.put(Position.CARGO_2, 2);
         positionTicks.put(Position.CARGO_3, 3);

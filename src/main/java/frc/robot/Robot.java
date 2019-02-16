@@ -210,7 +210,7 @@ public class Robot extends TitanBot {
     }
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(270.0);
+      drive.setAngleTarget(90.0);
     }
     // Look Backward
     if (driverPad.getButton(LogitechButton.A)) {
@@ -218,7 +218,7 @@ public class Robot extends TitanBot {
     }
     // Look Left
     if (driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(90.0);
+      drive.setAngleTarget(-90.0);
     }
     //combo directions
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
@@ -238,11 +238,40 @@ public class Robot extends TitanBot {
     if (operatorPad.getButton(LogitechButton.Y)) {
       tower.setTowerPosition(Position.HATCH_2);
     }
+
+    if (operatorPad.getButton(LogitechButton.LEFT_BUMPER)){
+      tower.setTowerPosition(Position.GROUND);
+    }
+
     if (operatorPad.getButton(LogitechButton.A)) {
       tower.setTowerPosition(Position.LOW);
     }
 
-    
+    if (operatorPad.getButton(LogitechButton.B)) {
+      tower.setTowerPosition(Position.CARGO_2);
+    }
+
+    if (operatorPad.getButton(LogitechButton.X)) {
+      tower.setTowerPosition(Position.HATCH_3);
+    }
+
+    if (operatorPad.getButton(LogitechButton.RIGHT_BUMPER)) {
+      tower.setTowerPosition(Position.CARGO_3);
+    }
+
+    //TODO hatch, rollers
+    //To allow toggling of the claw
+    boolean opened = true;
+    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER)) {
+      if (opened == true) {
+        tower.setClawOpen(true);
+      }
+      else if (opened == false) {
+        tower.setClawOpen(false);
+      }
+    }
+
+    if (operatorPad.getButton())
   }
 
   /**

@@ -5,6 +5,7 @@ import ca.team3161.lib.robot.LifecycleListener;
 public interface Tower extends LifecycleListener {
     enum Position {
         STARTING_CONFIG, //Elevator at bottom and arm in
+        GROUND,
         LOW, // Hatch level 1, cargo level 1, loading
         HATCH_2,
         HATCH_3,

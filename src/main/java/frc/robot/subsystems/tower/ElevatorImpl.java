@@ -26,6 +26,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
+        positionTicks.put(Position.GROUND, -5000);
         positionTicks.put(Position.LOW, -10000);
         positionTicks.put(Position.CARGO_2, -15000);
         positionTicks.put(Position.CARGO_3, -25000);
