@@ -190,6 +190,7 @@ public class Robot extends TitanBot {
         this.tower.setArmSpeed(x);
       }
     });
+    this.operatorPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
@@ -223,10 +224,10 @@ public class Robot extends TitanBot {
     //combo directions
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
       drive.setAngleTarget(315.0);
-    } 
+    }
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
       drive.setAngleTarget(45.0);
-    } 
+    }
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
       drive.setAngleTarget(255.0);
     }
@@ -260,16 +261,6 @@ public class Robot extends TitanBot {
     }
 
     //TODO hatch, rollers
-    //To allow toggling of the claw
-    boolean opened = true;
-    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER)) {
-      if (opened == true) {
-        tower.setClawOpen(true);
-      }
-      else if (opened == false) {
-        tower.setClawOpen(false);
-      }
-    }
 
     if (operatorPad.getButton())
   }
