@@ -85,7 +85,9 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setAngleTarget(double angleTarget) {
-        this.angleTarget = angleTarget;
+        // TODO verify 360 wraparound is correct. Does this need to handle
+        // wrapping at +-180 instead of 0/360?
+        this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
     }
 
