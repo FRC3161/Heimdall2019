@@ -9,6 +9,7 @@ import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -85,6 +86,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void setPosition(Position position) {
+        if (Objects.equals(this.targetPosition, position)) {
+            // ignore repeat position requests
+            return;
+        }
         this.targetPosition = position;
         int encoderTicks;
         if (!POSITION_TICKS.containsKey(position)) {
