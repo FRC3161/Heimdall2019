@@ -78,6 +78,9 @@ public class DriveImpl implements Drive {
         if (this.getCenterWheelsDeployed()) {
             this.tankDrive.arcadeDrive(forwardRate, turnRate);
         } else {
+	    if (!this.turnController.isEnabled()) {
+		    this.turnController.enable();
+	    }
             this.setAngleTarget(this.angleTarget + turnRate * 180 * TimedRobot.kDefaultPeriod); // 180 degrees per second, divided by update rate
             this.holoDrive.driveCartesian(strafeRate, forwardRate, computedTurnPID, fieldCentric ? currentAngle : 0);
         }
@@ -117,7 +120,11 @@ public class DriveImpl implements Drive {
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
     }
-
+    
+    public void resetTurnController() {
+	this.turnController.reset();
+    }
+	
     //Sets the gyro to make the robot face a cetain angle
 	private void gyroPID(double angle) {
         this.computedTurnPID = angle;
