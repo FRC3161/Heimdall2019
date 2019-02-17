@@ -20,6 +20,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -136,6 +137,11 @@ public class Robot extends TitanBot {
     System.out.println("Auto selected: " + m_autoSelected);
     drive.resetGyro();
     this.underLay.set(Value.kOn);
+
+    // Do teleop stuff and enable gamepads
+    this.teleopSetup();
+    driverPad.enableBindings();
+    operatorPad.enableBindings();
   }
 
   /**
@@ -144,29 +150,10 @@ public class Robot extends TitanBot {
    */
   @Override
   public void autonomousRoutine() throws InterruptedException {
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-
-    case kSystemCheckAuto:
-      tower.setBeakOpen(true);
-      tower.setClawOpen(true);
-      tower.setRollers(Direction.IN);
-      waitFor(250, TimeUnit.MILLISECONDS);
-      tower.setBeakOpen(false);
-      tower.setClawOpen(false);
-      tower.setRollers(Direction.NONE);
-      waitFor(1, TimeUnit.SECONDS);
-      drive.setCenterWheelsDeployed(true);
-      waitFor(250, TimeUnit.MILLISECONDS);
-      drive.setCenterWheelsDeployed(false);
-      break;
-
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
+    // Just do teleop, at usual 50Hz
+    while (isAutonomous()) {
+      this.teleopRoutine();
+      Thread.sleep((long) (TimedRobot.kDefaultPeriod * 1000));
     }
   }
 
