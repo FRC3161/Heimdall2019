@@ -198,7 +198,7 @@ public class Robot extends TitanBot {
     }
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(90.0);
+      drive.setAngleTarget(270.0);
     }
     // Look Backward
     if (driverPad.getButton(LogitechButton.A)) {
@@ -206,7 +206,7 @@ public class Robot extends TitanBot {
     }
     // Look Left
     if (driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(-90.0);
+      drive.setAngleTarget(90.0);
     }
     //combo directions
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
@@ -248,8 +248,20 @@ public class Robot extends TitanBot {
     }
 
     //TODO hatch, rollers
-
-    if (operatorPad.getButton())
+    //Test of dpad, clean up the getDpad() calls
+    if (operatorPad.getDpad() == -1) { //Dpad not pressed
+      tower.setRollers(Direction.NONE);
+      tower.setBeakOpen(false);
+    }
+    if (operatorPad.getDpad() == 0) { //Dpad UP
+      tower.setRollers(Direction.OUT);
+    }
+    if (operatorPad.getDpad() == 180) { //Dpad DOWN
+      tower.setRollers(Direction.IN);
+    }
+    if (operatorPad.getDpad() == 270) { //Dpad LEFT
+      tower.setBeakOpen(true);
+    }
   }
 
   /**
