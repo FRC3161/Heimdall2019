@@ -7,4 +7,5 @@ public interface Drive {
     boolean getCenterWheelsDeployed();
     void resetGyro();
     void setFieldCentric(boolean enabled);
+    void resetTurnController();
 }
