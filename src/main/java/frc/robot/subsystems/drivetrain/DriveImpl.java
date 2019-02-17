@@ -62,7 +62,7 @@ public class DriveImpl implements Drive {
         this.angleSensor.setInverted(true);
 
         this.turnController = new PIDController(kP, kI, kD, angleSensor, this::gyroPID);
-        turnController.setInputRange(-180.0f, 180.0f);
+        turnController.setInputRange(0, 360.0);
         turnController.setContinuous();
         turnController.setAbsoluteTolerance(kToleranceDegrees);
         turnController.enable();
