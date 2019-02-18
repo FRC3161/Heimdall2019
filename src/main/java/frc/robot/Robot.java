@@ -194,8 +194,8 @@ public class Robot extends TitanBot {
   @Override
   public void teleopRoutine() {
     this.drive.drive(
-      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
+      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
     // Look Forward

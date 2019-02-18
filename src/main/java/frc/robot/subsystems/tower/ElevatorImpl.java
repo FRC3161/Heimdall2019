@@ -53,7 +53,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
         //Arm PID
-        final Gains kGains = new Gains(0.75, 0.08, 0.25, 0.0, 0, 0.75); //TODO Placeholder values
+        final Gains kGains = new Gains(0.3, 0.08, 0.25, 0.0, 0, 0.75); //TODO Placeholder values
         final int kTimeoutMs = 30;
         // final boolean kSensorPhase = true;
         // final boolean kMotorInvert = false;
@@ -129,9 +129,6 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
-        if (current.equals(LifecycleEvent.ON_INIT)) {
-            start();
-        }
         if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)){
             return;
         }
