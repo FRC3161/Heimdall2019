@@ -7,12 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
-import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -20,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
-class ArmImpl extends RepeatingPooledSubsystem implements Arm {
+class ArmImpl implements Arm {
 
     private static final BidiMap<Position, Integer> POSITION_TICKS;
     static {
@@ -40,7 +35,6 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
     private Position targetPosition = Position.STARTING_CONFIG;
 
     ArmImpl(int talonPort) {
-        super(50, TimeUnit.MILLISECONDS);
         this.controller = new WPI_TalonSRX(talonPort);
 
         //Arm PID
@@ -107,9 +101,6 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
-        if (current.equals(LifecycleEvent.ON_INIT)) {
-            start();   
-        }
         if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)) {
             return;
         }
