@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
-class ArmImpl implements Arm {
+class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     private static final BidiMap<Position, Integer> POSITION_TICKS;
     static {
@@ -35,6 +35,7 @@ class ArmImpl implements Arm {
     private Position targetPosition = Position.STARTING_CONFIG;
 
     ArmImpl(int talonPort) {
+        super(50, TimeUnit.MILLISECONDS);
         this.controller = new WPI_TalonSRX(talonPort);
 
         //Arm PID
@@ -101,6 +102,9 @@ class ArmImpl implements Arm {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        if (current.equals(LifecycleEvent.ON_INIT)) {
+            start();   
+        }
         if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)) {
             return;
         }
