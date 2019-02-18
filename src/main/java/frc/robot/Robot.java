@@ -9,6 +9,8 @@ package frc.robot;
 
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Test.None;
+
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -178,7 +180,7 @@ public class Robot extends TitanBot {
         this.tower.setArmSpeed(x);
       }
     });
-    this.operatorPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
+    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
@@ -224,6 +226,7 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
+   
     if (operatorPad.getDpad() == 270) {
       tower.setTowerPosition(Position.HATCH_2);
     }
