@@ -25,7 +25,8 @@ public class RobotMap {
     // Solenoids (PCM)
     public static final int COLSON_SOLENOID = 0;
     public static final int CLAW_SOLENOID = 1;
-    public static final int BEAK_SOLENOID = 2;
+    public static final int BEAK_OPEN_SOLENOID = 2;
+    public static final int BEAK_CLOSE_SOLENOID = 3;
 
     // Sensors (DIO)
     public static final int OBJECT_SENSOR = 0;
