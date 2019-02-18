@@ -91,8 +91,9 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setAngleTarget(double angleTarget) {
-        // TODO verify 360 wraparound is correct. Does this need to handle
-        // wrapping at +-180 instead of 0/360?
+        if (angleTarget < 0) {
+            angleTarget += 360;
+        }
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
     }
@@ -123,11 +124,11 @@ public class DriveImpl implements Drive {
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
     }
-    
+
     public void resetTurnController() {
 	this.turnController.reset();
     }
-	
+
     //Sets the gyro to make the robot face a cetain angle
 	private void gyroPID(double angle) {
         this.computedTurnPID = angle;
