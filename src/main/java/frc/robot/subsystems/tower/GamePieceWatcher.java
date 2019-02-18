@@ -33,6 +33,15 @@ class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleList
         }
     }
 
+    public boolean getObjectState() {
+        if (this.objectSensor.get()) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
         switch (current) {
