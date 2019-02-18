@@ -9,8 +9,6 @@ package frc.robot;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test.None;
-
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -181,6 +179,7 @@ public class Robot extends TitanBot {
       }
     });
     this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
+    this.operatorPad.bind(LogitechButton.B, PressType.HOLD, () -> tower.setBeakOpen(!tower.isBeakOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
