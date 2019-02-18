@@ -264,6 +264,8 @@ public class Robot extends TitanBot {
     if (!gamePieceWatcher.getObjectState() && !tower.isBeakOpen()) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
+
+    arm.putEncoderTicks();
   }
 
   /**

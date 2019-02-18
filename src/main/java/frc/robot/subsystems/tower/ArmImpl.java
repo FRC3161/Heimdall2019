@@ -111,4 +111,9 @@ class ArmImpl implements Arm {
         SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
     }
 
+    @Override
+    public void putEncoderTicks() {
+        SmartDashboard.putNumber("Arm Encoder Ticks", controller.getSelectedSensorPosition());
+    }
+
 }
