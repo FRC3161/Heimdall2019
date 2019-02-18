@@ -8,4 +8,5 @@ interface Arm extends LifecycleListener {
     Position getPosition();
     void setSpeed(double speed);
     void reset();
+    void task();
 }

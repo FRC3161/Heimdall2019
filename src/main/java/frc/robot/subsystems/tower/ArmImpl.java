@@ -7,6 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -105,4 +106,9 @@ class ArmImpl implements Arm {
         }
         reset();
     }
+    @Override
+    public void task() {
+        SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
+    }
+
 }
