@@ -123,4 +123,10 @@ public class TowerImpl implements Tower {
         this.elevator.reset();
         this.arm.reset();
     }
+
+    @Override
+    public void putEncoderTicks() {
+        SmartDashboard.putNumber("Arm Encoder Ticks", this.arm.returnEncoderTicks());
+    }
+
 }

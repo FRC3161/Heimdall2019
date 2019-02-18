@@ -9,5 +9,5 @@ interface Arm extends LifecycleListener {
     void setSpeed(double speed);
     void reset();
     void task();
-    void putEncoderTicks();
+    double returnEncoderTicks();
 }

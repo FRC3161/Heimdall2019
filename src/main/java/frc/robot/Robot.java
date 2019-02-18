@@ -265,7 +265,7 @@ public class Robot extends TitanBot {
       tower.setRollers(Direction.IN);
     }
 
-    arm.putEncoderTicks();
+    tower.putEncoderTicks();
   }
 
   /**
