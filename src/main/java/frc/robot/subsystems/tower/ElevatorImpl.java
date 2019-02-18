@@ -28,7 +28,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, -5000);
-        positionTicks.put(Position.LOW, -10000);
+        positionTicks.put(Position.HATCH_1, -10000);
         positionTicks.put(Position.CARGO_2, -15000);
         positionTicks.put(Position.CARGO_3, -25000);
         positionTicks.put(Position.HATCH_2, -30000);

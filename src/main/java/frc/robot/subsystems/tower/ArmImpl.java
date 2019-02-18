@@ -22,7 +22,7 @@ class ArmImpl implements Arm {
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
-        positionTicks.put(Position.LOW, 1);
+        positionTicks.put(Position.HATCH_1, 1);
         positionTicks.put(Position.CARGO_2, 2);
         positionTicks.put(Position.CARGO_3, 3);
         positionTicks.put(Position.HATCH_2, 4);

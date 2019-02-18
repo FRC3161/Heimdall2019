@@ -11,17 +11,14 @@ import frc.robot.RobotMap;
 
 class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
 
-    private final RightSight hatchSensor;
-    private final RightSight ballSensor;
+    private final RightSight objectSensor;
     private final Relay relay;
 
     GamePieceWatcher() {
         super(50, TimeUnit.MILLISECONDS);
         this.relay = new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward);
-        this.hatchSensor = new RightSight(RobotMap.HATCH_SENSOR);
-        this.hatchSensor.setInverted(true);
-        this.ballSensor = new RightSight(RobotMap.BALL_SENSOR);
-        this.ballSensor.setInverted(true);
+        this.objectSensor = new RightSight(RobotMap.OBJECT_SENSOR);
+        this.objectSensor.setInverted(true);
     }
 
     @Override
@@ -29,7 +26,7 @@ class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleList
 
     @Override
     public void task() {
-        if (this.hatchSensor.get() || this.ballSensor.get()) {
+        if (this.objectSensor.get()) {
             this.relay.set(Relay.Value.kOn);
         } else {
             this.relay.set(Relay.Value.kOff);

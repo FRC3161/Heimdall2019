@@ -28,8 +28,7 @@ public class RobotMap {
     public static final int BEAK_SOLENOID = 2;
 
     // Sensors (DIO)
-    public static final int BALL_SENSOR = 0;
-    public static final int HATCH_SENSOR = 1;
+    public static final int OBJECT_SENSOR = 0;
     public static final int TOP_LIMIT_SWITCH = 2;
     public static final int BOTTOM_LIMIT_SWITCH = 3;
 
