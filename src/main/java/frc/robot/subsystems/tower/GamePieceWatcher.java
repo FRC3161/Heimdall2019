@@ -9,12 +9,12 @@ import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 import edu.wpi.first.wpilibj.Relay;
 import frc.robot.RobotMap;
 
-class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
+public class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
 
     private final RightSight objectSensor;
     private final Relay relay;
 
-    GamePieceWatcher() {
+    public GamePieceWatcher() {
         super(50, TimeUnit.MILLISECONDS);
         this.relay = new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward);
         this.objectSensor = new RightSight(RobotMap.OBJECT_SENSOR);

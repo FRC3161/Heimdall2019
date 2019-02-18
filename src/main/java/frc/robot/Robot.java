@@ -31,6 +31,7 @@ import frc.robot.subsystems.tower.Tower;
 import frc.robot.subsystems.tower.TowerImpl;
 import frc.robot.subsystems.tower.Tower.Direction;
 import frc.robot.subsystems.tower.Tower.Position;
+import frc.robot.subsystems.tower.GamePieceWatcher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +55,8 @@ public class Robot extends TitanBot {
 
   private LogitechDualAction driverPad;
   private LogitechDualAction operatorPad;
+
+  private GamePieceWatcher gamePieceWatcher;
 
   @Override
   public int getAutonomousPeriodLengthSeconds() {
@@ -94,11 +97,12 @@ public class Robot extends TitanBot {
     this.drive = new DriveImpl();
     this.tower = new TowerImpl();
     this.underLay = new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward);
+    this.gamePieceWatcher = new GamePieceWatcher();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     m_chooser.addOption("System Check Auto", kSystemCheckAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
-
+    
     registerLifecycleComponent(this.driverPad);
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
@@ -251,19 +255,14 @@ public class Robot extends TitanBot {
     }
 
     //TODO hatch, rollers
-    //Test of dpad, clean up the getDpad() calls
-    if (operatorPad.getDpad() == -1) { //Dpad not pressed
+    if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER) || gamePieceWatcher.getObjectState())) {
       tower.setRollers(Direction.NONE);
-      tower.setBeakOpen(false);
     }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
     }
-    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER)) { //Dpad DOWN
+    if (!gamePieceWatcher.getObjectState() && !tower.isBeakOpen()) { //Dpad DOWN
       tower.setRollers(Direction.IN);
-    }
-    if (operatorPad.getDpad() == 270) { //Dpad LEFT
-      tower.setBeakOpen(true);
     }
   }
 
