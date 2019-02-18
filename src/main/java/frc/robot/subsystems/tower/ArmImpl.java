@@ -27,7 +27,7 @@ class ArmImpl implements Arm {
         positionTicks.put(Position.CARGO_2, 2);
         positionTicks.put(Position.CARGO_3, 3);
         positionTicks.put(Position.HATCH_2, 4);
-        positionTicks.put(Position.HATCH_3, 5);
+        positionTicks.put(Position.HATCH_3, -3000);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
@@ -46,7 +46,7 @@ class ArmImpl implements Arm {
         int absolutePosition;
 
         kPIDLoopIdx = 0;
-        kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.25); //TODO Placeholder values
+        kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.6); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
