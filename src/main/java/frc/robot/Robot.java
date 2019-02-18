@@ -224,27 +224,27 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
-    if (operatorPad.getButton(LogitechButton.Y)) {
+    if (operatorPad.getDpad() == 270) {
       tower.setTowerPosition(Position.HATCH_2);
     }
 
-    if (operatorPad.getButton(LogitechButton.LEFT_BUMPER)){
+    if (operatorPad.getDpad() == 180){
       tower.setTowerPosition(Position.GROUND);
     }
 
-    if (operatorPad.getButton(LogitechButton.A)) {
-      tower.setTowerPosition(Position.LOW);
+    if (operatorPad.getDpad() == 90) {
+      tower.setTowerPosition(Position.HATCH_1);
     }
 
-    if (operatorPad.getButton(LogitechButton.B)) {
+    if (operatorPad.getDpad() == 315) {
       tower.setTowerPosition(Position.CARGO_2);
     }
 
-    if (operatorPad.getButton(LogitechButton.X)) {
+    if (operatorPad.getDpad() == 0) {
       tower.setTowerPosition(Position.HATCH_3);
     }
 
-    if (operatorPad.getButton(LogitechButton.RIGHT_BUMPER)) {
+    if (operatorPad.getDpad() == 45) {
       tower.setTowerPosition(Position.CARGO_3);
     }
 
@@ -254,10 +254,10 @@ public class Robot extends TitanBot {
       tower.setRollers(Direction.NONE);
       tower.setBeakOpen(false);
     }
-    if (operatorPad.getDpad() == 0) { //Dpad UP
+    if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
     }
-    if (operatorPad.getDpad() == 180) { //Dpad DOWN
+    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER)) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
     if (operatorPad.getDpad() == 270) { //Dpad LEFT
