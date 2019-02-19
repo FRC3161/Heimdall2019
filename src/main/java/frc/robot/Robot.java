@@ -58,8 +58,6 @@ public class Robot extends TitanBot {
 
   private GamePieceWatcher gamePieceWatcher;
 
-  private boolean beakOpen;
-
   @Override
   public int getAutonomousPeriodLengthSeconds() {
     return 15;
@@ -94,6 +92,10 @@ public class Robot extends TitanBot {
         new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X,
         new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
+    this.operatorPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, 
+      new DeadbandJoystickMode(GAMEPAD_DEADBAND));
+      this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y, 
+      new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
     this.drive = new DriveImpl();
@@ -174,18 +176,10 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
-    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x -> {
-      if (Math.abs(x) > GAMEPAD_DEADBAND) {
-        this.tower.setElevatorSpeed(x);
-      }
-    });
-    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x -> {
-      if (Math.abs(x) > GAMEPAD_DEADBAND) {
-        this.tower.setArmSpeed(x);
-      }
-    });
-    //this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
-    //this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
+    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x -> this.tower.setElevatorSpeed(x));
+    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x -> this.tower.setArmSpeed(x));
+    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
+    this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
@@ -265,15 +259,6 @@ public class Robot extends TitanBot {
     }
     if (!gamePieceWatcher.getObjectState() && !tower.isBeakOpen()) { //Dpad DOWN
       tower.setRollers(Direction.IN);
-    }
-
-    //Beak
-    if (operatorPad.getButton(LogitechButton.A)) {
-        if (beakOpen) {
-          this.tower.setBeakOpen(false);
-        } else {
-          this.tower.setBeakOpen(true);
-        }
     }
 
     tower.putEncoderTicks();
