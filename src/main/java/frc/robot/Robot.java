@@ -207,10 +207,10 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
     if (operatorPad.getButton(LogitechButton.B)){
-      tower.setBeakOpen(true);
+      tower.setBeakOpen(false);
     }
     if (!operatorPad.getButton(LogitechButton.B)){
-      tower.setBeakOpen(false);
+      tower.setBeakOpen(true);
     }
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
