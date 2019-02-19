@@ -30,6 +30,7 @@ public class ColsonPodImpl implements ColsonPod {
     @Override
     public void set(double speed) {
         if (isDeployed()) {
+            this.controller.setInverted(true);
             this.controller.set(speed);
         }
     }
