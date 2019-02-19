@@ -53,7 +53,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
 
         //Arm PID
-        final Gains kGains = new Gains(0.75, 0.08, 0.25, 0.0, 0, 0.6); //TODO Placeholder values
+        final Gains kGains = new Gains(0.001, 0.001, 0.001, 0.0, 0, 0.5); //TODO Placeholder values
         final int kTimeoutMs = 30;
         // final boolean kSensorPhase = true;
         // final boolean kMotorInvert = false;
@@ -145,5 +145,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void defineResources() { }
+
+    @Override
+    public double returnEncoderTicks() {
+        return controllerMaster.getSelectedSensorPosition();
+    }
 
 }

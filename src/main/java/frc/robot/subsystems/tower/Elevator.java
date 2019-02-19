@@ -7,5 +7,6 @@ interface Elevator extends LifecycleListener {
     void setPosition(Position position);
     Position getPosition();
     void setSpeed(double speed);
+    double returnEncoderTicks();
     void reset();
 }
