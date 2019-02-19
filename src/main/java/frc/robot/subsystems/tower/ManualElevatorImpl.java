@@ -10,9 +10,6 @@ public class ManualElevatorImpl implements Elevator {
 
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
-    private final int kPIDLoopIdx = 0;
-
-    private Position targetPosition = Position.STARTING_CONFIG;
 
     ManualElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
         this.controllerMaster = new WPI_TalonSRX(masterPort);
