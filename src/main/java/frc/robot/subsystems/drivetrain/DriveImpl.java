@@ -55,8 +55,8 @@ public class DriveImpl implements Drive {
 
         this.holoDrive = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
         this.tankDrive = new DifferentialDrive(
-            new SpeedControllerGroup(frontLeftDrive, leftColson, backLeftDrive),
-            new SpeedControllerGroup(frontRightDrive, rightColson, backRightDrive)
+            new SpeedControllerGroup(frontRightDrive, leftColson, frontLeftDrive),
+            new SpeedControllerGroup(backLeftDrive, rightColson, backRightDrive)
         );
         this.tankDrive.setSafetyEnabled(false);
         this.holoDrive.setSafetyEnabled(false);
