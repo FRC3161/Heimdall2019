@@ -38,4 +38,9 @@ public class ManualElevatorImpl implements Elevator {
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) { }
 
+    @Override
+    public double returnEncoderTicks() {
+        return 1.d;
+    }
+
 }
