@@ -94,7 +94,7 @@ public class Robot extends TitanBot {
         new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.operatorPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, 
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
-      this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y, 
+    this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y, 
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
