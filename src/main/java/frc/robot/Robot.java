@@ -188,6 +188,9 @@ public class Robot extends TitanBot {
     this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
+
+    this.driverPad.enableBindings();
+    this.operatorPad.enableBindings();
   }
 
   /**
