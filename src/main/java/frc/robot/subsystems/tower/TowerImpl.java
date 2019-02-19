@@ -9,11 +9,9 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class TowerImpl implements Tower {
 
