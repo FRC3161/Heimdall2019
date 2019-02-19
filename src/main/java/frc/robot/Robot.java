@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.util.concurrent.TimeUnit;
-
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
@@ -92,9 +90,9 @@ public class Robot extends TitanBot {
         new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.X,
         new SquaredJoystickMode().andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
-    this.operatorPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y, 
+    this.operatorPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y,
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
-    this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y, 
+    this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y,
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
@@ -106,7 +104,7 @@ public class Robot extends TitanBot {
     m_chooser.addOption("My Auto", kCustomAuto);
     m_chooser.addOption("System Check Auto", kSystemCheckAuto);
     SmartDashboard.putData("Auto choices pls", m_chooser);
-    
+
     registerLifecycleComponent(this.driverPad);
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
@@ -179,12 +177,12 @@ public class Robot extends TitanBot {
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
       if (x!= 0) {
         this.tower.setElevatorSpeed(x);
-      } 
+      }
     });
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x-> {
       if (x!= 0) {
         this.tower.setArmSpeed(x);
-      } 
+      }
     });
     this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
     this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
@@ -233,7 +231,7 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
-   
+
     if (operatorPad.getDpad() == 270) {
       tower.setTowerPosition(Position.HATCH_2);
     }
