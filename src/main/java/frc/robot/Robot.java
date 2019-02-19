@@ -58,8 +58,6 @@ public class Robot extends TitanBot {
 
   private GamePieceWatcher gamePieceWatcher;
 
-  private boolean beakOpen;
-
   @Override
   public int getAutonomousPeriodLengthSeconds() {
     return 15;
@@ -184,8 +182,8 @@ public class Robot extends TitanBot {
         this.tower.setArmSpeed(x);
       }
     });
-    //this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
-    //this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
+    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
+    this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
   }
@@ -265,15 +263,6 @@ public class Robot extends TitanBot {
     }
     if (!gamePieceWatcher.getObjectState() && !tower.isBeakOpen()) { //Dpad DOWN
       tower.setRollers(Direction.IN);
-    }
-
-    //Beak
-    if (operatorPad.getButton(LogitechButton.A)) {
-        if (beakOpen) {
-          this.tower.setBeakOpen(false);
-        } else {
-          this.tower.setBeakOpen(true);
-        }
     }
 
     tower.putEncoderTicks();
