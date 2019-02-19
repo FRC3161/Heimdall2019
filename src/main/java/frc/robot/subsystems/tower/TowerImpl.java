@@ -90,6 +90,10 @@ public class TowerImpl implements Tower {
             roller.set(0);
             return;
         }
+        if(ROLLER_DIRECTIONS_PWM.containsKey(Direction.SLOW_IN)){
+            roller.set(0.2);
+            return;
+        }
         roller.set(ROLLER_DIRECTIONS_PWM.get(direction));
     }
 
