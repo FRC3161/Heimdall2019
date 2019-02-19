@@ -264,13 +264,13 @@ public class Robot extends TitanBot {
     }
 
     //TODO hatch, rollers
-    if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER) || gamePieceWatcher.getObjectState())) {
+    if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER))&& (!operatorPad.getButton(LogitechButton.RIGHT_TRIGGER))) {
       tower.setRollers(Direction.NONE);
     }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
     }
-    if (!gamePieceWatcher.getObjectState() && !tower.isBeakOpen()) { //Dpad DOWN
+    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
 
