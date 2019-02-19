@@ -126,6 +126,6 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public double returnEncoderTicks() {
-        return controller.get();
+        return controller.getSelectedSensorPosition();
     }
 }
