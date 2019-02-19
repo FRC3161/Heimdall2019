@@ -31,7 +31,8 @@ public class TowerImpl implements Tower {
     private final Arm arm;
     private final Solenoid openClaw;
     private final Solenoid closeClaw;
-    private final DoubleSolenoid beak;
+    private final Solenoid openBeak;
+    private final Solenoid closeBeak;
     private final SpeedControllerGroup roller;
     private final GamePieceWatcher gamePieceWatcher;
     private Position position;
@@ -41,7 +42,8 @@ public class TowerImpl implements Tower {
         this.arm = new ArmImpl(RobotMap.ARM_CONTROLLER);
         this.openClaw = new Solenoid(RobotMap.CLAW_OPEN_SOLENOID);
         this.closeClaw = new Solenoid(RobotMap.CLAW_CLOSE_SOLENOID);
-        this.beak = new DoubleSolenoid(RobotMap.BEAK_OPEN_SOLENOID, RobotMap.BEAK_CLOSE_SOLENOID);
+        this.openBeak = new Solenoid(RobotMap.BEAK_OPEN_SOLENOID); 
+        this.closeBeak = new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID);
         this.roller = new SpeedControllerGroup(new VictorSP(RobotMap.TOWER_ROLLER_1), new VictorSP(RobotMap.TOWER_ROLLER_2));
         this.gamePieceWatcher = new GamePieceWatcher();
         setTowerPosition(Position.STARTING_CONFIG);
@@ -73,12 +75,13 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setBeakOpen(boolean open) {
-        beak.set(open ? Value.kForward : Value.kReverse);
+        openBeak.set(open);
+        closeBeak.set(!open);
     }
 
     @Override
     public boolean isBeakOpen() {
-        return beak.get().equals(Value.kForward);
+        return  openBeak.get();
     }
 
     @Override

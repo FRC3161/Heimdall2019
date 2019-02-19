@@ -174,18 +174,18 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
-    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
+    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x-> {
       if (x!= 0) {
         this.tower.setElevatorSpeed(x);
       }
     });
-    this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x-> {
+    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
       if (x!= 0) {
         this.tower.setArmSpeed(x);
       }
     });
     this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
-    this.operatorPad.bind(LogitechButton.B,() -> tower.setBeakOpen(!tower.isBeakOpen()));
+    this.operatorPad.bind(LogitechButton.B,PressType.RELEASE,() -> tower.setBeakOpen(!tower.isBeakOpen()));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
 
@@ -199,6 +199,9 @@ public class Robot extends TitanBot {
   @Override
   public void teleopRoutine() {
     SmartDashboard.putNumber("operator pad left stick Y", operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y));
+    SmartDashboard.putNumber("operator pad right stick Y", operatorPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.Y));
+    SmartDashboard.putBoolean("operator pad A button", operatorPad.getButton(LogitechButton.A));
+    SmartDashboard.putBoolean("operator pad B button", operatorPad.getButton(LogitechButton.B));
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
