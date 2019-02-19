@@ -198,6 +198,7 @@ public class Robot extends TitanBot {
    */
   @Override
   public void teleopRoutine() {
+    SmartDashboard.putNumber("operator pad left stick Y", operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y));
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
