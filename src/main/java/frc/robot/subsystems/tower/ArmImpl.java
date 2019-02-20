@@ -51,7 +51,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         int absolutePosition;
 
         kPIDLoopIdx = 0;
-        kGains = new Gains(0.15, 0.0, 0.0, 0.0, 0, 0.6); //TODO Placeholder values
+        kGains = new Gains(0.05, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
