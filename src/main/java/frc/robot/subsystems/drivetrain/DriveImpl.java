@@ -43,9 +43,9 @@ public class DriveImpl implements Drive {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
         frontLeftDrive.setInverted(true);
         this.frontRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
-        frontRightDrive.setInverted(false);
+        frontRightDrive.setInverted(true);
         this.backLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
-        backLeftDrive.setInverted(false);
+        backLeftDrive.setInverted(true);
         this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
         backRightDrive.setInverted(true);
 
