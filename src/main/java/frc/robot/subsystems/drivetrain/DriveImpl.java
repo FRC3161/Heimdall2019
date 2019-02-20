@@ -79,7 +79,7 @@ public class DriveImpl implements Drive {
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
         if (this.getCenterWheelsDeployed()) {
-            this.tankDrive.arcadeDrive(forwardRate, turnRate);
+            this.tankDrive.arcadeDrive(strafeRate, turnRate);
         } else {
 	    if (!this.turnController.isEnabled()) {
 		    this.turnController.enable();
