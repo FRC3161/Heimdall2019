@@ -31,7 +31,7 @@ public class DriveImpl implements Drive {
     private double angleTarget;
     private volatile double computedTurnPID;
     //ramps amount of output
-    private final double kP = 0.005;
+    private final double kP = 0.0005;
     //builds up over time and resets when target is hit
     private final double kI = 0.0;
     //gets larger as the speed increases

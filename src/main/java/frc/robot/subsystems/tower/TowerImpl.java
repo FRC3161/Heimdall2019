@@ -20,7 +20,8 @@ public class TowerImpl implements Tower {
         final BidiMap<Direction, Double> rollerPwms = new DualHashBidiMap<>();
         // Direction to Roller PWM mapping
         rollerPwms.put(Direction.NONE, 0.);
-        rollerPwms.put(Direction.IN, 1.);
+        rollerPwms.put(Direction.IN, 0.7);
+        rollerPwms.put(Direction.SLOW_IN, 0.3);
         rollerPwms.put(Direction.OUT, -1.);
         ROLLER_DIRECTIONS_PWM = UnmodifiableBidiMap.unmodifiableBidiMap(rollerPwms);
     }
@@ -86,10 +87,6 @@ public class TowerImpl implements Tower {
     public void setRollers(Direction direction) {
         if (!ROLLER_DIRECTIONS_PWM.containsKey(direction)) {
             roller.set(0);
-            return;
-        }
-        if(ROLLER_DIRECTIONS_PWM.containsKey(Direction.SLOW_IN)){
-            roller.set(0.2);
             return;
         }
         roller.set(ROLLER_DIRECTIONS_PWM.get(direction));
