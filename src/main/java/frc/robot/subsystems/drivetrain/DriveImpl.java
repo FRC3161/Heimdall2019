@@ -53,9 +53,9 @@ public class DriveImpl implements Drive {
         this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve);
         this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve);
 
-        this.holoDrive = new MecanumDrive(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
+        this.holoDrive = new MecanumDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
         this.tankDrive = new DifferentialDrive(
-            new SpeedControllerGroup(frontRightDrive, leftColson, frontLeftDrive),
+            new SpeedControllerGroup(frontLeftDrive, leftColson, frontRightDrive),
             new SpeedControllerGroup(backLeftDrive, rightColson, backRightDrive)
         );
         this.tankDrive.setSafetyEnabled(false);
