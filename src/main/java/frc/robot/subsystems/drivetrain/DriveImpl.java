@@ -126,7 +126,8 @@ public class DriveImpl implements Drive {
     }
 
     public void resetTurnController() {
-	this.turnController.reset();
+        this.turnController.reset();
+        this.angleTarget = this.angleSensor.pidGet();
     }
 
     //Sets the gyro to make the robot face a cetain angle
