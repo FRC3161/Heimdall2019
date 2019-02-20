@@ -201,6 +201,7 @@ public class Robot extends TitanBot {
     SmartDashboard.putNumber("operator pad right stick Y", operatorPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.Y));
     SmartDashboard.putBoolean("operator pad A button", operatorPad.getButton(LogitechButton.A));
     SmartDashboard.putBoolean("operator pad B button", operatorPad.getButton(LogitechButton.B));
+    SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
