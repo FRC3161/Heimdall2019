@@ -203,6 +203,8 @@ public class Robot extends TitanBot {
     SmartDashboard.putBoolean("operator pad B button", operatorPad.getButton(LogitechButton.B));
     SmartDashboard.putBoolean("operator pad right trigger", operatorPad.getButton(LogitechButton.RIGHT_TRIGGER));
     SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
+    SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
+    tower.putEncoderTicks();
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
@@ -284,8 +286,6 @@ public class Robot extends TitanBot {
       tower.setRollers(Direction.IN);
     }
 
-    SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
-    tower.putEncoderTicks();
   }
 
   /**
