@@ -283,9 +283,8 @@ public class Robot extends TitanBot {
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
-    if (!this.drive.getCenterWheelsDeployed()){
-      SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
-    }
+
+    SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
     tower.putEncoderTicks();
   }
 
