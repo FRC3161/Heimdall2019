@@ -204,8 +204,8 @@ public class Robot extends TitanBot {
     SmartDashboard.putBoolean("operator pad right trigger", operatorPad.getButton(LogitechButton.RIGHT_TRIGGER));
     SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
     this.drive.drive(
-      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
+      this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
     if (operatorPad.getButton(LogitechButton.B)){
