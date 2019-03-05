@@ -96,6 +96,7 @@ public class DriveImpl implements Drive {
         }
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
+        SmartDashboard.putNumber("Angle Target", angleTarget);
     }
 
     @Override
