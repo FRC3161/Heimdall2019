@@ -126,6 +126,11 @@ public class DriveImpl implements Drive {
         this.fieldCentric = fieldCentric;
     }
 
+    @Override
+    public boolean isFieldCentric() {
+        return this.fieldCentric;
+    }
+
     public void resetTurnController() {
         this.turnController.reset();
         this.angleTarget = this.angleSensor.pidGet();

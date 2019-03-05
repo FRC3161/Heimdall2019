@@ -22,14 +22,27 @@ public interface Tower extends LifecycleListener {
 
     void setTowerPosition(Position position);
     Position getTowerPosition();
+
     void setClawOpen(boolean open);
     boolean isClawOpen();
+    default void toggleClaw() {
+        setClawOpen(!isClawOpen());
+    }
+
     void setBeakOpen(boolean open);
     boolean isBeakOpen();
+    default void toggleBeak() {
+        setBeakOpen(!isBeakOpen());
+    }
+
     void setRollers(Direction direction);
     Direction getRollerDirection();
+
     void setElevatorSpeed(double speed);
+
     void setArmSpeed(double speed);
+
     void reset();
+
     void putEncoderTicks();
 }

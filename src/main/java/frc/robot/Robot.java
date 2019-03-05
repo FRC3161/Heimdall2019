@@ -169,8 +169,7 @@ public class Robot extends TitanBot {
    */
   @Override
   public void teleopSetup() {
-    this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS,
-        () -> this.drive.setCenterWheelsDeployed(!this.drive.getCenterWheelsDeployed()));
+    this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
@@ -184,7 +183,8 @@ public class Robot extends TitanBot {
         this.tower.setArmSpeed(x);
       }
     });
-    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, () -> tower.setClawOpen(!tower.isClawOpen()));
+    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, this.tower::toggleClaw);
+    this.operatorPad.bind(LogitechButton.B, x -> this.tower.setBeakOpen(!x));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
 
@@ -210,12 +210,6 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
-    if (operatorPad.getButton(LogitechButton.B)){
-      tower.setBeakOpen(false);
-    }
-    if (!operatorPad.getButton(LogitechButton.B)){
-      tower.setBeakOpen(true);
-    }
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
       drive.setAngleTarget(0.0);
