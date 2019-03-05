@@ -170,6 +170,8 @@ public class Robot extends TitanBot {
   @Override
   public void teleopSetup() {
     this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
+    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
+    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
@@ -277,12 +279,6 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
-    }
-    if (operatorPad.getButton(LogitechButton.B)){
-      this.tower.setClawOpen(false);
-    }
-    if (!operatorPad.getButton(LogitechButton.B)){
-      this.tower.setClawOpen(true);
     }
     }
 
