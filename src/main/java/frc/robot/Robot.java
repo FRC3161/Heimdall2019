@@ -184,8 +184,6 @@ public class Robot extends TitanBot {
       }
     });
     this.operatorPad.bind(LogitechButton.A, PressType.PRESS, this.tower::toggleClaw);
-    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, this.tower.setClawOpen(false));
-    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE, this.tower.setClawOpen(true));
     this.underLay.set(Value.kOn);
     this.drive.resetGyro();
 
@@ -280,8 +278,13 @@ public class Robot extends TitanBot {
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
-
-  }
+    if (operatorPad.getButton(LogitechButton.B)){
+      this.tower.setClawOpen(false);
+    }
+    if (!operatorPad.getButton(LogitechButton.B)){
+      this.tower.setClawOpen(true);
+    }
+    }
 
   /**
    * This function is called once at the start of test mode.
