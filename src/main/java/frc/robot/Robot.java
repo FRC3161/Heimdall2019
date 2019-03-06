@@ -211,35 +211,37 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
+    double faceTarget = 0;
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
-      drive.setAngleTarget(0.0);
+      faceTarget = 0;
     }
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(270.0);
+      faceTarget = 270;
     }
     // Look Backward
     if (driverPad.getButton(LogitechButton.A)) {
-      drive.setAngleTarget(180.0);
+      faceTarget = 180;
     }
     // Look Left
     if (driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(90.0);
+      faceTarget = 90;
     }
     //combo directions
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(315.0);
+      faceTarget = 315;
     }
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(45.0);
+      faceTarget = 45;
     }
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
-      drive.setAngleTarget(255.0);
+      faceTarget = 255;
     }
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
-      drive.setAngleTarget(135.0);
+      faceTarget = 135;
     }
+    drive.setAngleTarget(faceTarget);
 
     // TODO properly map out all tower positions
 
