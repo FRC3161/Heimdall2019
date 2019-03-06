@@ -15,29 +15,28 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveImpl implements Drive {
-    private final MecanumDrive holoDrive;
-    private final DifferentialDrive tankDrive;
-    private final OmniPod frontLeftDrive;
-    private final OmniPod frontRightDrive;
-    private final OmniPod backLeftDrive;
-    private final OmniPod backRightDrive;
-    private final ColsonPod leftColson;
-    private final ColsonPod rightColson;
+    protected final MecanumDrive holoDrive;
+    protected final DifferentialDrive tankDrive;
+    protected final OmniPod frontLeftDrive;
+    protected final OmniPod frontRightDrive;
+    protected final OmniPod backLeftDrive;
+    protected final OmniPod backRightDrive;
+    protected final ColsonPod leftColson;
+    protected final ColsonPod rightColson;
 
-    private InvertiblePIDSource<AHRS> angleSensor;
+    protected InvertiblePIDSource<AHRS> angleSensor;
 
-    private final PIDController turnController;
-    private boolean fieldCentric = true;
-    private double angleTarget;
-    private volatile double computedTurnPID;
+    protected final PIDController turnController;
+    protected boolean fieldCentric = true;
+    protected double angleTarget;
+    protected volatile double computedTurnPID;
     //ramps amount of output
-    private final double kP = 0.002;
+    protected final double kP = 0.002;
     //builds up over time and resets when target is hit
-    private final double kI = 0.0;
+    protected final double kI = 0.0;
     //gets larger as the speed increases
-    private final double kD = 0.0;
-    float kToleranceDegrees = 2;
-
+    protected final double kD = 0.0;
+    protected float kToleranceDegrees = 2;
 
     public DriveImpl() {
         this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
@@ -81,9 +80,9 @@ public class DriveImpl implements Drive {
         if (this.getCenterWheelsDeployed()) {
             this.tankDrive.arcadeDrive(forwardRate ,turnRate);
         } else {
-	    if (!this.turnController.isEnabled()) {
-		    this.turnController.enable();
-	    }
+            if (!this.turnController.isEnabled()) {
+                this.turnController.enable();
+            }
             this.setAngleTarget(this.angleTarget + turnRate * 180 * TimedRobot.kDefaultPeriod); // 180 degrees per second, divided by update rate
             this.holoDrive.driveCartesian(forwardRate,strafeRate,computedTurnPID, fieldCentric ? currentAngle : 0);
         }
@@ -137,9 +136,8 @@ public class DriveImpl implements Drive {
     }
 
     //Sets the gyro to make the robot face a cetain angle
-	private void gyroPID(double angle) {
+	protected void gyroPID(double angle) {
         this.computedTurnPID = angle;
         SmartDashboard.putNumber("pid value", angle);
     }
 }
-
