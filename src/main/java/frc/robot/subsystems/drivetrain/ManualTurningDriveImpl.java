@@ -20,15 +20,22 @@ public class ManualTurningDriveImpl extends DriveImpl {
         } else {
             final double effectiveTurnRate;
             if (Math.abs(turnRate) < MANUAL_TURNING_DEADBAND) {
-                if (!this.turnController.isEnabled()) {
-                    this.turnController.enable();
-                }
                 effectiveTurnRate = computedTurnPID;
             } else {
-                this.turnController.disable();
+                if (this.turnController.isEnabled()) {
+                    this.turnController.disable();
+                }
                 effectiveTurnRate = turnRate;
             }
             this.holoDrive.driveCartesian(forwardRate, strafeRate, effectiveTurnRate, fieldCentric ? currentAngle : 0);
+        }
+    }
+
+    @Override
+    public void setAngleTarget(double target) {
+        super.setAngleTarget(target);
+        if (!this.turnController.isEnabled()) {
+            this.turnController.enable();
         }
     }
 }
