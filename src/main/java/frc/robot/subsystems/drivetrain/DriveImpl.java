@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
 import frc.robot.InvertiblePIDSource;
+import frc.robot.MathUtils;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,6 +29,7 @@ public class DriveImpl implements Drive {
 
     protected final PIDController turnController;
     protected boolean fieldCentric = true;
+    protected boolean speedLimited = true;
     protected double angleTarget;
     protected volatile double computedTurnPID;
     //ramps amount of output
@@ -77,8 +79,15 @@ public class DriveImpl implements Drive {
         double currentAngle = this.angleSensor.pidGet();
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
+        if (this.speedLimited) {
+            final double limit = 0.65;
+            forwardRate = MathUtils.absClamp(forwardRate, limit);
+            strafeRate = MathUtils.absClamp(strafeRate, limit);
+            turnRate = MathUtils.absClamp(turnRate, limit);
+        }
+
         if (this.getCenterWheelsDeployed()) {
-            this.tankDrive.arcadeDrive(forwardRate ,turnRate);
+            this.tankDrive.arcadeDrive(forwardRate, turnRate);
         } else {
             if (!this.turnController.isEnabled()) {
                 this.turnController.enable();
@@ -123,6 +132,7 @@ public class DriveImpl implements Drive {
     @Override
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
+        this.speedLimited = fieldCentric;
     }
 
     @Override
