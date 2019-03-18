@@ -21,37 +21,17 @@ import frc.robot.subsystems.tower.Tower.Position;
 import frc.robot.subsystems.Gains;
 
 class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
-
-    private static final BidiMap<Position, Integer> POSITION_TICKS;
-    static {
-        final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
-        // TODO placeholder encoder tick values
-        positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, 0);
-        positionTicks.put(Position.HATCH_1, 0);
-        positionTicks.put(Position.CARGO_2, 0);
-        positionTicks.put(Position.CARGO_3, -25000);
-        positionTicks.put(Position.HATCH_2, 0);
-        positionTicks.put(Position.HATCH_3, -40000);
-        POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
-    }
-
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
     private final int kPIDLoopIdx = 0;
-    private final DigitalInput limitSwitchTop;
-    private final DigitalInput limitSwitchBottom;
 
     private Position targetPosition = Position.STARTING_CONFIG;
 
-    ElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
+    ElevatorImpl(int masterPort, int slavePort) {
         super(50, TimeUnit.MILLISECONDS);
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
         this.controllerSlave.follow(controllerMaster);
-        this.limitSwitchTop = new DigitalInput(topSwitchPort);
-        this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
-
         //Arm PID
         final Gains kGains = new Gains(0.001, 0.001, 0.001, 0.0, 0, 1); //TODO Placeholder values
         final int kTimeoutMs = 30;
@@ -92,10 +72,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         }
         this.targetPosition = position;
         int encoderTicks;
-        if (!POSITION_TICKS.containsKey(position)) {
-            encoderTicks = POSITION_TICKS.get(Position.STARTING_CONFIG);
+        if (position.equals(Position.CARGO_3)|| position.equals(Position.HATCH_3)) {
+            encoderTicks = -40000;
         } else {
-            encoderTicks = POSITION_TICKS.get(position);
+            encoderTicks = 0;
         }
 
         this.controllerMaster.setIntegralAccumulator(0);
