@@ -203,7 +203,7 @@ public class Robot extends TitanBot {
     SmartDashboard.putBoolean("operator pad right trigger", operatorPad.getButton(LogitechButton.RIGHT_TRIGGER));
     SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
     SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
-    SmartDashboard.putBoolean("is Compressor low", this.compressor.getPressureSwitchValue());
+    SmartDashboard.putBoolean("is Compressor low", !this.compressor.getPressureSwitchValue());
     SmartDashboard.putBoolean("is the compressor on", this.compressor.enabled());
     tower.putEncoderTicks();
     this.drive.drive(
