@@ -54,8 +54,6 @@ public class Robot extends TitanBot {
   private LogitechDualAction driverPad;
   private LogitechDualAction operatorPad;
 
-  private GamePieceWatcher gamePieceWatcher;
-
   @Override
   public int getAutonomousPeriodLengthSeconds() {
     return 15;
@@ -99,7 +97,6 @@ public class Robot extends TitanBot {
     this.drive = new DriveImpl();
     this.tower = new TowerImpl();
     this.underLay = new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward);
-    this.gamePieceWatcher = new GamePieceWatcher();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     m_chooser.addOption("System Check Auto", kSystemCheckAuto);
