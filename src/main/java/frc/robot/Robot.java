@@ -285,7 +285,7 @@ public class Robot extends TitanBot {
   }
 
   private void toggleCompressor() {
-    this.compressor.setClosedLoopControl(!this.compressor.enabled());
+    this.compressor.setClosedLoopControl(!this.compressor.getClosedLoopControl());
   }
 
   /**
