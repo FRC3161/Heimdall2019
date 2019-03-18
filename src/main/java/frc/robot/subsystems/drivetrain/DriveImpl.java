@@ -31,11 +31,11 @@ public class DriveImpl implements Drive {
     protected double angleTarget;
     protected volatile double computedTurnPID;
     //ramps amount of output
-    protected final double kP = 0.002;
+    protected final double kP = 0.0106;
     //builds up over time and resets when target is hit
     protected final double kI = 0.0;
     //gets larger as the speed increases
-    protected final double kD = 0.0;
+    protected final double kD = 0.008;
     protected float kToleranceDegrees = 2;
 
     public DriveImpl() {
@@ -60,11 +60,11 @@ public class DriveImpl implements Drive {
         this.tankDrive.setSafetyEnabled(false);
         this.holoDrive.setSafetyEnabled(false);
 
-        this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::getAngle);
-        this.angleSensor.setInverted(true);
+        this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::pidGet);
+        this.angleSensor.setInverted(false);
 
         this.turnController = new PIDController(kP, kI, kD, angleSensor, this::gyroPID);
-        turnController.setInputRange(0, 360.0);
+        turnController.setInputRange(-180, 180);
         turnController.setContinuous();
         turnController.setAbsoluteTolerance(kToleranceDegrees);
         turnController.enable();
@@ -90,9 +90,9 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setAngleTarget(double angleTarget) {
-        if (angleTarget < 0) {
-            angleTarget += 360;
-        }
+        // if (angleTarget < 0) {
+        //     angleTarget += 360;
+        // }
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
         SmartDashboard.putNumber("Angle Target", angleTarget);

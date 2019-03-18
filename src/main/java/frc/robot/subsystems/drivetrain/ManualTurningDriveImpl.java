@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ManualTurningDriveImpl extends DriveImpl {
 
     private static final double MANUAL_TURNING_DEADBAND = 0.05;
+    private static final long UPDATE_WINDOW = 100;
+    private long lastUpdate = -1;
 
     public ManualTurningDriveImpl() {
         super();
@@ -33,6 +35,11 @@ public class ManualTurningDriveImpl extends DriveImpl {
 
     @Override
     public void setAngleTarget(double target) {
+        long now = System.currentTimeMillis();
+        if (lastUpdate + UPDATE_WINDOW > now) {
+            return;
+        }
+        lastUpdate = now;
         super.setAngleTarget(target);
         if (!this.turnController.isEnabled()) {
             this.turnController.enable();

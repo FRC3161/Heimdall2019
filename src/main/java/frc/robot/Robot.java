@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.drivetrain.Drive;
 import frc.robot.subsystems.drivetrain.DriveImpl;
+import frc.robot.subsystems.drivetrain.ManualTurningDriveImpl;
 import frc.robot.subsystems.tower.Tower;
 import frc.robot.subsystems.tower.TowerImpl;
 import frc.robot.subsystems.tower.Tower.Direction;
@@ -94,7 +95,7 @@ public class Robot extends TitanBot {
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.compressor = new Compressor();
     this.compressor.setClosedLoopControl(true);
-    this.drive = new DriveImpl();
+    this.drive = new ManualTurningDriveImpl();
     this.tower = new TowerImpl();
     this.underLay = new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -185,7 +186,6 @@ public class Robot extends TitanBot {
     });
     this.operatorPad.bind(LogitechButton.A, PressType.PRESS, this.tower::toggleClaw);
     this.underLay.set(Value.kOn);
-    this.drive.resetGyro();
 
     this.driverPad.enableBindings();
     this.operatorPad.enableBindings();
@@ -211,37 +211,40 @@ public class Robot extends TitanBot {
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.X),
       this.driverPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.X)
     );
-    double faceTarget = 0;
+    Double faceTarget = null;
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
-      faceTarget = 0;
+      faceTarget = 0.0;
     }
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
-      faceTarget = 270;
+      faceTarget = 90.0;
     }
     // Look Backward
     if (driverPad.getButton(LogitechButton.A)) {
-      faceTarget = 180;
+      faceTarget = 180.0;
     }
     // Look Left
     if (driverPad.getButton(LogitechButton.X)) {
-      faceTarget = 90;
+      faceTarget = -90.0;
     }
     //combo directions
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.B)) {
-      faceTarget = 315;
+      faceTarget = 28.75;
     }
     if (driverPad.getButton(LogitechButton.Y) && driverPad.getButton(LogitechButton.X)) {
-      faceTarget = 45;
+      faceTarget = -28.75;
     }
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.B)) {
-      faceTarget = 255;
+      faceTarget = 151.25;
     }
     if (driverPad.getButton(LogitechButton.A) && driverPad.getButton(LogitechButton.X)) {
-      faceTarget = 135;
+      faceTarget = -151.25;
     }
-    drive.setAngleTarget(faceTarget);
+    if (faceTarget != null) {
+      drive.setAngleTarget(faceTarget);
+      SmartDashboard.putNumber("Face Target", faceTarget);
+    }
 
     // TODO properly map out all tower positions
 
