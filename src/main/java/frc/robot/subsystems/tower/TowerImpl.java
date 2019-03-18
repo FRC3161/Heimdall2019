@@ -11,7 +11,6 @@ import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 import ca.team3161.lib.robot.LifecycleEvent;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class TowerImpl implements Tower {
