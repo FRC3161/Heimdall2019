@@ -1,7 +1,6 @@
 package frc.robot.subsystems.tower;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.tower.Elevator;
 
