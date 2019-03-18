@@ -13,8 +13,8 @@ public class RobotMap {
 
     // Tower controllers
     // PWM
-    public static final int TOWER_ROLLER_1 = 8;
-    public static final int TOWER_ROLLER_2 = 9;
+    public static final int TOWER_ROLLER_INTAKE = 8;
+    public static final int TOWER_ROLLER_WRIST = 9;
     // CAN
     public static final int ARM_CONTROLLER = 5;
     public static final int ELEVATOR_MASTER_CONTROLLER = 7;

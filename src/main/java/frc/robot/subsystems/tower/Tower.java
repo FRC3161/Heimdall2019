@@ -41,6 +41,8 @@ public interface Tower extends LifecycleListener {
 
     void setArmSpeed(double speed);
 
+    void setWristSpeed(double speed);
+
     void reset();
 
     void putEncoderTicks();
