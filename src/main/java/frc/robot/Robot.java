@@ -55,7 +55,7 @@ public class Robot extends TitanBot {
   private LogitechDualAction operatorPad;
 
   private GamePieceWatcher gamePieceWatcher;
-
+  private compressorSwitch;
   @Override
   public int getAutonomousPeriodLengthSeconds() {
     return 15;
@@ -172,6 +172,7 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
     this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
     this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
+    this.operatorPad.bind(LogitechButton.X, PressType.PRESS, () -> this.robot:: compressorswitch);
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
@@ -281,6 +282,15 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
+    }
+public void compressorSwitch {
+  
+    if (this.compressor.enabled()){
+      this.compressor.stop();
+    }
+    else{
+      this.compressor.start();
+    }
     }
     }
 
