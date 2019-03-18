@@ -276,9 +276,6 @@ public class Robot extends TitanBot {
     if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER))&& (!operatorPad.getButton(LogitechButton.RIGHT_TRIGGER))) {
       tower.setRollers(Direction.NONE);
     }
-    if ((operatorPad.getButton(LogitechButton.LEFT_BUMPER)) || tower.isClawOpen()){
-      tower.setRollers(Direction.SLOW_IN);
-    }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
     }
