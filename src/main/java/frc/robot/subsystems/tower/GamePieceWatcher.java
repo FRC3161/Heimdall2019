@@ -7,6 +7,7 @@ import ca.team3161.lib.robot.LifecycleListener;
 import ca.team3161.lib.robot.sensors.RightSight;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class GamePieceWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
@@ -26,7 +27,9 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
 
     @Override
     public void task() {
-        if (this.objectSensor.get()) {
+        boolean detected = this.objectSensor.get();
+        SmartDashboard.putBoolean("GamePieceWatcher", detected);
+        if (detected) {
             this.relay.set(Relay.Value.kOn);
         } else {
             this.relay.set(Relay.Value.kOff);
