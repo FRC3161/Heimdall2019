@@ -51,7 +51,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         int absolutePosition;
 
         kPIDLoopIdx = 0;
-        kGains = new Gains(0.05, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
+        //touch kp with care dont increase greatly rather not move at all then go ape shit
+        kGains = new Gains(0.00005, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
