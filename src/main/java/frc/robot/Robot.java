@@ -282,20 +282,22 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
-      DSPrint = "Yeet";
-      long now = System.currentTimeMillis();
-        if (lastUpdate + UPDATE_WINDOW < now) {
-          DriverStation.reportError(DSPrint, false);
-          return;
-        }
-        lastUpdate = now;
+      this.Easteregg();
       
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
   }
-
+  public void Easteregg(){
+    DSPrint = "Yeet";
+      long now = System.currentTimeMillis();
+        if (lastUpdate + UPDATE_WINDOW > now) {
+          return;
+        }
+          DriverStation.reportError(DSPrint, false);
+          lastUpdate = now;
+  }
   private void toggleCompressor() {
     this.compressor.setClosedLoopControl(!this.compressor.getClosedLoopControl());
   }
