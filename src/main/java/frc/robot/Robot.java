@@ -17,6 +17,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
@@ -54,6 +55,7 @@ public class Robot extends TitanBot {
 
   private LogitechDualAction driverPad;
   private LogitechDualAction operatorPad;
+  String DSPrint;
 
   @Override
   public int getAutonomousPeriodLengthSeconds() {
@@ -277,6 +279,8 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
+      DSPrint = "Yeet";
+      DriverStation.reportError(DSPrint, false);
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
