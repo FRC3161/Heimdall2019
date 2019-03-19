@@ -286,6 +286,7 @@ public class Robot extends TitanBot {
       long now = System.currentTimeMillis();
         if (lastUpdate + UPDATE_WINDOW < now) {
           DriverStation.reportError(DSPrint, false);
+          return;
         }
         lastUpdate = now;
       
