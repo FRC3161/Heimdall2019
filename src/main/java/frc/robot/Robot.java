@@ -291,12 +291,12 @@ public class Robot extends TitanBot {
   }
   public void Easteregg(){
     DSPrint = "Yeet";
-      long now = System.currentTimeMillis();
-        if (lastUpdate + UPDATE_WINDOW > now) {
-          return;
-        }
-          DriverStation.reportError(DSPrint, false);
-          lastUpdate = now;
+    long now = System.currentTimeMillis();
+    if (lastUpdate + UPDATE_WINDOW > now) {
+        return;
+    }
+    DriverStation.reportError(DSPrint, false);
+    lastUpdate = now;
   }
   private void toggleCompressor() {
     this.compressor.setClosedLoopControl(!this.compressor.getClosedLoopControl());
