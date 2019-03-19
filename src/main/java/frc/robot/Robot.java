@@ -56,6 +56,9 @@ public class Robot extends TitanBot {
   private LogitechDualAction driverPad;
   private LogitechDualAction operatorPad;
   String DSPrint;
+  private static final long UPDATE_WINDOW = 3000;
+  private long lastUpdate = -1;
+  
 
   @Override
   public int getAutonomousPeriodLengthSeconds() {
@@ -280,7 +283,12 @@ public class Robot extends TitanBot {
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
       DSPrint = "Yeet";
-      DriverStation.reportError(DSPrint, false);
+      long now = System.currentTimeMillis();
+        if (lastUpdate + UPDATE_WINDOW > now) {
+          DriverStation.reportError(DSPrint, false);
+        }
+        lastUpdate = now;
+      
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
