@@ -23,14 +23,18 @@ import frc.robot.subsystems.Gains;
 class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
+    private final DigitalInput limitSwitchTop;
+    private final DigitalInput limitSwitchBottom;
     private final int kPIDLoopIdx = 0;
 
     private Position targetPosition = Position.STARTING_CONFIG;
 
-    ElevatorImpl(int masterPort, int slavePort) {
+    ElevatorImpl(int masterPort, int slavePort, int topSwitchPort,int bottomSwitchPort) {
         super(50, TimeUnit.MILLISECONDS);
         this.controllerMaster = new WPI_TalonSRX(masterPort);
         this.controllerSlave = new WPI_TalonSRX(slavePort);
+        this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
+        this.limitSwitchTop = new DigitalInput(topSwitchPort);
         this.controllerSlave.follow(controllerMaster);
         //Arm PID
         final Gains kGains = new Gains(0.001, 0.001, 0.001, 0.0, 0, 1); //TODO Placeholder values
@@ -62,6 +66,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         //Speed Limiting
         controllerMaster.configPeakOutputForward(kGains.kPeakOutput);
         controllerMaster.configPeakOutputReverse(-kGains.kPeakOutput);
+        
     }
 
     @Override
@@ -89,15 +94,15 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void setSpeed(double speed) {
-        // if (limitSwitchTop.get()) {
-        //     if (speed > 0){
-        //         speed = 0;
-        //     }
-        // } else if (limitSwitchBottom.get()) {
-        //     if (speed < 0){
-        //         speed = 0;
-        //     }
-        // }
+         if (limitSwitchTop.get()) {
+             if (speed > 0){
+                 speed = 0;
+             }
+        }else if (limitSwitchBottom.get()) {
+            if (speed < 0){
+                 speed = 0;
+            }
+        }
         controllerMaster.set(ControlMode.PercentOutput, speed);
     }
 
