@@ -20,12 +20,6 @@ public interface Tower extends LifecycleListener {
     void setTowerPosition(Position position);
     Position getTowerPosition();
 
-    void setClawOpen(boolean open);
-    boolean isClawOpen();
-    default void toggleClaw() {
-        setClawOpen(!isClawOpen());
-    }
-
     void setBeakOpen(boolean open);
     boolean isBeakOpen();
     default void toggleBeak() {

@@ -175,8 +175,8 @@ public class Robot extends TitanBot {
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
-    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
-    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
+    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setBeakOpen(false));
+    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setBeakOpen(true));
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.PRESS, this::wristUp);
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.RELEASE, this::wristStop);
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.PRESS, this::wristDown);
@@ -301,7 +301,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristUp() {
-    if (tower.isClawOpen()) {
+    if (tower.isBeakOpen()) {
       wristStop();
       return;
     }
@@ -309,7 +309,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristDown() {
-    if (tower.isClawOpen()) {
+    if (tower.isBeakOpen()) {
       wristStop();
       return;
     }

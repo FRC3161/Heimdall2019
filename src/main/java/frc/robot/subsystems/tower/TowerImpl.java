@@ -27,8 +27,6 @@ public class TowerImpl implements Tower {
 
     private final Elevator elevator;
     private final Arm arm;
-    private final Solenoid openClaw;
-    private final Solenoid closeClaw;
     private final Solenoid openBeak;
     private final Solenoid closeBeak;
     private final SpeedController intake;
@@ -39,8 +37,6 @@ public class TowerImpl implements Tower {
     public TowerImpl() {
         this.elevator = new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER, RobotMap.TOP_LIMIT_SWITCH,RobotMap.BOTTOM_LIMIT_SWITCH);
         this.arm = new ArmImpl(RobotMap.ARM_CONTROLLER);
-        this.openClaw = new Solenoid(RobotMap.CLAW_OPEN_SOLENOID);
-        this.closeClaw = new Solenoid(RobotMap.CLAW_CLOSE_SOLENOID);
         this.openBeak = new Solenoid(RobotMap.BEAK_OPEN_SOLENOID); 
         this.closeBeak = new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID);
         this.intake = new VictorSP(RobotMap.TOWER_ROLLER_INTAKE);
@@ -61,18 +57,6 @@ public class TowerImpl implements Tower {
     public Position getTowerPosition() {
         return position;
     }
-
-    @Override
-    public void setClawOpen(boolean open) {
-        openClaw.set(open);
-        closeClaw.set(!open);
-    }
-
-    @Override
-    public boolean isClawOpen() {
-        return openClaw.get();
-    }
-
     @Override
     public void setBeakOpen(boolean open) {
         openBeak.set(open);
