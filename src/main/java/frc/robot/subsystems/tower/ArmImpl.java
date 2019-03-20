@@ -81,7 +81,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         this.targetPosition = position;
         int encoderTicks;
         if (!POSITION_TICKS.containsKey(position)) {
-            encoderTicks = POSITION_TICKS.get(Position.STARTING_CONFIG);
+            encoderTicks = POSITION_TICKS.getOrDefault(Position.STARTING_CONFIG, 0);
         } else {
             encoderTicks = POSITION_TICKS.get(position);
         }
