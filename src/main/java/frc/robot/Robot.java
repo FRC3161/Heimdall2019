@@ -57,8 +57,7 @@ public class Robot extends TitanBot {
   private LogitechDualAction operatorPad;
   String DSPrint;
   private static final long UPDATE_WINDOW = 3000;
-  private long lastUpdate = -1;
-  
+  private long lastYeet = -1;
 
   @Override
   public int getAutonomousPeriodLengthSeconds() {
@@ -284,33 +283,35 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
-      this.Easteregg();
-      
+      this.easterEgg();
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
   }
-  public void Easteregg(){
-    DSPrint = "Yeet";
+
+  public void easterEgg(){
     long now = System.currentTimeMillis();
-    if (lastUpdate + UPDATE_WINDOW > now) {
+    if (lastYeet + UPDATE_WINDOW > now) {
         return;
     }
-    DriverStation.reportError(DSPrint, false);
-    lastUpdate = now;
+    DriverStation.reportError("Yeet", false);
+    lastYeet = now;
   }
+
   private void toggleCompressor() {
     this.compressor.setClosedLoopControl(!this.compressor.getClosedLoopControl());
   }
-  private void wristUp(){
-    if(driverPad.getButton(LogitechButton.B)){
+
+  private void wristUp() {
+    if (tower.isBeakOpen()) {
       return;
     }
     this.tower.setWristSpeed(0.5);
   }
-  private void wristDown(){
-    if(driverPad.getButton(LogitechButton.B)){
+
+  private void wristDown() {
+    if (tower.isBeakOpen()) {
       return;
     }
     this.tower.setWristSpeed(-0.5);
