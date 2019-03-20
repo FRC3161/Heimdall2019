@@ -101,7 +101,7 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setWristSpeed(double speed){
-        if (limitSwitchWrist.get()) {
+        if (this.limitSwitchWrist.get()) {
             if (speed > 0){
                 speed = 0;
             }
