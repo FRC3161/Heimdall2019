@@ -306,7 +306,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristUp() {
-    if (tower.isBeakOpen()) {
+    if (tower.isClawOpen()) {
       wristStop();
       return;
     }
@@ -314,7 +314,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristDown() {
-    if (tower.isBeakOpen()) {
+    if (tower.isClawOpen()) {
       wristStop();
       return;
     }
