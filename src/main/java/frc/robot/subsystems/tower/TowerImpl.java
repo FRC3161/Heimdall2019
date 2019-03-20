@@ -12,6 +12,7 @@ import ca.team3161.lib.robot.LifecycleEvent;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class TowerImpl implements Tower {
 
@@ -32,6 +33,7 @@ public class TowerImpl implements Tower {
     private final SpeedController intake;
     private final SpeedController wrist;
     private final GamePieceWatcher gamePieceWatcher;
+    private final DigitalInput limitSwitchWrist;
     private Position position;
 
     public TowerImpl() {
@@ -41,6 +43,7 @@ public class TowerImpl implements Tower {
         this.closeBeak = new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID);
         this.intake = new VictorSP(RobotMap.TOWER_ROLLER_INTAKE);
         this.wrist = new  VictorSP(RobotMap.TOWER_ROLLER_WRIST);
+        this.limitSwitchWrist = new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH);
         this.gamePieceWatcher = new GamePieceWatcher();
         setTowerPosition(Position.STARTING_CONFIG);
     }
@@ -98,6 +101,11 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setWristSpeed(double speed){
+        if (limitSwitchWrist.get()) {
+            if (speed > 0){
+                speed = 0;
+            }
+        }
         this.wrist.set(speed / 2);
     }
 
