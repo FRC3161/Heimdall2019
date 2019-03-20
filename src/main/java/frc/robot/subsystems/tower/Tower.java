@@ -6,11 +6,9 @@ public interface Tower extends LifecycleListener {
     enum Position {
         STARTING_CONFIG, //Elevator at bottom and arm in
         GROUND,
-        HATCH_1, // Hatch level 1, cargo level 1, loading
-        HATCH_2,
-        HATCH_3,
-        CARGO_2,
-        CARGO_3
+        LEVEL_1, // Hatch level 1, cargo level 1, loading
+        LEVEL_2,
+        LEVEL_3
     }
 
     enum Direction {

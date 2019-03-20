@@ -27,11 +27,9 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
-        positionTicks.put(Position.HATCH_1, 1);
-        positionTicks.put(Position.CARGO_2, 2);
-        positionTicks.put(Position.CARGO_3, 3);
-        positionTicks.put(Position.HATCH_2, 4);
-        positionTicks.put(Position.HATCH_3, -3000);
+        positionTicks.put(Position.LEVEL_1, 1);
+        positionTicks.put(Position.LEVEL_2, 4);
+        positionTicks.put(Position.LEVEL_3, -3000);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 

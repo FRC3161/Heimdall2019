@@ -72,7 +72,7 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         }
         this.targetPosition = position;
         int encoderTicks;
-        if (position.equals(Position.CARGO_3)|| position.equals(Position.HATCH_3)) {
+        if (position.equals(Position.LEVEL_3)) {
             encoderTicks = -40000;
         } else {
             encoderTicks = 0;

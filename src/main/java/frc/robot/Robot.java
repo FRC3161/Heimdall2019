@@ -177,7 +177,6 @@ public class Robot extends TitanBot {
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
     this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
     this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
-    this.operatorPad.bind(LogitechButton.X, PressType.PRESS, this::toggleCompressor);
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.PRESS, this::wristUp);
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.RELEASE, this::wristStop);
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.PRESS, this::wristDown);
@@ -192,7 +191,6 @@ public class Robot extends TitanBot {
         this.tower.setArmSpeed(x);
       }
     });
-    this.operatorPad.bind(LogitechButton.A, PressType.PRESS, this.tower::toggleClaw);
     this.underLay.set(Value.kOn);
 
     this.driverPad.enableBindings();
@@ -254,30 +252,27 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
-
-    if (operatorPad.getDpad() == 270) {
-      tower.setTowerPosition(Position.HATCH_2);
-    }
-
     if (operatorPad.getDpad() == 180){
       tower.setTowerPosition(Position.GROUND);
     }
 
-    if (operatorPad.getDpad() == 90) {
-      tower.setTowerPosition(Position.HATCH_1);
+    if (operatorPad.getButton(LogitechButton.A)) {
+      tower.setTowerPosition(Position.LEVEL_1);
+    }
+    if (operatorPad.getButton(LogitechButton.X)) {
+      tower.setTowerPosition(Position.LEVEL_2);
     }
 
-    if (operatorPad.getDpad() == 315) {
-      tower.setTowerPosition(Position.CARGO_2);
+    if (operatorPad.getButton(LogitechButton.Y)) {
+      tower.setTowerPosition(Position.LEVEL_3);
     }
-
-    if (operatorPad.getDpad() == 0) {
-      tower.setTowerPosition(Position.HATCH_3);
-    }
-
-    if (operatorPad.getDpad() == 45) {
-      tower.setTowerPosition(Position.CARGO_3);
-    }
+    if (operatorPad.getDpad() == 0){
+      tower.setTowerPosition(Position.GROUND);
+    } 
+    if (operatorPad.getDpad() == 180){
+      toggleCompressor();
+    } 
+    
 
     //TODO hatch, rollers
     if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER))&& (!operatorPad.getButton(LogitechButton.RIGHT_TRIGGER))) {
