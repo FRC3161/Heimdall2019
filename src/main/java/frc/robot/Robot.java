@@ -310,7 +310,7 @@ public class Robot extends TitanBot {
       wristStop();
       return;
     }
-    this.tower.setWristSpeed(0.5);
+    this.tower.setWristSpeed(1);
   }
 
   private void wristDown() {
@@ -318,7 +318,7 @@ public class Robot extends TitanBot {
       wristStop();
       return;
     }
-    this.tower.setWristSpeed(-0.5);
+    this.tower.setWristSpeed(-1);
   }
 
   private void wristStop() {

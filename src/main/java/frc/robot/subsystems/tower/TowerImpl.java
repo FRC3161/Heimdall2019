@@ -114,7 +114,7 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setWristSpeed(double speed){
-        this.wrist.set(speed);
+        this.wrist.set(speed / 2);
     }
 
     @Override
