@@ -25,6 +25,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
     static {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
+        positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
         positionTicks.put(Position.LEVEL_1, 2);
         positionTicks.put(Position.LEVEL_2, 3);
