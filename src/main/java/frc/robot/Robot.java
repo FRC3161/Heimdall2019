@@ -304,9 +304,15 @@ public class Robot extends TitanBot {
     this.compressor.setClosedLoopControl(!this.compressor.getClosedLoopControl());
   }
   private void wristUp(){
+    if(driverPad.getButton(LogitechButton.B)){
+      return;
+    }
     this.tower.setWristSpeed(0.5);
   }
   private void wristDown(){
+    if(driverPad.getButton(LogitechButton.B)){
+      return;
+    }
     this.tower.setWristSpeed(-0.5);
   }
 
