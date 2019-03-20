@@ -172,12 +172,12 @@ public class Robot extends TitanBot {
   @Override
   public void teleopSetup() {
     this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
-    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
-    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
-    this.operatorPad.bind(LogitechButton.X, PressType.PRESS, this::toggleCompressor);
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
+    this.operatorPad.bind(LogitechButton.B, PressType.PRESS, () -> this.tower.setClawOpen(false));
+    this.operatorPad.bind(LogitechButton.B, PressType.RELEASE,() -> this.tower.setClawOpen(true));
+    this.operatorPad.bind(LogitechButton.X, PressType.PRESS, this::toggleCompressor);
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.PRESS, this::wristUp);
     this.operatorPad.bind(LogitechButton.RIGHT_BUMPER, PressType.RELEASE, this::wristStop);
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.PRESS, this::wristDown);
