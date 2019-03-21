@@ -210,6 +210,7 @@ public class Robot extends TitanBot {
     SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
     SmartDashboard.putBoolean("are colsons down", this.drive.getCenterWheelsDeployed());
     SmartDashboard.putBoolean("is the compressor on", this.compressor.getClosedLoopControl());
+    SmartDashboard.putNumber("Dpad angle", operatorPad.getDpad());
     tower.putEncoderTicks();
     this.drive.drive(
       this.driverPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y),
