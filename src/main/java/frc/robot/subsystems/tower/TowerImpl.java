@@ -46,6 +46,7 @@ public class TowerImpl implements Tower {
         this.limitSwitchWrist = new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH);
         this.gamePieceWatcher = new GamePieceWatcher();
         setTowerPosition(Position.STARTING_CONFIG);
+        wrist.setInverted(false);
     }
 
     @Override
