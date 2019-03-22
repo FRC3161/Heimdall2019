@@ -104,7 +104,7 @@ public class TowerImpl implements Tower {
     @Override
     public void setWristSpeed(double speed){
         if (speed == 0){
-            speed = -0.1;
+            speed = 0.08;
         }
         // if (this.arm.returnEncoderTicks() >= 0){
         //    if (speed < 0){
