@@ -59,7 +59,13 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         // negative drives the arm *up*
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
 
-        this.tuner = new WPISmartPIDTuner("Arm PID", pid, kP, kI, kD);
+        this.tuner = new WPISmartPIDTuner.Builder()
+            .kP(kP)
+            .kI(kI)
+            .kD(kD)
+            .absoluteTolerance(5)
+            .outputRange(maxOutputDown, maxOutputUp)
+            .build(pid, "Arm PID");
     }
 
     @Override
