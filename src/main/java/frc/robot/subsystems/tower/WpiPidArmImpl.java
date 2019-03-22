@@ -47,10 +47,13 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         this.controller = talon;
         this.source = new InvertiblePIDSource<PIDSource>(new TalonPIDSource(talon), PIDSource::pidGet);
 
-        final double kP = 0.05;
+        final double kP = 0.02;
         final double kI = 0;
         final double kD = 0;
+        final double maxOutput = 0.5;
         this.pid = new PIDController(kP, kI, kD, source, this);
+        this.pid.setAbsoluteTolerance(5);
+        this.pid.setOutputRange(-maxOutput, maxOutput);
     }
 
     @Override
@@ -65,6 +68,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         }
         SmartDashboard.putNumber("encoder tick target arm", encoderTicks);
         this.pid.setSetpoint(encoderTicks);
+        this.pid.setEnabled(true);
         SmartDashboard.putString("arm Position", position.toString());
     }
 
@@ -76,6 +80,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     @Override
     public void setSpeed(double speed) {
         this.manual = true;
+        this.pid.setEnabled(false);
         this.controller.set(speed);
     }
 
