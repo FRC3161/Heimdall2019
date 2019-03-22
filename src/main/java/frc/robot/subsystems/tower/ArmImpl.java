@@ -26,10 +26,10 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, 1);
-        positionTicks.put(Position.LEVEL_1, 2);
-        positionTicks.put(Position.LEVEL_2, 3);
-        positionTicks.put(Position.LEVEL_3, -3000);
+        positionTicks.put(Position.GROUND, -1);
+        positionTicks.put(Position.LEVEL_1, -35 );
+        positionTicks.put(Position.LEVEL_2, -153);
+        positionTicks.put(Position.LEVEL_3, 6);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
 
@@ -50,7 +50,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
         kPIDLoopIdx = 0;
         //touch kp with care dont increase greatly rather not move at all then go ape shit
-        kGains = new Gains(0.05, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
+        kGains = new Gains(0.08, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
         kTimeoutMs = 30;
         absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
@@ -120,7 +120,6 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void task() {
-        SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
     }
 
     @Override
