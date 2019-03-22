@@ -11,6 +11,7 @@ import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 import ca.team3161.lib.utils.Utils;
+import ca.team3161.lib.utils.WPISmartPIDTuner;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -37,6 +38,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     private final SpeedController controller;
     private final PIDController pid;
     private final TalonPIDSource source;
+    private final WPISmartPIDTuner tuner;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
@@ -55,6 +57,8 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(5);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
+
+        this.tuner = new WPISmartPIDTuner("Arm PID", pid, kP, kI, kD);
     }
 
     @Override
@@ -96,6 +100,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        this.tuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
         }
