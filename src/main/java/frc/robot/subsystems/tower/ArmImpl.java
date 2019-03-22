@@ -28,8 +28,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         // TODO placeholder encoder tick values
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, -1);
-        positionTicks.put(Position.LEVEL_1, 0 );
-        positionTicks.put(Position.LEVEL_2, 5);
+        positionTicks.put(Position.LEVEL_1, -35 );
+        positionTicks.put(Position.LEVEL_2, -153);
         positionTicks.put(Position.LEVEL_3, 6);
         POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
     }
@@ -38,7 +38,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
     private Position targetPosition = Position.STARTING_CONFIG;
 
     ArmImpl(int talonPort) {
-        super(20, TimeUnit.MICROSECONDS);
+        super(50, TimeUnit.MILLISECONDS);
         this.controller = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
 
         //Arm PID
@@ -51,11 +51,11 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
         kPIDLoopIdx = 0;
         //touch kp with care dont increase greatly rather not move at all then go ape shit
-        kGains = new Gains(0.08, 0.0, 0.0, 0.0, 0, 0.45); //TODO Placeholder values
+        kGains = new Gains(0.16, 0.0, 0.0, 0.0, 0, 1); //TODO Placeholder values
         kTimeoutMs = 30;
-        absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
+        // absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
         kMotorInvert = false;
-        kSensorPhase = true;
+        // kSensorPhase = true;
 
         //Set PID values on Talon
         controller.config_kF(kPIDLoopIdx, kGains.kF);
@@ -63,12 +63,15 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         controller.config_kI(kPIDLoopIdx, kGains.kI);
         controller.config_kD(kPIDLoopIdx, kGains.kD);
 
-        absolutePosition &= 0xFFF;
-        if (kSensorPhase) {absolutePosition *= -1;}
-        if (kMotorInvert) {absolutePosition *= -1;}
+        // absolutePosition &= 0xFFF;
+        // if (kSensorPhase) {absolutePosition *= -1;}
+        // if (kMotorInvert) {absolutePosition *= -1;}
 
         controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-        controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+        // controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+        //controller.setSelectedSensorPosition(0, 0, 0);
+        controller.setSensorPhase(true);
+        controller.configAllowableClosedloopError(kPIDLoopIdx, 5);
 
         //Speed Limiting
         controller.configPeakOutputForward(kGains.kPeakOutput);
@@ -86,7 +89,10 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
         } else {
             encoderTicks = POSITION_TICKS.get(position);
         }
+        SmartDashboard.putNumber("encoder tick target arm",encoderTicks);
+        this.controller.setIntegralAccumulator(0);
         this.controller.set(ControlMode.Position, encoderTicks);
+        SmartDashboard.putString("arm Position", position.toString());
     }
 
     @Override
@@ -121,6 +127,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void task() {
+        SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
     }
 
     @Override
