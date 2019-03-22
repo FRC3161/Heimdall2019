@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.drivetrain.Drive;
 import frc.robot.subsystems.drivetrain.DriveImpl;
@@ -111,8 +113,10 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.driverPad);
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
-    CameraServer.getInstance().startAutomaticCapture();
-    
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(160, 120);
+    camera.setFPS(24);
+
     this.tower.setBeakOpen(true);
   }
 
@@ -262,7 +266,7 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getDpad() == 0){
       toggleCompressor();
-    } 
+    }
 
     if (operatorPad.getButton(LogitechButton.A)) {
       tower.setTowerPosition(Position.LEVEL_1);
