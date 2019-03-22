@@ -191,12 +191,12 @@ public class Robot extends TitanBot {
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.PRESS, this::wristDown);
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.RELEASE, this::wristStop);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x-> {
-      if (x != 0) {
+      if (x != 0 && operatorPad.getDpad() == 270) {
         this.tower.setElevatorSpeed(x);
       }
     });
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
-      if (x!= 0) {
+      if (x!= 0 && operatorPad.getDpad() == 270) {
         this.tower.setArmSpeed(x);
       }
     });
