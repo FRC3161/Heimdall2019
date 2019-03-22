@@ -2,6 +2,8 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import ca.team3161.lib.utils.Utils;
+
 /**
  * OmniPod without PID
  */
@@ -13,7 +15,7 @@ public class RawOmniPodImpl implements OmniPod {
     private boolean scaledDown = false;
 
     public RawOmniPodImpl(int talonCANPort) {
-        this.talon = new WPI_TalonSRX(talonCANPort);
+        this.talon = Utils.safeInit("WheelPod port #" + talonCANPort, () -> new WPI_TalonSRX(talonCANPort));
     }
 
     @Override

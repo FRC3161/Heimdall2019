@@ -8,6 +8,7 @@
 package frc.robot;
 
 import ca.team3161.lib.robot.TitanBot;
+import ca.team3161.lib.utils.Utils;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
@@ -85,8 +86,8 @@ public class Robot extends TitanBot {
    */
   @Override
   public void robotSetup() {
-    this.driverPad = new LogitechDualAction(0);
-    this.operatorPad = new LogitechDualAction(1);
+    this.driverPad = Utils.safeInit("driverPad", () -> new LogitechDualAction(0));
+    this.operatorPad = Utils.safeInit("operatorPad", () -> new LogitechDualAction(1));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y,
         new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X,
@@ -97,11 +98,11 @@ public class Robot extends TitanBot {
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.operatorPad.setMode(LogitechControl.RIGHT_STICK, LogitechAxis.Y,
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
-    this.compressor = new Compressor();
+    this.compressor = Utils.safeInit("compressor", () -> new Compressor());
     this.compressor.setClosedLoopControl(true);
-    this.drive = new ManualTurningDriveImpl();
-    this.tower = new TowerImpl();
-    this.underLay = new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward);
+    this.drive = Utils.safeInit("drive", () -> new ManualTurningDriveImpl());
+    this.tower = Utils.safeInit("tower", () -> new TowerImpl());
+    this.underLay = Utils.safeInit("underLay", () -> new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward));
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     m_chooser.addOption("System Check Auto", kSystemCheckAuto);

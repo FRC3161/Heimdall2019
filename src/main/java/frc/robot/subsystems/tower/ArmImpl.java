@@ -8,6 +8,7 @@ import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
+import ca.team3161.lib.utils.Utils;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -38,7 +39,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     ArmImpl(int talonPort) {
         super(20, TimeUnit.MICROSECONDS);
-        this.controller = new WPI_TalonSRX(talonPort);
+        this.controller = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
 
         //Arm PID
         final int kPIDLoopIdx;

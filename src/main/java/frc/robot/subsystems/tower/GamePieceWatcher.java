@@ -6,6 +6,7 @@ import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.LifecycleListener;
 import ca.team3161.lib.robot.sensors.RightSight;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
+import ca.team3161.lib.utils.Utils;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -17,8 +18,8 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
 
     public GamePieceWatcher() {
         super(50, TimeUnit.MILLISECONDS);
-        this.relay = new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward);
-        this.objectSensor = new RightSight(RobotMap.OBJECT_SENSOR);
+        this.relay = Utils.safeInit("Watcher relay", () -> new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward));
+        this.objectSensor = Utils.safeInit("Watcher RightSight", () -> new RightSight(RobotMap.OBJECT_SENSOR));
         this.objectSensor.setInverted(true);
     }
 

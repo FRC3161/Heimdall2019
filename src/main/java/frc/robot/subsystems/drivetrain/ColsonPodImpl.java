@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+import ca.team3161.lib.utils.Utils;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -10,7 +11,7 @@ public class ColsonPodImpl implements ColsonPod {
     private final Solenoid solenoid;
 
     ColsonPodImpl(int controllerPort, Solenoid solenoid) {
-        this.controller = new VictorSP(controllerPort);
+        this.controller = Utils.safeInit("Colson pod port #" + controllerPort, () -> new VictorSP(controllerPort));
         this.solenoid = solenoid;
     }
 
