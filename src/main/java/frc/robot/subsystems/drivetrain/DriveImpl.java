@@ -81,7 +81,7 @@ public class DriveImpl implements Drive {
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
         if (this.speedLimited) {
-            final double limit = 0.65;
+            final double limit = 0.30;
             forwardRate = MathUtils.absClamp(forwardRate, limit);
             strafeRate = MathUtils.absClamp(strafeRate, limit);
             turnRate = MathUtils.absClamp(turnRate, limit);
@@ -133,7 +133,7 @@ public class DriveImpl implements Drive {
     @Override
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
-        this.speedLimited = fieldCentric;
+        this.speedLimited = !fieldCentric;
     }
 
     @Override

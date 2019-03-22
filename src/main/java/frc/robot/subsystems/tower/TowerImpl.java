@@ -112,7 +112,7 @@ public class TowerImpl implements Tower {
         //     return;
         //    }
         // }
-        this.wrist.set(speed / 2);
+        this.wrist.set(speed / -2);
     }
 
     @Override
