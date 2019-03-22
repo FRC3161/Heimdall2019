@@ -38,6 +38,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     private final PIDController pid;
     private final PIDSource source;
     private volatile double pidSpeed;
+    private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
 
     WpiPidArmImpl(int talonPort) {
@@ -54,6 +55,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void setPosition(Position position) {
+        this.manual = false;
         this.targetPosition = position;
         int encoderTicks;
         if (!POSITION_TICKS.containsKey(this.targetPosition)) {
@@ -73,6 +75,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void setSpeed(double speed) {
+        this.manual = true;
         this.controller.set(speed);
     }
 
@@ -98,9 +101,12 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void task() {
-        this.controller.set(pidSpeed);
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("arm speed", this.controller.get());
+        if (this.manual) {
+            return;
+        }
+        this.controller.set(pidSpeed);
     }
 
     @Override
