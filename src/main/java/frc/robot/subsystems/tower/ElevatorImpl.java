@@ -45,28 +45,28 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
         // int absolutePosition = controllerMaster.getSensorCollection().getPulseWidthPosition();
 
         //Set PID values on Talon
-        controllerMaster.config_kF(kPIDLoopIdx, kGains.kF);
-        controllerMaster.config_kP(kPIDLoopIdx, kGains.kP);
-        controllerMaster.config_kI(kPIDLoopIdx, kGains.kI);
-        controllerMaster.config_kD(kPIDLoopIdx, kGains.kD);
-        controllerMaster.setInverted(false);
-        controllerMaster.setSensorPhase(false);
-        controllerMaster.configAllowableClosedloopError(kPIDLoopIdx, 150);
+        // controllerMaster.config_kF(kPIDLoopIdx, kGains.kF);
+        // controllerMaster.config_kP(kPIDLoopIdx, kGains.kP);
+        // controllerMaster.config_kI(kPIDLoopIdx, kGains.kI);
+        // controllerMaster.config_kD(kPIDLoopIdx, kGains.kD);
+        // controllerMaster.setInverted(false);
+        // controllerMaster.setSensorPhase(false);
+        // controllerMaster.configAllowableClosedloopError(kPIDLoopIdx, 150);
 
-        // absolutePosition &= 0xFFF;
-        // if (kSensorPhase) {
-        //     absolutePosition *= -1;
-        // }
-        // if (kMotorInvert) {
-        //     absolutePosition *= -1;
-        // }
+        // // absolutePosition &= 0xFFF;
+        // // if (kSensorPhase) {
+        // //     absolutePosition *= -1;
+        // // }
+        // // if (kMotorInvert) {
+        // //     absolutePosition *= -1;
+        // // }
 
-        controllerMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-        controllerMaster.setSelectedSensorPosition(0, 0, 0);
+        // controllerMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+        // controllerMaster.setSelectedSensorPosition(0, 0, 0);
 
-        //Speed Limiting
-        controllerMaster.configPeakOutputForward(kGains.kPeakOutput);
-        controllerMaster.configPeakOutputReverse(-kGains.kPeakOutput);
+        // //Speed Limiting
+        // controllerMaster.configPeakOutputForward(kGains.kPeakOutput);
+        // controllerMaster.configPeakOutputReverse(-kGains.kPeakOutput);
         
     }
 
@@ -84,8 +84,8 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
             encoderTicks = 0;
         }
 
-        this.controllerMaster.setIntegralAccumulator(0);
-        this.controllerMaster.set(ControlMode.Position, encoderTicks);
+        // this.controllerMaster.setIntegralAccumulator(0);
+        // this.controllerMaster.set(ControlMode.Position, encoderTicks);
     }
 
     @Override
@@ -104,13 +104,13 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
                  speed = 0;
             }
         }
-        controllerMaster.set(ControlMode.PercentOutput, speed);
+        // controllerMaster.set(ControlMode.PercentOutput, speed);
     }
 
     @Override
     public void reset() {
-        controllerMaster.setSelectedSensorPosition(0);
-        controllerMaster.setIntegralAccumulator(0);
+        // controllerMaster.setSelectedSensorPosition(0);
+        // controllerMaster.setIntegralAccumulator(0);
     }
 
     @Override
