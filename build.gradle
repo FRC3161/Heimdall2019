@@ -43,6 +43,9 @@ repositories {
     maven {
         url "http://devsite.ctr-electronics.com/maven/release/"
     }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -50,11 +53,11 @@ repositories {
 dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
+    compile "com.github.FRC3161:Yggdrasil:v0.19.2"
     compile "com.ctre.phoenix:api-java:5.14.1+"
     compile "com.ctre.phoenix:wpiapi-java:5.14.1+"
     //compile "com.kauailabs.navx.frc:navx-java:3.1.344+"
     compile "org.apache.commons:commons-collections4:4.3"
-    compile fileTree(dir:'libs', include:'*.jar')
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
