@@ -112,6 +112,8 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
     CameraServer.getInstance().startAutomaticCapture();
+    
+    this.tower.setBeakOpen(true);
   }
 
   /**
@@ -152,6 +154,7 @@ public class Robot extends TitanBot {
     this.teleopSetup();
     driverPad.enableBindings();
     operatorPad.enableBindings();
+    this.tower.setBeakOpen(true);
   }
 
   /**
@@ -299,7 +302,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristUp() {
-    if (tower.isBeakOpen()) {
+    if (!tower.isBeakOpen()) {
       wristStop();
       return;
     }
@@ -307,7 +310,7 @@ public class Robot extends TitanBot {
   }
 
   private void wristDown() {
-    if (tower.isBeakOpen()) {
+    if (!tower.isBeakOpen()) {
       wristStop();
       return;
     }
