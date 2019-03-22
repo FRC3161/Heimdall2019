@@ -120,6 +120,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void task() {
+        SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
     }
 
     @Override

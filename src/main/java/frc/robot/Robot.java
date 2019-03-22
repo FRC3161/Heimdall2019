@@ -202,11 +202,6 @@ public class Robot extends TitanBot {
    */
   @Override
   public void teleopRoutine() {
-    SmartDashboard.putNumber("operator pad left stick Y", operatorPad.getValue(LogitechControl.LEFT_STICK, LogitechAxis.Y));
-    SmartDashboard.putNumber("operator pad right stick Y", operatorPad.getValue(LogitechControl.RIGHT_STICK, LogitechAxis.Y));
-    SmartDashboard.putBoolean("operator pad A button", operatorPad.getButton(LogitechButton.A));
-    SmartDashboard.putBoolean("operator pad B button", operatorPad.getButton(LogitechButton.B));
-    SmartDashboard.putBoolean("operator pad right trigger", operatorPad.getButton(LogitechButton.RIGHT_TRIGGER));
     SmartDashboard.putBoolean("Colson Deployment", drive.getCenterWheelsDeployed());
     SmartDashboard.putBoolean("is the compressor on", this.compressor.getClosedLoopControl());
     SmartDashboard.putNumber("Dpad angle", operatorPad.getDpad());
