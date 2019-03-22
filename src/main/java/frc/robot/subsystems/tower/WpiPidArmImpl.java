@@ -29,6 +29,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     private final WPISmartPIDTuner pidTuner;
     private final SmartDashboardTuner levelOneTuner;
     private final SmartDashboardTuner levelTwoTuner;
+    private final SmartDashboardTuner bayTuner;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
@@ -41,12 +42,14 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         talon.setInverted(true);
         this.source = new TalonPIDSource(talon);
 
-        final int levelOneTicks = -42;
+        final int levelOneTicks = -55;
         final int levelTwoTicks = -160;
+        final int bayTicks = -110;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, -1);
         positionTicks.put(Position.LEVEL_1, levelOneTicks);
+        positionTicks.put(Position.BAY, bayTicks);
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
         positionTicks.put(Position.LEVEL_3, 6);
 
@@ -71,6 +74,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
         this.levelOneTuner = new SmartDashboardTuner("Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
         this.levelTwoTuner = new SmartDashboardTuner("Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
+        this.bayTuner = new SmartDashboardTuner("bay Ticks", levelTwoTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
     }
 
     @Override

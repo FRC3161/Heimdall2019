@@ -7,6 +7,7 @@ public interface Tower extends LifecycleListener {
         STARTING_CONFIG, //Elevator at bottom and arm in
         GROUND,
         LEVEL_1, // Hatch level 1, cargo level 1, loading
+        BAY,
         LEVEL_2,
         LEVEL_3
     }

@@ -179,8 +179,8 @@ public class Robot extends TitanBot {
    */
   @Override
   public void teleopSetup() {
-    this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
-    this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.RELEASE, this.drive::toggleCenterWheelsDeployed);
+    // this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.PRESS, this.drive::toggleCenterWheelsDeployed);
+    // this.driverPad.bind(LogitechButton.RIGHT_TRIGGER, PressType.RELEASE, this.drive::toggleCenterWheelsDeployed);
     this.driverPad.bind(LogitechButton.RIGHT_BUMPER, x -> this.drive.setFieldCentric(!x));
     this.driverPad.bind(LogitechButton.START, this.drive::resetGyro);
     this.operatorPad.bind(LogitechButton.START, this.tower::reset);
@@ -264,6 +264,9 @@ public class Robot extends TitanBot {
     if (operatorPad.getDpad() == 180){
       tower.setTowerPosition(Position.GROUND);
     }
+    if (operatorPad.getDpad() == 90){
+      tower.setTowerPosition(Position.LEVEL_3);
+    }
     if (operatorPad.getDpad() == 0){
       toggleCompressor();
     }
@@ -272,11 +275,11 @@ public class Robot extends TitanBot {
       tower.setTowerPosition(Position.LEVEL_1);
     }
     if (operatorPad.getButton(LogitechButton.X)) {
-      tower.setTowerPosition(Position.LEVEL_2);
+      tower.setTowerPosition(Position.BAY);
     }
 
     if (operatorPad.getButton(LogitechButton.Y)) {
-      tower.setTowerPosition(Position.LEVEL_3);
+      tower.setTowerPosition(Position.LEVEL_2);
     }
 
     //TODO hatch, rollers
