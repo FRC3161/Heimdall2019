@@ -109,6 +109,9 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("arm speed", this.controller.get());
         if (this.manual) {
+            if (controller.get() < 0.1) {
+                controller.set(0);
+            }
             return;
         }
         this.controller.set(pidSpeed);
