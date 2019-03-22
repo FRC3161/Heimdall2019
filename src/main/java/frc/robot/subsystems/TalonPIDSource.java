@@ -45,4 +45,8 @@ public class TalonPIDSource implements PIDSource {
         }
         return producer.apply(this.sensorIndex);
     }
+
+    public void reset() {
+        this.talon.setSelectedSensorPosition(0);
+    }
 }

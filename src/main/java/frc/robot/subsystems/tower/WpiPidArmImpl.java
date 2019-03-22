@@ -36,7 +36,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     private final SpeedController controller;
     private final PIDController pid;
-    private final PIDSource source;
+    private final TalonPIDSource source;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
@@ -45,7 +45,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         super(50, TimeUnit.MILLISECONDS);
         WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
         this.controller = talon;
-        this.source = new InvertiblePIDSource<PIDSource>(new TalonPIDSource(talon), PIDSource::pidGet);
+        this.source = new TalonPIDSource(talon);
 
         final double kP = 0.02;
         final double kI = 0;
@@ -87,6 +87,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     @Override
     public void reset() {
         this.pid.reset();
+        this.source.reset();
     }
 
     @Override
