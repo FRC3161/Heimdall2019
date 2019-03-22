@@ -53,7 +53,7 @@ repositories {
 dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
-    compile "com.github.FRC3161:Yggdrasil:v0.19.2"
+    compile "com.github.frc3161:yggdrasil:v0.19.3"
     compile "com.ctre.phoenix:api-java:5.14.1+"
     compile "com.ctre.phoenix:wpiapi-java:5.14.1+"
     //compile "com.kauailabs.navx.frc:navx-java:3.1.344+"
