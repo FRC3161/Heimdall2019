@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import com.kauailabs.navx.frc.AHRS;
 
 import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
+import ca.team3161.lib.utils.Utils;
 import frc.robot.InvertiblePIDSource;
 import frc.robot.MathUtils;
 import frc.robot.RobotMap;
@@ -41,18 +42,18 @@ public class DriveImpl implements Drive {
     protected float kToleranceDegrees = 2;
 
     public DriveImpl() {
-        this.frontLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON);
+        this.frontLeftDrive = Utils.safeInit("frontLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
         frontLeftDrive.setInverted(true);
-        this.frontRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON);
+        this.frontRightDrive = Utils.safeInit("frontRightDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON));
         frontRightDrive.setInverted(true);
-        this.backLeftDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON);
+        this.backLeftDrive = Utils.safeInit("backLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON));
         backLeftDrive.setInverted(true);
-        this.backRightDrive = new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON);
+        this.backRightDrive = Utils.safeInit("backRightDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON));
         backRightDrive.setInverted(true);
 
-        Solenoid colsonValve = new Solenoid(RobotMap.COLSON_SOLENOID);
-        this.leftColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve);
-        this.rightColson = new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve);
+        Solenoid colsonValve = Utils.safeInit("colsonValve", () -> new Solenoid(RobotMap.COLSON_SOLENOID));
+        this.leftColson = Utils.safeInit("leftColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve));
+        this.rightColson = Utils.safeInit("rightColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve));
 
         this.holoDrive = new MecanumDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
         this.tankDrive = new DifferentialDrive(

@@ -9,6 +9,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
+import ca.team3161.lib.utils.Utils;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -37,14 +38,14 @@ public class TowerImpl implements Tower {
     private Position position;
 
     public TowerImpl() {
-        this.elevator = new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER, RobotMap.TOP_LIMIT_SWITCH,RobotMap.BOTTOM_LIMIT_SWITCH);
-        this.arm = new ArmImpl(RobotMap.ARM_CONTROLLER);
-        this.openBeak = new Solenoid(RobotMap.BEAK_OPEN_SOLENOID); 
-        this.closeBeak = new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID);
-        this.intake = new VictorSP(RobotMap.TOWER_ROLLER_INTAKE);
-        this.wrist = new  VictorSP(RobotMap.TOWER_ROLLER_WRIST);
-        this.limitSwitchWrist = new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH);
-        this.gamePieceWatcher = new GamePieceWatcher();
+        this.elevator = Utils.safeInit("elevator", () -> new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER, RobotMap.TOP_LIMIT_SWITCH,RobotMap.BOTTOM_LIMIT_SWITCH));
+        this.arm = Utils.safeInit("arm", () -> new ArmImpl(RobotMap.ARM_CONTROLLER));
+        this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID)); 
+        this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));
+        this.intake = Utils.safeInit("intake", () -> new VictorSP(RobotMap.TOWER_ROLLER_INTAKE));
+        this.wrist = Utils.safeInit("wrist", () -> new  VictorSP(RobotMap.TOWER_ROLLER_WRIST));
+        this.limitSwitchWrist = Utils.safeInit("limitSwitchWrist", () -> new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH));
+        this.gamePieceWatcher = Utils.safeInit("gamePieceWatcher", () -> new GamePieceWatcher());
         setTowerPosition(Position.STARTING_CONFIG);
         wrist.setInverted(false);
     }

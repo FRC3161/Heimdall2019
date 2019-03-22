@@ -6,6 +6,7 @@ import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
+import ca.team3161.lib.utils.Utils;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
@@ -31,10 +32,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     ElevatorImpl(int masterPort, int slavePort, int topSwitchPort,int bottomSwitchPort) {
         super(50, TimeUnit.MILLISECONDS);
-        this.controllerMaster = new WPI_TalonSRX(masterPort);
-        this.controllerSlave = new WPI_TalonSRX(slavePort);
-        this.limitSwitchBottom = new DigitalInput(bottomSwitchPort);
-        this.limitSwitchTop = new DigitalInput(topSwitchPort);
+        this.controllerMaster = Utils.safeInit("elevator controllerMaster", () -> new WPI_TalonSRX(masterPort));
+        this.controllerSlave = Utils.safeInit("elevator controllerSlave", () -> new WPI_TalonSRX(slavePort));
+        this.limitSwitchBottom = Utils.safeInit("elevator limitSwitchBottom", () -> new DigitalInput(bottomSwitchPort));
+        this.limitSwitchTop = Utils.safeInit("elevator limitSwitchTop", () -> new DigitalInput(topSwitchPort));
         this.controllerSlave.follow(controllerMaster);
         //Arm PID
         final Gains kGains = new Gains(0.001, 0.001, 0.001, 0.0, 0, 1); //TODO Placeholder values
