@@ -96,7 +96,9 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     }
 
     @Override
-    public void defineResources() { }
+    public void defineResources() {
+        require(pid);
+    }
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
