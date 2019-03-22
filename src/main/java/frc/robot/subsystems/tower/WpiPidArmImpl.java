@@ -52,10 +52,11 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kP = 0.02;
         final double kI = 0;
         final double kD = 0.01;
-        final double maxOutputUp = 0.58;
-        final double maxOutputDown = -0.2;
+        final double maxOutputUp = 0.3;
+        final double maxOutputDown = -0.65;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(5);
+        // negative drives the arm *up*
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
 
         this.tuner = new WPISmartPIDTuner("Arm PID", pid, kP, kI, kD);
@@ -118,10 +119,12 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("arm speed", this.controller.get());
         if (this.manual) {
-            if (controller.get() < 0.1) {
-                controller.set(0);
+            if (Math.abs(controller.get()) < 0.1) {
+                // this.pid.setSetpoint(this.returnEncoderTicks());
+                // this.manual = false;
+                this.controller.set(0);
+                return;
             }
-            return;
         }
         this.controller.set(pidSpeed);
     }
