@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Relay;
 
 public class TowerImpl implements Tower {
 
@@ -34,18 +35,28 @@ public class TowerImpl implements Tower {
     private final SpeedController intake;
     private final SpeedController wrist;
     private final GamePieceWatcher gamePieceWatcher;
+    private final GameTimerWatcher gameTimerWatcher;
     private final DigitalInput limitSwitchWrist;
+    private final Relay relay;
     private Position position;
 
     public TowerImpl() {
         this.elevator = Utils.safeInit("elevator", () -> new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER, RobotMap.TOP_LIMIT_SWITCH,RobotMap.BOTTOM_LIMIT_SWITCH));
+
         this.arm = Utils.safeInit("arm", () -> new WpiPidArmImpl(RobotMap.ARM_CONTROLLER));
+
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));
+
         this.intake = Utils.safeInit("intake", () -> new VictorSP(RobotMap.TOWER_ROLLER_INTAKE));
+
         this.wrist = Utils.safeInit("wrist", () -> new  VictorSP(RobotMap.TOWER_ROLLER_WRIST));
         this.limitSwitchWrist = Utils.safeInit("limitSwitchWrist", () -> new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH));
-        this.gamePieceWatcher = Utils.safeInit("gamePieceWatcher", () -> new GamePieceWatcher());
+
+        this.relay = Utils.safeInit("Watcher relay", () -> new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward));
+        this.gamePieceWatcher = Utils.safeInit("gamePieceWatcher", () -> new GamePieceWatcher(this.relay));
+        this.gameTimerWatcher = Utils.safeInit("gameTimerWatcher", () -> new GameTimerWatcher(this.relay));
+
         setTowerPosition(Position.STARTING_CONFIG);
         wrist.setInverted(false);
     }
@@ -117,10 +128,8 @@ public class TowerImpl implements Tower {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
-        if (current.equals(LifecycleEvent.ON_INIT)) {
-            this.gamePieceWatcher.start();
-        }
         this.gamePieceWatcher.lifecycleStatusChanged(previous, current);
+        this.gameTimerWatcher.lifecycleStatusChanged(previous, current);
         this.elevator.lifecycleStatusChanged(previous, current);
         this.arm.lifecycleStatusChanged(previous, current);
     }
