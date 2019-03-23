@@ -33,6 +33,8 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
+    private volatile double maxOutputUp;
+    private volatile double maxOutputDown;
 
     WpiPidArmImpl(int talonPort) {
         super(50, TimeUnit.MILLISECONDS);
@@ -56,8 +58,8 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kI = 0.0001;
         final double kD = 0.0285;
         final double ktolerance = 2;
-        final double maxOutputUp = 0.65;
-        final double maxOutputDown = -0.275;
+        maxOutputUp = 0.65;
+        maxOutputDown = -0.275;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
@@ -100,6 +102,11 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     public void setSpeed(double speed) {
         this.manual = true;
         this.pid.setEnabled(false);
+        if (speed < maxOutputDown) {
+            speed = maxOutputDown;
+        } else if (speed > maxOutputUp) {
+            speed = maxOutputUp;
+        }
         this.controller.set(speed);
     }
 
