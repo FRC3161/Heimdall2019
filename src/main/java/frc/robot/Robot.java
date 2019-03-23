@@ -14,6 +14,7 @@ import ca.team3161.lib.utils.controls.InvertedJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import ca.team3161.lib.utils.controls.Gamepad.PressType;
+import ca.team3161.lib.utils.controls.LogitechDualAction.DpadDirection;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
@@ -191,9 +192,9 @@ public class Robot extends TitanBot {
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.PRESS, this::wristDown);
     this.operatorPad.bind(LogitechButton.LEFT_BUMPER, PressType.RELEASE, this::wristStop);
     this.operatorPad.map(LogitechControl.RIGHT_STICK, LogitechAxis.Y, x-> {
-      if (x != 0) {
+      // if (x != 0) {
         this.tower.setElevatorSpeed(x);
-      }
+    // }
     });
     this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
       if (x!= 0) {
@@ -229,7 +230,7 @@ public class Robot extends TitanBot {
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
       faceTarget = 0.0;
-    }
+    } 
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
       faceTarget = 90.0;
@@ -261,13 +262,13 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
-    if (operatorPad.getDpad() == 180){
+    if (operatorPad.getDpadDirection().equals(DpadDirection.DOWN)){
       tower.setTowerPosition(Position.GROUND);
     }
-    if (operatorPad.getDpad() == 90){
+    if (operatorPad.getDpadDirection().equals(DpadDirection.RIGHT)){
       tower.setTowerPosition(Position.LEVEL_3);
     }
-    if (operatorPad.getDpad() == 0){
+    if (operatorPad.getDpadDirection().equals(DpadDirection.UP)){
       toggleCompressor();
     }
 

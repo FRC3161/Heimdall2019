@@ -72,17 +72,17 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void setPosition(Position position) {
-        if (Objects.equals(this.targetPosition, position)) {
-            // ignore repeat position requests
-            return;
-        }
-        this.targetPosition = position;
-        int encoderTicks;
-        if (position.equals(Position.LEVEL_3)) {
-            encoderTicks = -40000;
-        } else {
-            encoderTicks = 0;
-        }
+        // if (Objects.equals(this.targetPosition, position)) {
+        //     // ignore repeat position requests
+        //     return;
+        // }
+        // this.targetPosition = position;
+        // int encoderTicks;
+        // if (position.equals(Position.LEVEL_3)) {
+        //     encoderTicks = -40000;
+        // } else {
+        //     encoderTicks = 0;
+        // }
 
         // this.controllerMaster.setIntegralAccumulator(0);
         // this.controllerMaster.set(ControlMode.Position, encoderTicks);
@@ -95,16 +95,17 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void setSpeed(double speed) {
-         if (limitSwitchTop.get()) {
-             if (speed > 0){
-                 speed = 0;
-             }
-        }else if (limitSwitchBottom.get()) {
-            if (speed < 0){
-                 speed = 0;
-            }
-        }
-        // controllerMaster.set(ControlMode.PercentOutput, speed);
+        //  if (limitSwitchTop.get()) {
+        //      if (speed > 0){
+        //          speed = 0;
+        //      }
+        // }else if (limitSwitchBottom.get()) {
+        //     if (speed < 0){
+        //          speed = 0;
+        //     }
+        // }
+        
+         controllerMaster.set(ControlMode.PercentOutput, speed);
     }
 
     @Override

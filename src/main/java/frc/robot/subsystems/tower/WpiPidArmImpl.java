@@ -57,7 +57,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kD = 0.04;
         final double ktolerance = 2;
         final double maxOutputUp = 0.65;
-        final double maxOutputDown = -0.08;
+        final double maxOutputDown = -0.05;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);

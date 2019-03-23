@@ -23,7 +23,7 @@ public class TowerImpl implements Tower {
         // Direction to Roller PWM mapping
         rollerPwms.put(Direction.NONE, 0.);
         rollerPwms.put(Direction.IN, 0.7);
-        rollerPwms.put(Direction.OUT, -1.);
+        rollerPwms.put(Direction.OUT, -0.8);
         ROLLER_DIRECTIONS_PWM = UnmodifiableBidiMap.unmodifiableBidiMap(rollerPwms);
     }
 
