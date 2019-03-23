@@ -16,6 +16,7 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
 
     private final RightSight objectSensor;
     private final Relay relay;
+    private volatile boolean isTeleop;
 
     public GamePieceWatcher(Relay relay) {
         super(50, TimeUnit.MILLISECONDS);
@@ -31,7 +32,7 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
 
     @Override
     public void task() {
-        if (Timer.getMatchTime() < GameTimerWatcher.ACTIVE_REMAINING_TIME) {
+        if (isTeleop && Timer.getMatchTime() < GameTimerWatcher.ACTIVE_REMAINING_TIME) {
             cancel();
             return;
         }
@@ -44,7 +45,7 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
         }
     }
 
-    public boolean getObjectState() {
+    private boolean getObjectState() {
         if (this.objectSensor.get()) {
             return true;
         }
@@ -58,7 +59,11 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
         switch (current) {
             case ON_TEST:
             case ON_AUTO:
+                this.isTeleop = false;
+                this.start();
+                break;
             case ON_TELEOP:
+                this.isTeleop = true;
                 this.start();
                 break;
             default:
