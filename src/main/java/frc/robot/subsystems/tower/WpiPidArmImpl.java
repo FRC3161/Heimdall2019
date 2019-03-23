@@ -38,28 +38,28 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         super(50, TimeUnit.MILLISECONDS);
         WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
         this.controller = talon;
+        this.controller.setInverted(true);
         this.source = new TalonPIDSource(talon);
 
-        final int levelOneTicks = -55;
-        final int levelTwoTicks = -160;
-        final int bayTicks = -110;
+        final int levelOneTicks = 50;
+        final int levelTwoTicks = 153;
+        final int bayTicks = 110;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, -1);
+        positionTicks.put(Position.GROUND, 1);
         positionTicks.put(Position.LEVEL_1, levelOneTicks);
         positionTicks.put(Position.BAY, bayTicks);
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
         positionTicks.put(Position.LEVEL_3, 6);
 
-        final double kP = 0.025;
-        final double kI = 0.001;
-        final double kD = 0.01;
+        final double kP = 0.015;
+        final double kI = 0.0005;
+        final double kD = 0.04;
         final double ktolerance = 2;
-        final double maxOutputUp = 0.15;
-        final double maxOutputDown = -0.55;
+        final double maxOutputUp = 0.65;
+        final double maxOutputDown = -0.08;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
-        // negative drives the arm *up*
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
         this.pid.setName("arm pid");
         this.pidTuner = new WPISmartPIDTuner.Builder()
@@ -151,6 +151,6 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void pidWrite(double pid) {
-        this.pidSpeed = pid;
+        this.pidSpeed = -pid;
     }
 }
