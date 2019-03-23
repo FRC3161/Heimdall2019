@@ -38,8 +38,6 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         super(50, TimeUnit.MILLISECONDS);
         WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
         this.controller = talon;
-        talon.setSensorPhase(true);
-        talon.setInverted(true);
         this.source = new TalonPIDSource(talon);
 
         final int levelOneTicks = -55;
@@ -54,11 +52,11 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         positionTicks.put(Position.LEVEL_3, 6);
 
         final double kP = 0.025;
-        final double kI = 0;
+        final double kI = 0.001;
         final double kD = 0.01;
         final double ktolerance = 2;
         final double maxOutputUp = 0.15;
-        final double maxOutputDown = -0.82;
+        final double maxOutputDown = -0.55;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         // negative drives the arm *up*
@@ -74,7 +72,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
         this.levelOneTuner = new SmartDashboardTuner("Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
         this.levelTwoTuner = new SmartDashboardTuner("Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
-        this.bayTuner = new SmartDashboardTuner("bay Ticks", levelTwoTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
+        this.bayTuner = new SmartDashboardTuner("bay Ticks", bayTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
     }
 
     @Override
