@@ -43,7 +43,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
         final int levelOneTicks = 50;
         final int levelTwoTicks = 153;
-        final int bayTicks = 110;
+        final int bayTicks = 120;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
@@ -52,12 +52,12 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
         positionTicks.put(Position.LEVEL_3, 6);
 
-        final double kP = 0.015;
-        final double kI = 0.0005;
-        final double kD = 0.04;
+        final double kP = 0.0225;
+        final double kI = 0.0001;
+        final double kD = 0.0285;
         final double ktolerance = 2;
         final double maxOutputUp = 0.65;
-        final double maxOutputDown = -0.05;
+        final double maxOutputDown = -0.275;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
@@ -135,7 +135,8 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("arm speed", this.controller.get());
         if (this.manual) {
-            if (Math.abs(controller.get()) < 0.1) {
+            if (Math.abs(controller.get()) < 0.
+            1) {
                 // this.pid.setSetpoint(this.returnEncoderTicks());
                 // this.manual = false;
                 this.controller.set(0);

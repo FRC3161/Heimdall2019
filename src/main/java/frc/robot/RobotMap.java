@@ -24,8 +24,6 @@ public class RobotMap {
     public static final int UNDERGLOW_SPIKE = 1;
     // Solenoids (PCM)
     public static final int COLSON_SOLENOID = 0;
-    public static final int CLAW_OPEN_SOLENOID = 1;
-    public static final int CLAW_CLOSE_SOLENOID = 2;
     public static final int BEAK_OPEN_SOLENOID = 3;
     public static final int BEAK_CLOSE_SOLENOID = 4;
 
