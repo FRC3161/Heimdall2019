@@ -119,6 +119,7 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         this.pidTuner.lifecycleStatusChanged(previous, current);
         this.levelOneTuner.lifecycleStatusChanged(previous, current);
         this.levelTwoTuner.lifecycleStatusChanged(previous, current);
+        this.bayTuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
         }
