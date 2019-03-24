@@ -56,10 +56,11 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kP = 0.0225;
         final double kI = 0.0001;
         final double kD = 0.0285;
+        final double kF = 0;
         final double ktolerance = 2;
         maxOutputUp = 0.65;
         maxOutputDown = -0.275;
-        this.pid = new PIDController(kP, kI, kD, source, this);
+        this.pid = new AntiGravityPIDController(kP, kI, kD, kF, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
         this.pid.setName("arm pid");
@@ -67,6 +68,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
             .kP(kP)
             .kI(kI)
             .kD(kD)
+            .kF(kF)
             .absoluteTolerance(ktolerance)
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);
