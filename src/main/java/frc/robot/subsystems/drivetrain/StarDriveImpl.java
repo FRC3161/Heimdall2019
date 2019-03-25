@@ -16,7 +16,7 @@ import frc.robot.MathUtils;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveImpl implements Drive {
+public class StarDriveImpl implements StarDrive {
     protected final MecanumDrive holoDrive;
     protected final DifferentialDrive tankDrive;
     protected final OmniPod frontLeftDrive;
@@ -41,7 +41,7 @@ public class DriveImpl implements Drive {
     protected final double kD = 0.008;
     protected float kToleranceDegrees = 2;
 
-    public DriveImpl() {
+    public StarDriveImpl() {
         this.frontLeftDrive = Utils.safeInit("frontLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
         frontLeftDrive.setInverted(true);
         this.frontRightDrive = Utils.safeInit("frontRightDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON));

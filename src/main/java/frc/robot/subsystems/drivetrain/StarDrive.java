@@ -1,6 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
-public interface Drive {
+public interface StarDrive {
     void drive(double forwardRate, double strafeRate, double turnRate);
 
     void setAngleTarget(double angleTarget);

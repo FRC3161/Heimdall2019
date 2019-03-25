@@ -2,13 +2,13 @@ package frc.robot.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ManualTurningDriveImpl extends DriveImpl {
+public class ManualTurningStarDriveImpl extends StarDriveImpl {
 
     private static final double MANUAL_TURNING_DEADBAND = 0.05;
     private static final long UPDATE_WINDOW = 100;
     private long lastUpdate = -1;
 
-    public ManualTurningDriveImpl() {
+    public ManualTurningStarDriveImpl() {
         super();
     }
 
