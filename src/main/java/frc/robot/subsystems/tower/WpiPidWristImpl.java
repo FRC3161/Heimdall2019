@@ -164,6 +164,6 @@ class WpiPidWristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutp
 
     @Override
     public void pidWrite(double pid) {
-        this.pidSpeed = -pid;
+        this.pidSpeed = pid;
     }
 }
