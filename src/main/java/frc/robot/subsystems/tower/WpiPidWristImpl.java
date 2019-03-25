@@ -144,8 +144,8 @@ class WpiPidWristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutp
 
     @Override
     public void task() {
-        SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
-        SmartDashboard.putNumber("arm speed", this.controller.get());
+        SmartDashboard.putNumber("Wrist encoder ticks", this.source.pidGet());
+        SmartDashboard.putNumber("Wrist speed", this.controller.get());
         if (this.manual) {
             if (Math.abs(controller.get()) < 0.1) {
                 // this.pid.setSetpoint(this.returnEncoderTicks());
