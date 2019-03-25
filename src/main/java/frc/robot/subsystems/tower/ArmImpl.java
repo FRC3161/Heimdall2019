@@ -60,7 +60,14 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double ktolerance = 2;
         maxOutputUp = 0.65;
         maxOutputDown = -0.275;
-        this.pid = new AntiGravityPIDController(kP, kI, kD, kF, source, this);
+        this.pid = new WPIPIDulum(kP, kI, kD, kF, source, this) {
+            @Override
+            public double getAngle() {
+                final double sensorTicksPerRev = 256.0;
+                final double offset = 0; // TODO determine actual physical offset from 0 in initialization position
+                return (360.0 / sensorTicksPerRev) * source.pidGet() + offset;
+            }
+        };
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
         this.pid.setName("arm pid");

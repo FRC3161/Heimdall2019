@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 
-class AntiGravityPIDController extends PIDController {
+class WPIPIDulum extends PIDController {
 
-    AntiGravityPIDController(double kP, double kI, double kD, double kF, PIDSource source,
+    WPIPIDulum(double kP, double kI, double kD, double kF, PIDSource source,
             PIDOutput output) {
         super(kP, kI, kD, kF, source, output);
     }
