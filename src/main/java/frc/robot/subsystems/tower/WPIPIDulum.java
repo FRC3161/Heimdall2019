@@ -29,6 +29,8 @@ class WPIPIDulum extends PIDController {
      * and angle 90 corresponds to the mechanism sitting parallel to the ground (ie maximum
      * gravitational torque).
      * Subclasses should override this method to scale and offset the sensor reading if necessary.
+     * The original sensor reading should be obtained by calling back to this method (super.getAngle())
+     * to preserve thread safety.
      */
     public double getAngle() {
         m_thisMutex.lock();

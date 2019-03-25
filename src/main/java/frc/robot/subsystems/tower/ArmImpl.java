@@ -65,7 +65,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
             public double getAngle() {
                 final double sensorTicksPerRev = 256.0;
                 final double offset = 0; // TODO determine actual physical offset from 0 in initialization position
-                return (360.0 / sensorTicksPerRev) * source.pidGet() + offset;
+                return (360.0 / sensorTicksPerRev) * super.getAngle() + offset;
             }
         };
         this.pid.setAbsoluteTolerance(ktolerance);
