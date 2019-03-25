@@ -13,7 +13,12 @@ class WPIPIDulum extends PIDController {
 
     @Override
     protected double calculateFeedForward() {
-        return getF() * Math.sin(Math.toRadians(getAngle()));
+        m_thisMutex.lock();
+        try {
+            return getF() * Math.sin(Math.toRadians(getAngle()));
+        } finally {
+            m_thisMutex.unlock();
+        }
     }
 
     /**
@@ -26,7 +31,12 @@ class WPIPIDulum extends PIDController {
      * Subclasses should override this method to scale and offset the sensor reading if necessary.
      */
     public double getAngle() {
-        return m_pidInput.pidGet();
+        m_thisMutex.lock();
+        try {
+            return m_pidInput.pidGet();
+        } finally {
+            m_thisMutex.unlock();
+        }
     }
 
 }
