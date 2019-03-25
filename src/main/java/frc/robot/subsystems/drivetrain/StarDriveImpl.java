@@ -17,6 +17,10 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StarDriveImpl implements StarDrive {
+
+    private static final double MANUAL_TURNING_DEADBAND = 0.05;
+    private static final long UPDATE_WINDOW = 100;
+
     protected final MecanumDrive holoDrive;
     protected final DifferentialDrive tankDrive;
     protected final OmniPod frontLeftDrive;
@@ -40,6 +44,7 @@ public class StarDriveImpl implements StarDrive {
     //gets larger as the speed increases
     protected final double kD = 0.008;
     protected float kToleranceDegrees = 2;
+    protected long lastUpdate = -1;
 
     public StarDriveImpl() {
         this.frontLeftDrive = Utils.safeInit("frontLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
@@ -80,32 +85,35 @@ public class StarDriveImpl implements StarDrive {
         double currentAngle = this.angleSensor.pidGet();
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
-        if (this.speedLimited) {
-            final double limit = 0.30;
-            forwardRate = MathUtils.absClamp(forwardRate, limit);
-            strafeRate = MathUtils.absClamp(strafeRate, limit);
-            turnRate = MathUtils.absClamp(turnRate, limit);
-        }
-
         if (this.getCenterWheelsDeployed()) {
-            this.tankDrive.arcadeDrive(forwardRate, turnRate);
+            this.tankDrive.arcadeDrive(forwardRate ,turnRate);
         } else {
-            if (!this.turnController.isEnabled()) {
-                this.turnController.enable();
+            final double effectiveTurnRate;
+            if (Math.abs(turnRate) < MANUAL_TURNING_DEADBAND) {
+                effectiveTurnRate = computedTurnPID;
+            } else {
+                if (this.turnController.isEnabled()) {
+                    this.turnController.disable();
+                }
+                effectiveTurnRate = turnRate;
             }
-            this.setAngleTarget(this.angleTarget + turnRate * 180 * TimedRobot.kDefaultPeriod); // 180 degrees per second, divided by update rate
-            this.holoDrive.driveCartesian(forwardRate,strafeRate,computedTurnPID, fieldCentric ? currentAngle : 0);
+            this.holoDrive.driveCartesian(forwardRate, strafeRate, effectiveTurnRate, fieldCentric ? currentAngle : 0);
         }
     }
 
     @Override
     public void setAngleTarget(double angleTarget) {
-        // if (angleTarget < 0) {
-        //     angleTarget += 360;
-        // }
+        long now = System.currentTimeMillis();
+        if (lastUpdate + UPDATE_WINDOW > now) {
+            return;
+        }
+        lastUpdate = now;
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
         SmartDashboard.putNumber("Angle Target", angleTarget);
+        if (!this.turnController.isEnabled()) {
+            this.turnController.enable();
+        }
     }
 
     @Override
