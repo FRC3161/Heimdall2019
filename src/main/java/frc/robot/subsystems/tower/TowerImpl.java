@@ -30,10 +30,10 @@ public class TowerImpl implements Tower {
 
     private final Elevator elevator;
     private final Arm arm;
+    private final Wrist wrist;
     private final Solenoid openBeak;
     private final Solenoid closeBeak;
     private final SpeedController intake;
-    private final SpeedController wrist;
     private final GamePieceWatcher gamePieceWatcher;
     private final GameTimerWatcher gameTimerWatcher;
     private final DigitalInput limitSwitchWrist;
@@ -45,12 +45,14 @@ public class TowerImpl implements Tower {
 
         this.arm = Utils.safeInit("arm", () -> new WpiPidArmImpl(RobotMap.ARM_CONTROLLER));
 
+        this.wrist = Utils.safeInit("wrist", () -> new  WpiPidWristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.WRIST_ENCODER));
+
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));
 
         this.intake = Utils.safeInit("intake", () -> new VictorSP(RobotMap.TOWER_ROLLER_INTAKE));
 
-        this.wrist = Utils.safeInit("wrist", () -> new  VictorSP(RobotMap.TOWER_ROLLER_WRIST));
+        
         this.limitSwitchWrist = Utils.safeInit("limitSwitchWrist", () -> new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH));
 
         this.relay = Utils.safeInit("Watcher relay", () -> new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward));
@@ -58,7 +60,6 @@ public class TowerImpl implements Tower {
         this.gameTimerWatcher = Utils.safeInit("gameTimerWatcher", () -> new GameTimerWatcher(this.relay));
 
         setTowerPosition(Position.STARTING_CONFIG);
-        wrist.setInverted(false);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class TowerImpl implements Tower {
         this.position = position;
         this.elevator.setPosition(position);
         this.arm.setPosition(position);
+        this.wrist.setPosition(position);
         SmartDashboard.putString("Tower Position", position.toString());
     }
 
@@ -114,16 +116,7 @@ public class TowerImpl implements Tower {
 
     @Override
     public void setWristSpeed(double speed){
-        if (speed == 0){
-            speed = 0.08;
-        }
-        // if (this.arm.returnEncoderTicks() >= 0){
-        //    if (speed < 0){
-        //     this.wrist.set(0);
-        //     return;
-        //    }
-        // }
-        this.wrist.set(speed / 2);
+        this.wrist.setSpeed(speed / 2);
     }
 
     @Override
@@ -132,12 +125,14 @@ public class TowerImpl implements Tower {
         this.gameTimerWatcher.lifecycleStatusChanged(previous, current);
         this.elevator.lifecycleStatusChanged(previous, current);
         this.arm.lifecycleStatusChanged(previous, current);
+        this.wrist.lifecycleStatusChanged(previous, current);
     }
 
     @Override
     public void reset(){
         this.elevator.reset();
         this.arm.reset();
+        this.wrist.reset();
     }
 
     @Override
