@@ -40,7 +40,6 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         super(50, TimeUnit.MILLISECONDS);
         WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
         this.controller = talon;
-        this.controller.setInverted(true);
         this.source = new TalonPIDSource(talon);
 
         final int levelOneTicks = 50;
@@ -159,6 +158,6 @@ class WpiPidArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void pidWrite(double pid) {
-        this.pidSpeed = -pid;
+        this.pidSpeed = pid;
     }
 }
