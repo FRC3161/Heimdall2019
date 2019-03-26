@@ -41,23 +41,24 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.controller.setInverted(true);
         this.source = new Encoder(encoderChannelA, encoderChannelB);
 
-        final int levelOneTicks = 50;
-        final int levelTwoTicks = 153;
-        final int bayTicks = 120;
+        // TODO determine ticks
+        final int levelOneTicks = 2;
+        final int levelTwoTicks = 3;
+        final int bayTicks = 4;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
         positionTicks.put(Position.LEVEL_1, levelOneTicks);
         positionTicks.put(Position.BAY, bayTicks);
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
-        positionTicks.put(Position.LEVEL_3, 6);
+        positionTicks.put(Position.LEVEL_3, 5);
 
-        final double kP = 0.0225;
-        final double kI = 0.0001;
-        final double kD = 0.0285;
+        final double kP = 0.0;
+        final double kI = 0.0;
+        final double kD = 0.0;
         final double ktolerance = 2;
-        maxOutputUp = 0.65;
-        maxOutputDown = -0.275;
+        maxOutputUp = 1;
+        maxOutputDown = -1;
         this.pid = new PIDController(kP, kI, kD, source, this);
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
