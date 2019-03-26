@@ -71,9 +71,9 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);
 
-        this.levelOneTuner = new SmartDashboardTuner("Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
-        this.levelTwoTuner = new SmartDashboardTuner("Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
-        this.bayTuner = new SmartDashboardTuner("bay Ticks", bayTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
+        this.levelOneTuner = new SmartDashboardTuner("Wrist Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
+        this.levelTwoTuner = new SmartDashboardTuner("Wrist Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
+        this.bayTuner = new SmartDashboardTuner("Wrist Bay Ticks", bayTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
     }
 
     @Override
@@ -86,7 +86,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         } else {
             encoderTicks = positionTicks.get(this.targetPosition);
         }
-        SmartDashboard.putNumber("encoder tick target Wrist", encoderTicks);
+        SmartDashboard.putNumber("Wrist encoder tick target", encoderTicks);
         this.pid.setSetpoint(encoderTicks);
         this.pid.setEnabled(true);
         SmartDashboard.putString("Wrist Position", position.toString());
