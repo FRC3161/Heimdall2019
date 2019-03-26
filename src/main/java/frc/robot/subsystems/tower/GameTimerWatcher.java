@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class GameTimerWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
 
     static final double ACTIVE_REMAINING_TIME = 30;
-    private static final double SOLID_REMAINING_TIME = 15;
+    private static final double SOLID_REMAINING_TIME = 20;
     private final Relay relay;
 
     public GameTimerWatcher(Relay relay) {
