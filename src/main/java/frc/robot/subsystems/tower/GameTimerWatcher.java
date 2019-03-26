@@ -14,7 +14,7 @@ public class GameTimerWatcher extends RepeatingPooledSubsystem implements Lifecy
     static final double ACTIVE_REMAINING_TIME = 30;
     private static final double SOLID_REMAINING_TIME = 20;
     private final Relay relay;
-    private boolean lit = false;
+    private volatile boolean lit = false;
 
     public GameTimerWatcher(Relay relay) {
         super(500, TimeUnit.MILLISECONDS);
