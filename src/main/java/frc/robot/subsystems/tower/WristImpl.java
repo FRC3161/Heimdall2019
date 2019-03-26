@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
 
-class WpiPidWristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
+class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
     private final BidiMap<Position, Integer> positionTicks;
 
@@ -41,7 +41,7 @@ class WpiPidWristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutp
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
 
-    WpiPidWristImpl(int victorPort,int encoder) {
+    WristImpl(int victorPort, int encoder) {
         super(50, TimeUnit.MILLISECONDS);
         VictorSP victor = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
         this.controller = victor;
