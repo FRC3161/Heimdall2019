@@ -1,97 +1,94 @@
 package frc.robot.subsystems.tower;
 
+import java.util.concurrent.TimeUnit;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
-import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
+import ca.team3161.lib.utils.SmartDashboardTuner;
 import ca.team3161.lib.utils.Utils;
+import ca.team3161.lib.utils.WPISmartPIDTuner;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
-import java.util.concurrent.TimeUnit;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
+import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
-import frc.robot.subsystems.Gains;
 
-class ArmImpl extends RepeatingPooledSubsystem implements Arm {
+class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
-    private static final BidiMap<Position, Integer> POSITION_TICKS;
-    static {
-        final BidiMap<Position, Integer> positionTicks = new DualHashBidiMap<>();
-        // TODO placeholder encoder tick values
-        positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, -1);
-        positionTicks.put(Position.LEVEL_1, -35 );
-        positionTicks.put(Position.LEVEL_2, -153);
-        positionTicks.put(Position.LEVEL_3, 6);
-        POSITION_TICKS = UnmodifiableBidiMap.unmodifiableBidiMap(positionTicks);
-    }
+    private final BidiMap<Position, Integer> positionTicks;
 
-    private final WPI_TalonSRX controller;
+    private final SpeedController controller;
+    private final PIDController pid;
+    private final TalonPIDSource source;
+    private final WPISmartPIDTuner pidTuner;
+    private final SmartDashboardTuner levelOneTuner;
+    private final SmartDashboardTuner levelTwoTuner;
+    private final SmartDashboardTuner bayTuner;
+    private volatile double pidSpeed;
+    private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
+    private volatile double maxOutputUp;
+    private volatile double maxOutputDown;
 
     ArmImpl(int talonPort) {
         super(50, TimeUnit.MILLISECONDS);
-        this.controller = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
+        WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
+        this.controller = talon;
+        this.source = new TalonPIDSource(talon);
 
-        //Arm PID
-        final int kPIDLoopIdx;
-        final Gains kGains;
-        final int kTimeoutMs;
-        boolean kSensorPhase;
-        boolean kMotorInvert;
-        int absolutePosition;
+        final int levelOneTicks = 50;
+        final int levelTwoTicks = 153;
+        final int bayTicks = 120;
+        positionTicks = new DualHashBidiMap<>();
+        positionTicks.put(Position.STARTING_CONFIG, 0);
+        positionTicks.put(Position.GROUND, 1);
+        positionTicks.put(Position.LEVEL_1, levelOneTicks);
+        positionTicks.put(Position.BAY, bayTicks);
+        positionTicks.put(Position.LEVEL_2, levelTwoTicks);
+        positionTicks.put(Position.LEVEL_3, 6);
 
-        kPIDLoopIdx = 0;
-        //touch kp with care dont increase greatly rather not move at all then go ape shit
-        kGains = new Gains(0.16, 0.0, 0.0, 0.0, 0, 1); //TODO Placeholder values
-        kTimeoutMs = 30;
-        // absolutePosition = controller.getSensorCollection().getPulseWidthPosition();
-        kMotorInvert = false;
-        // kSensorPhase = true;
+        final double kP = 0.0225;
+        final double kI = 0.0001;
+        final double kD = 0.0285;
+        final double ktolerance = 2;
+        maxOutputUp = 0.65;
+        maxOutputDown = -0.275;
+        this.pid = new PIDController(kP, kI, kD, source, this);
+        this.pid.setAbsoluteTolerance(ktolerance);
+        this.pid.setOutputRange(maxOutputDown, maxOutputUp);
+        this.pid.setName("arm pid");
+        this.pidTuner = new WPISmartPIDTuner.Builder()
+            .kP(kP)
+            .kI(kI)
+            .kD(kD)
+            .absoluteTolerance(ktolerance)
+            .outputRange(maxOutputDown, maxOutputUp)
+            .build(pid);
 
-        //Set PID values on Talon
-        controller.config_kF(kPIDLoopIdx, kGains.kF);
-        controller.config_kP(kPIDLoopIdx, kGains.kP);
-        controller.config_kI(kPIDLoopIdx, kGains.kI);
-        controller.config_kD(kPIDLoopIdx, kGains.kD);
-
-        // absolutePosition &= 0xFFF;
-        // if (kSensorPhase) {absolutePosition *= -1;}
-        // if (kMotorInvert) {absolutePosition *= -1;}
-
-        controller.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-        // controller.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-        //controller.setSelectedSensorPosition(0, 0, 0);
-        controller.setSensorPhase(true);
-        controller.configAllowableClosedloopError(kPIDLoopIdx, 5);
-
-        //Speed Limiting
-        controller.configPeakOutputForward(kGains.kPeakOutput);
-        controller.configPeakOutputReverse(-kGains.kPeakOutput);
-
-        //controller.configAllowableClosedloopError(kPIDLoopIdx, allowableCloseLoopError, kTimeoutMs);
+        this.levelOneTuner = new SmartDashboardTuner("Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
+        this.levelTwoTuner = new SmartDashboardTuner("Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
+        this.bayTuner = new SmartDashboardTuner("bay Ticks", bayTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
     }
 
     @Override
     public void setPosition(Position position) {
+        this.manual = false;
         this.targetPosition = position;
         int encoderTicks;
-        if (!POSITION_TICKS.containsKey(position)) {
-            encoderTicks = POSITION_TICKS.getOrDefault(Position.STARTING_CONFIG, 0);
+        if (!positionTicks.containsKey(this.targetPosition)) {
+            encoderTicks = positionTicks.getOrDefault(Position.STARTING_CONFIG, 0);
         } else {
-            encoderTicks = POSITION_TICKS.get(position);
+            encoderTicks = positionTicks.get(this.targetPosition);
         }
-        SmartDashboard.putNumber("encoder tick target arm",encoderTicks);
-        this.controller.setIntegralAccumulator(0);
-        this.controller.set(ControlMode.Position, encoderTicks);
+        SmartDashboard.putNumber("encoder tick target arm", encoderTicks);
+        this.pid.setSetpoint(encoderTicks);
+        this.pid.setEnabled(true);
         SmartDashboard.putString("arm Position", position.toString());
     }
 
@@ -102,19 +99,33 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void setSpeed(double speed) {
-        this.controller.set(ControlMode.PercentOutput, speed);
+        this.manual = true;
+        this.pid.setEnabled(false);
+        if (speed < maxOutputDown) {
+            speed = maxOutputDown;
+        } else if (speed > maxOutputUp) {
+            speed = maxOutputUp;
+        }
+        this.controller.set(speed);
     }
 
     @Override
     public void reset() {
-        this.controller.setIntegralAccumulator(0);
+        this.pid.reset();
+        this.source.reset();
     }
 
     @Override
-    public void defineResources() { }
+    public void defineResources() {
+        require(pid);
+    }
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        this.pidTuner.lifecycleStatusChanged(previous, current);
+        this.levelOneTuner.lifecycleStatusChanged(previous, current);
+        this.levelTwoTuner.lifecycleStatusChanged(previous, current);
+        this.bayTuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
         }
@@ -127,11 +138,26 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm {
 
     @Override
     public void task() {
-        SmartDashboard.putNumber("arm encoder ticks", controller.getSelectedSensorPosition());
+        SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
+        SmartDashboard.putNumber("arm speed", this.controller.get());
+        if (this.manual) {
+            if (Math.abs(controller.get()) < 0.1) {
+                // this.pid.setSetpoint(this.returnEncoderTicks());
+                // this.manual = false;
+                this.controller.set(0);
+                return;
+            }
+        }
+        this.controller.set(pidSpeed);
     }
 
     @Override
     public double returnEncoderTicks() {
-        return controller.getSelectedSensorPosition();
+        return source.pidGet();
+    }
+
+    @Override
+    public void pidWrite(double pid) {
+        this.pidSpeed = pid;
     }
 }
