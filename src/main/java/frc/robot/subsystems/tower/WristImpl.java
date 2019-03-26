@@ -37,8 +37,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
     WristImpl(int victorPort, int encoderChannelA, int encoderChannelB) {
         super(50, TimeUnit.MILLISECONDS);
-        VictorSP victor = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
-        this.controller = victor;
+        this.controller = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
         this.controller.setInverted(true);
         this.source = new Encoder(encoderChannelA, encoderChannelB);
 
