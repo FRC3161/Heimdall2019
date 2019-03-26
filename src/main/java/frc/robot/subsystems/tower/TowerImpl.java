@@ -1,20 +1,17 @@
 package frc.robot.subsystems.tower;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.tower.Elevator;
-
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.utils.Utils;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 
 public class TowerImpl implements Tower {
 
@@ -36,7 +33,6 @@ public class TowerImpl implements Tower {
     private final SpeedController intake;
     private final GamePieceWatcher gamePieceWatcher;
     private final GameTimerWatcher gameTimerWatcher;
-    private final DigitalInput limitSwitchWrist;
     private final Relay relay;
     private Position position;
 
@@ -45,15 +41,12 @@ public class TowerImpl implements Tower {
 
         this.arm = Utils.safeInit("arm", () -> new WpiPidArmImpl(RobotMap.ARM_CONTROLLER));
 
-        this.wrist = Utils.safeInit("wrist", () -> new  WpiPidWristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.WRIST_ENCODER));
+        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.WRIST_ENCODER_CHANNEL_A, RobotMap.WRIST_ENCODER_CHANNEL_B));
 
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));
 
         this.intake = Utils.safeInit("intake", () -> new VictorSP(RobotMap.TOWER_ROLLER_INTAKE));
-
-        
-        this.limitSwitchWrist = Utils.safeInit("limitSwitchWrist", () -> new DigitalInput(RobotMap.WRIST_LIMIT_SWITCH));
 
         this.relay = Utils.safeInit("Watcher relay", () -> new Relay(RobotMap.LED_SPIKE, Relay.Direction.kForward));
         this.gamePieceWatcher = Utils.safeInit("gamePieceWatcher", () -> new GamePieceWatcher(this.relay));

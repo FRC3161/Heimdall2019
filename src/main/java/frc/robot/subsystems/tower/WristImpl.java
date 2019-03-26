@@ -2,10 +2,6 @@ package frc.robot.subsystems.tower;
 
 import java.util.concurrent.TimeUnit;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
@@ -18,10 +14,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
 
 class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
@@ -41,12 +35,12 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
 
-    WristImpl(int victorPort, int encoder) {
+    WristImpl(int victorPort, int encoderChannelA, int encoderChannelB) {
         super(50, TimeUnit.MILLISECONDS);
         VictorSP victor = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
         this.controller = victor;
         this.controller.setInverted(true);
-        this.source = new Encoder(encoder);
+        this.source = new Encoder(encoderChannelA, encoderChannelB);
 
         final int levelOneTicks = 50;
         final int levelTwoTicks = 153;
