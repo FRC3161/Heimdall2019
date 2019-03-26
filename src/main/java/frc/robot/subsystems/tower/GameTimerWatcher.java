@@ -30,6 +30,7 @@ public class GameTimerWatcher extends RepeatingPooledSubsystem implements Lifecy
             this.relay.set(this.relay.get() == Relay.Value.kOn ? Relay.Value.kOff : Relay.Value.kOn);
         } else if (Timer.getMatchTime() <= SOLID_REMAINING_TIME) {
             this.relay.set(Relay.Value.kOn);
+            cancel();
         }
     }
 
