@@ -13,6 +13,7 @@ public class GameTimerWatcher extends RepeatingPooledSubsystem implements Lifecy
     static final double ACTIVE_REMAINING_TIME = 30;
     private static final double SOLID_REMAINING_TIME = 20;
     private final Relay relay;
+    private boolean lit = false;
 
     public GameTimerWatcher(Relay relay) {
         super(500, TimeUnit.MILLISECONDS);
@@ -27,7 +28,8 @@ public class GameTimerWatcher extends RepeatingPooledSubsystem implements Lifecy
     @Override
     public void task() {
         if (Timer.getMatchTime() < ACTIVE_REMAINING_TIME && Timer.getMatchTime() > SOLID_REMAINING_TIME) {
-            this.relay.set(this.relay.get() == Relay.Value.kOn ? Relay.Value.kOff : Relay.Value.kOn);
+            lit = !lit;
+            this.relay.set(lit ? Relay.Value.kOn : Relay.Value.kOff);
         } else if (Timer.getMatchTime() <= SOLID_REMAINING_TIME) {
             this.relay.set(Relay.Value.kOn);
             cancel();
