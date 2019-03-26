@@ -10,32 +10,29 @@ package frc.robot;
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.Utils;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
+import ca.team3161.lib.utils.controls.Gamepad.PressType;
 import ca.team3161.lib.utils.controls.InvertedJoystickMode;
 import ca.team3161.lib.utils.controls.LogitechDualAction;
-import ca.team3161.lib.utils.controls.SquaredJoystickMode;
-import ca.team3161.lib.utils.controls.Gamepad.PressType;
 import ca.team3161.lib.utils.controls.LogitechDualAction.DpadDirection;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
+import ca.team3161.lib.utils.controls.SquaredJoystickMode;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.subsystems.drivetrain.Drive;
-import frc.robot.subsystems.drivetrain.DriveImpl;
 import frc.robot.subsystems.drivetrain.ManualTurningDriveImpl;
 import frc.robot.subsystems.tower.Tower;
-import frc.robot.subsystems.tower.TowerImpl;
 import frc.robot.subsystems.tower.Tower.Direction;
 import frc.robot.subsystems.tower.Tower.Position;
-import frc.robot.subsystems.tower.GamePieceWatcher;
+import frc.robot.subsystems.tower.TowerImpl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -230,7 +227,7 @@ public class Robot extends TitanBot {
     // Look Forward
     if (driverPad.getButton(LogitechButton.Y)) {
       faceTarget = 0.0;
-    } 
+    }
     // Look Right
     if (driverPad.getButton(LogitechButton.B)) {
       faceTarget = 90.0;
