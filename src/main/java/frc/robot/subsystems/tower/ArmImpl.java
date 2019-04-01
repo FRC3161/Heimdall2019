@@ -111,10 +111,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         if (Math.abs(speed) > 0.1) {
             this.manual = true;
             this.pid.setEnabled(false);
-        } else {
-            speed = 0;
+            this.pidSpeed = speed;
         }
-        this.pidSpeed = speed;
     }
 
     @Override
