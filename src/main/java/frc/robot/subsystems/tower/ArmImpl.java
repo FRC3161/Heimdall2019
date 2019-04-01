@@ -146,7 +146,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     public void task() {
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("arm speed", pidSpeed);
-        if (this.manual && this.pidSpeed < 0.1) {
+        if (this.manual && Math.abs(this.pidSpeed) < 0.1) {
             this.pidSpeed = 0;
         }
         this.controller.set(pidSpeed);
