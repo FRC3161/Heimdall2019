@@ -323,7 +323,7 @@ public class Robot extends TitanBot {
     this.tower.setWristSpeed(-1);
   }
 
-private void wristStop() {
+  private void wristStop() {
       this.tower.setWristSpeed(0);
   }
 
