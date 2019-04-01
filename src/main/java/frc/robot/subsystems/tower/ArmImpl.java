@@ -115,7 +115,10 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         } else if (speed > maxOutputUp) {
             speed = maxOutputUp;
         }
-        this.controller.set(speed);
+        if (Math.abs(speed) < 0.1) {
+            speed = 0;
+        }
+        this.pidSpeed = speed;
     }
 
     @Override
@@ -148,15 +151,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     @Override
     public void task() {
         SmartDashboard.putNumber("arm encoder ticks", this.source.pidGet());
-        SmartDashboard.putNumber("arm speed", this.controller.get());
-        if (this.manual) {
-            if (Math.abs(controller.get()) < 0.1) {
-                // this.pid.setSetpoint(this.returnEncoderTicks());
-                // this.manual = false;
-                this.controller.set(0);
-                return;
-            }
-        }
+        SmartDashboard.putNumber("arm speed", pidSpeed);
         this.controller.set(pidSpeed);
     }
 
