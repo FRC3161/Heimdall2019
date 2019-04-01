@@ -42,9 +42,9 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         this.controller = talon;
         this.source = new TalonPIDSource(talon);
 
-        final int levelOneTicks = 50;
-        final int levelTwoTicks = 153;
-        final int bayTicks = 120;
+        final int levelOneTicks = -50;
+        final int levelTwoTicks = -153;
+        final int bayTicks = -120;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
         positionTicks.put(Position.GROUND, 1);
@@ -58,8 +58,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kD = 0.07;
         final double kF = 0;
         final double ktolerance = 2;
-        maxOutputUp = 0.65;
-        maxOutputDown = -0.275;
+        maxOutputUp = 0.275;
+        maxOutputDown = -0.65;
         this.pid = new WPIPIDulum(kP, kI, kD, kF, source, this) {
             @Override
             public double getAngle() {
@@ -167,6 +167,6 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void pidWrite(double pid) {
-        this.pidSpeed = pid;
+        this.pidSpeed = -pid;
     }
 }
