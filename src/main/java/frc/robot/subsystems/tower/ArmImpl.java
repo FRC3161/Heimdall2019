@@ -56,10 +56,18 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final double kP = 0.05;
         final double kI = 0.0001;
         final double kD = 0.07;
+        final double kF = 0;
         final double ktolerance = 2;
         maxOutputUp = 0.65;
         maxOutputDown = -0.275;
-        this.pid = new PIDController(kP, kI, kD, source, this);
+        this.pid = new WPIPIDulum(kP, kI, kD, kF, source, this) {
+            @Override
+            public double getAngle() {
+                final double sensorTicksPerRev = 256.0;
+                final double offset = 0; // TODO determine actual physical offset from 0 in initialization position
+                return (360.0 / sensorTicksPerRev) * super.getAngle() + offset;
+            }
+        };
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
         this.pid.setName("arm pid");
@@ -67,6 +75,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
             .kP(kP)
             .kI(kI)
             .kD(kD)
+            .kF(kF)
             .absoluteTolerance(ktolerance)
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);

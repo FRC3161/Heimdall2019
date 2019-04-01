@@ -56,10 +56,17 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         final double kP = 0.0;
         final double kI = 0.0;
         final double kD = 0.0;
+        final double kF = 0.0;
         final double ktolerance = 2;
         maxOutputUp = 1;
         maxOutputDown = -1;
-        this.pid = new PIDController(kP, kI, kD, source, this);
+        this.pid = new WPIPIDulum(kP, kI, kD, kF, source, this) {
+            @Override
+            public double getAngle() {
+                // TODO determine actual physical offset from 0 in initialization position
+                return super.getAngle();
+            }
+        };
         this.pid.setAbsoluteTolerance(ktolerance);
         this.pid.setOutputRange(maxOutputDown, maxOutputUp);
         this.pid.setName("Wrist pid");
@@ -67,6 +74,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
             .kP(kP)
             .kI(kI)
             .kD(kD)
+            .kF(kF)
             .absoluteTolerance(ktolerance)
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);
