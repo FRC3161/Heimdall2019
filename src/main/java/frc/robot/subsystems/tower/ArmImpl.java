@@ -53,9 +53,9 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
         positionTicks.put(Position.LEVEL_3, 6);
 
-        final double kP = 0.0225;
+        final double kP = 0.05;
         final double kI = 0.0001;
-        final double kD = 0.0285;
+        final double kD = 0.07;
         final double ktolerance = 2;
         maxOutputUp = 0.65;
         maxOutputDown = -0.275;
