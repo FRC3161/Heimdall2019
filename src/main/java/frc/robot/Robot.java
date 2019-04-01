@@ -193,11 +193,9 @@ public class Robot extends TitanBot {
         this.tower.setElevatorSpeed(x);
     // }
     });
-    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x-> {
-      if (x!= 0) {
-        this.tower.setArmSpeed(x);
-      }
-    });
+    this.operatorPad.map(LogitechControl.LEFT_STICK, LogitechAxis.Y, x->
+        this.tower.setArmSpeed(x)
+    );
     this.underLay.set(Value.kOn);
 
     this.driverPad.enableBindings();
