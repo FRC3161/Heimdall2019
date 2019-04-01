@@ -7,12 +7,14 @@ import ca.team3161.lib.robot.LifecycleListener;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GameTimerWatcher extends RepeatingPooledSubsystem implements LifecycleListener {
 
     static final double ACTIVE_REMAINING_TIME = 30;
     private static final double SOLID_REMAINING_TIME = 20;
     private final Relay relay;
+    private volatile boolean lit = false;
 
     public GameTimerWatcher(Relay relay) {
         super(500, TimeUnit.MILLISECONDS);
@@ -26,8 +28,10 @@ public class GameTimerWatcher extends RepeatingPooledSubsystem implements Lifecy
 
     @Override
     public void task() {
+        SmartDashboard.putBoolean("Game Timer", lit);
         if (Timer.getMatchTime() < ACTIVE_REMAINING_TIME && Timer.getMatchTime() > SOLID_REMAINING_TIME) {
-            this.relay.set(this.relay.get() == Relay.Value.kOn ? Relay.Value.kOff : Relay.Value.kOn);
+            lit = !lit;
+            this.relay.set(lit ? Relay.Value.kOn : Relay.Value.kOff);
         } else if (Timer.getMatchTime() <= SOLID_REMAINING_TIME) {
             this.relay.set(Relay.Value.kOn);
             cancel();
