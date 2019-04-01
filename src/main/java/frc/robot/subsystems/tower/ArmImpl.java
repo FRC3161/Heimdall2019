@@ -110,10 +110,10 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     public void setSpeed(double speed) {
         this.manual = true;
         this.pid.setEnabled(false);
-        if (speed < maxOutputDown) {
-            speed = maxOutputDown;
-        } else if (speed > maxOutputUp) {
-            speed = maxOutputUp;
+        if (speed < -maxOutputDown) {
+            speed = -maxOutputDown;
+        } else if (speed > -maxOutputUp) {
+            speed = -maxOutputUp;
         }
         if (Math.abs(speed) < 0.1) {
             speed = 0;
