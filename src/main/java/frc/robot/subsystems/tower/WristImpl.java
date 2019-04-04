@@ -26,9 +26,6 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     private final PIDController pid;
     private final Encoder source;
     private final WPISmartPIDTuner pidTuner;
-    private final SmartDashboardTuner levelOneTuner;
-    private final SmartDashboardTuner levelTwoTuner;
-    private final SmartDashboardTuner bayTuner;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
@@ -42,16 +39,8 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.source = new Encoder(encoderChannelA, encoderChannelB);
 
         // TODO determine ticks
-        final int levelOneTicks = 2;
-        final int levelTwoTicks = 3;
-        final int bayTicks = 4;
         positionTicks = new DualHashBidiMap<>();
-        positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, 1);
-        positionTicks.put(Position.LEVEL_1, levelOneTicks);
-        positionTicks.put(Position.BAY, bayTicks);
-        positionTicks.put(Position.LEVEL_2, levelTwoTicks);
-        positionTicks.put(Position.LEVEL_3, 5);
+        
 
         final double kP = 0.0;
         final double kI = 0.0;
@@ -78,10 +67,6 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
             .absoluteTolerance(ktolerance)
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);
-
-        this.levelOneTuner = new SmartDashboardTuner("Wrist Level One Ticks", levelOneTicks, d -> positionTicks.put(Position.LEVEL_1, d.intValue()));
-        this.levelTwoTuner = new SmartDashboardTuner("Wrist Level Two Ticks", levelTwoTicks, d -> positionTicks.put(Position.LEVEL_2, d.intValue()));
-        this.bayTuner = new SmartDashboardTuner("Wrist Bay Ticks", bayTicks, d -> positionTicks.put(Position.BAY, d.intValue()));
     }
 
     @Override
@@ -92,7 +77,12 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         if (!positionTicks.containsKey(this.targetPosition)) {
             encoderTicks = positionTicks.getOrDefault(Position.STARTING_CONFIG, 0);
         } else {
-            encoderTicks = positionTicks.get(this.targetPosition);
+            if (position.equals(position.BAY)){
+                encoderTicks = 400;
+            }
+            else{
+                encoderTicks = 0;
+            }
         }
         SmartDashboard.putNumber("Wrist encoder tick target", encoderTicks);
         this.pid.setSetpoint(encoderTicks);
@@ -134,9 +124,6 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
         this.pidTuner.lifecycleStatusChanged(previous, current);
-        this.levelOneTuner.lifecycleStatusChanged(previous, current);
-        this.levelTwoTuner.lifecycleStatusChanged(previous, current);
-        this.bayTuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
         }
