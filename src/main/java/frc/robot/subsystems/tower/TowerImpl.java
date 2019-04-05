@@ -41,7 +41,8 @@ public class TowerImpl implements Tower {
 
         this.arm = Utils.safeInit("arm", () -> new ArmImpl(RobotMap.ARM_CONTROLLER));
 
-        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
+        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.ELEVATOR_SLAVE_CONTROLLER)); //the talon encoder is used for wrist
+
 
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));
