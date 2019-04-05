@@ -41,7 +41,7 @@ public class TowerImpl implements Tower {
 
         this.arm = Utils.safeInit("arm", () -> new ArmImpl(RobotMap.ARM_CONTROLLER));
 
-        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.WRIST_ENCODER_CHANNEL_A, RobotMap.WRIST_ENCODER_CHANNEL_B));
+        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
 
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));

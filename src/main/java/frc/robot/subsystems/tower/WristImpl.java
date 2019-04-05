@@ -10,12 +10,13 @@ import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
 import ca.team3161.lib.utils.SmartDashboardTuner;
 import ca.team3161.lib.utils.Utils;
 import ca.team3161.lib.utils.WPISmartPIDTuner;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
 
 class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
@@ -24,7 +25,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
     private final SpeedController controller;
     private final PIDController pid;
-    private final Encoder source;
+    private final TalonPIDSource source;
     private final WPISmartPIDTuner pidTuner;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
@@ -32,11 +33,11 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
 
-    WristImpl(int victorPort, int encoderChannelA, int encoderChannelB) {
+    WristImpl(int victorPort, int talonPort) {
         super(50, TimeUnit.MILLISECONDS);
         this.controller = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
-        this.controller.setInverted(true);
-        this.source = new Encoder(encoderChannelA, encoderChannelB);
+        WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
+        this.source = new TalonPIDSource(talon);
 
         // TODO determine ticks
         positionTicks = new DualHashBidiMap<>();
