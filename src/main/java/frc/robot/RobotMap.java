@@ -29,9 +29,5 @@ public class RobotMap {
 
     // Sensors (DIO)
     public static final int OBJECT_SENSOR = 0;
-    public static final int WRIST_ENCODER_CHANNEL_A = 1;
-    public static final int WRIST_ENCODER_CHANNEL_B = 2;
-    public static final int TOP_LIMIT_SWITCH = 3;
-    public static final int BOTTOM_LIMIT_SWITCH = 4;
 
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.tower;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.UnmodifiableBidiMap;
@@ -28,6 +30,7 @@ public class TowerImpl implements Tower {
     private final Elevator elevator;
     private final Arm arm;
     private final Wrist wrist;
+    private final WPI_TalonSRX sharedElevatorWristTalon;
     private final Solenoid openBeak;
     private final Solenoid closeBeak;
     private final SpeedController intake;
@@ -37,12 +40,12 @@ public class TowerImpl implements Tower {
     private Position position;
 
     public TowerImpl() {
-        this.elevator = Utils.safeInit("elevator", () -> new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, RobotMap.ELEVATOR_SLAVE_CONTROLLER, RobotMap.TOP_LIMIT_SWITCH,RobotMap.BOTTOM_LIMIT_SWITCH));
+        this.sharedElevatorWristTalon = Utils.safeInit("elevator-wrist talon", () -> new WPI_TalonSRX(RobotMap.ELEVATOR_SLAVE_CONTROLLER));
+        this.elevator = Utils.safeInit("elevator", () -> new ManualElevatorImpl(RobotMap.ELEVATOR_MASTER_CONTROLLER, sharedElevatorWristTalon));
 
         this.arm = Utils.safeInit("arm", () -> new ArmImpl(RobotMap.ARM_CONTROLLER));
 
-        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, RobotMap.ELEVATOR_SLAVE_CONTROLLER)); //the talon encoder is used for wrist
-
+        this.wrist = Utils.safeInit("wrist", () -> new WristImpl(RobotMap.TOWER_ROLLER_WRIST, sharedElevatorWristTalon));
 
         this.openBeak = Utils.safeInit("openBeak", () -> new Solenoid(RobotMap.BEAK_OPEN_SOLENOID));
         this.closeBeak = Utils.safeInit("closeBeak", () -> new Solenoid(RobotMap.BEAK_CLOSE_SOLENOID));

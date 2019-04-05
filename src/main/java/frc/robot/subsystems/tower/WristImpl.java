@@ -2,19 +2,19 @@ package frc.robot.subsystems.tower;
 
 import java.util.concurrent.TimeUnit;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
 import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.subsystem.RepeatingPooledSubsystem;
-import ca.team3161.lib.utils.SmartDashboardTuner;
 import ca.team3161.lib.utils.Utils;
 import ca.team3161.lib.utils.WPISmartPIDTuner;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
@@ -33,15 +33,13 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
 
-    WristImpl(int victorPort, int talonPort) {
+    WristImpl(int victorPort, WPI_TalonSRX sharedTalon) {
         super(50, TimeUnit.MILLISECONDS);
         this.controller = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
-        WPI_TalonSRX talon = Utils.safeInit("arm controller", () -> new WPI_TalonSRX(talonPort));
-        this.source = new TalonPIDSource(talon);
+        this.source = new TalonPIDSource(sharedTalon);
 
         // TODO determine ticks
         positionTicks = new DualHashBidiMap<>();
-        
 
         final double kP = 0.0;
         final double kI = 0.0;

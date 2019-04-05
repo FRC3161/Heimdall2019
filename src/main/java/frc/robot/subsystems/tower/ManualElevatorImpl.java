@@ -12,9 +12,11 @@ public class ManualElevatorImpl implements Elevator {
     private final WPI_TalonSRX controllerMaster;
     private final WPI_TalonSRX controllerSlave;
 
-    ManualElevatorImpl(int masterPort, int slavePort, int topSwitchPort , int bottomSwitchPort) {
+    // slaveTalon is a hack to allow the Wrist to repurpose one of the elevator Talons'
+    // onboard sensor ports for its encoder
+    ManualElevatorImpl(int masterPort, WPI_TalonSRX slaveTalon) {
         this.controllerMaster = Utils.safeInit("elevator controllerMaster", () -> new WPI_TalonSRX(masterPort));
-        this.controllerSlave = Utils.safeInit("elevator controllerSlave", () -> new WPI_TalonSRX(slavePort));
+        this.controllerSlave = slaveTalon;
         this.controllerSlave.follow(controllerMaster);
 
         controllerMaster.setInverted(false);
