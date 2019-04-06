@@ -29,8 +29,8 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.drivetrain.Drive;
-import frc.robot.subsystems.drivetrain.ManualTurningDriveImpl;
+import frc.robot.subsystems.drivetrain.StarDrive;
+import frc.robot.subsystems.drivetrain.StarDriveImpl;
 import frc.robot.subsystems.tower.Tower;
 import frc.robot.subsystems.tower.Tower.Direction;
 import frc.robot.subsystems.tower.Tower.Position;
@@ -53,7 +53,7 @@ public class Robot extends TitanBot {
 
   private Compressor compressor;
   private Relay underLay;
-  private Drive drive;
+  private StarDrive drive;
   private Tower tower;
 
   private LogitechDualAction driverPad;
@@ -102,7 +102,7 @@ public class Robot extends TitanBot {
       new DeadbandJoystickMode(GAMEPAD_DEADBAND));
     this.compressor = Utils.safeInit("compressor", () -> new Compressor());
     this.compressor.setClosedLoopControl(true);
-    this.drive = Utils.safeInit("drive", () -> new ManualTurningDriveImpl());
+    this.drive = Utils.safeInit("drive", () -> new StarDriveImpl());
     this.tower = Utils.safeInit("tower", () -> new TowerImpl());
     this.underLay = Utils.safeInit("underLay", () -> new Relay(RobotMap.UNDERGLOW_SPIKE, Relay.Direction.kForward));
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
