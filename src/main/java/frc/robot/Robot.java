@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import ca.team3161.lib.robot.LifecycleEvent;
 import ca.team3161.lib.robot.TitanBot;
 import ca.team3161.lib.utils.Utils;
 import ca.team3161.lib.utils.controls.DeadbandJoystickMode;
@@ -18,7 +19,6 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -88,8 +88,42 @@ public class Robot extends TitanBot {
    */
   @Override
   public void robotSetup() {
-    this.driverPad = Utils.safeInit("driverPad", () -> new LogitechDualAction(0));
-    this.operatorPad = Utils.safeInit("operatorPad", () -> new LogitechDualAction(1));
+    this.driverPad = Utils.safeInit("driverPad", () -> new LogitechDualAction(0) {
+      @Override
+      public void lifecycleStatusChanged(final LifecycleEvent previous, final LifecycleEvent current) {
+          switch (current) {
+              case NONE:
+              case ON_INIT:
+              case ON_DISABLED:
+                  disableBindings();
+                  break;
+              case ON_AUTO:
+                  // SANDSTORM fallthrough
+              case ON_TELEOP:
+              case ON_TEST:
+                  enableBindings();
+                  break;
+          }
+      }
+    });
+    this.operatorPad = Utils.safeInit("operatorPad", () -> new LogitechDualAction(1) {
+      @Override
+      public void lifecycleStatusChanged(final LifecycleEvent previous, final LifecycleEvent current) {
+          switch (current) {
+              case NONE:
+              case ON_INIT:
+              case ON_DISABLED:
+                  disableBindings();
+                  break;
+              case ON_AUTO:
+                  // SANDSTORM fallthrough
+              case ON_TELEOP:
+              case ON_TEST:
+                  enableBindings();
+                  break;
+          }
+      }
+    });
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.Y,
         new InvertedJoystickMode().andThen(new SquaredJoystickMode()).andThen(new DeadbandJoystickMode(GAMEPAD_DEADBAND)));
     this.driverPad.setMode(LogitechControl.LEFT_STICK, LogitechAxis.X,
