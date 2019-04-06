@@ -86,6 +86,8 @@ public class StarDriveImpl implements StarDrive {
             forwardRate *= limitFactor;
             strafeRate *= limitFactor;
             turnRate *= limitFactor;
+        } else {
+            turnRate *= 0.7;
         }
 
         if (getCenterWheelsDeployed()) {
