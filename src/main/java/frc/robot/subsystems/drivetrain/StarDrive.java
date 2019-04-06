@@ -7,9 +7,7 @@ public interface StarDrive {
 
     void setCenterWheelsDeployed(boolean deployed);
     boolean getCenterWheelsDeployed();
-    default void toggleCenterWheelsDeployed() {
-        setCenterWheelsDeployed(!getCenterWheelsDeployed());
-    }
+    void toggleCenterWheelsDeployed();
 
     void resetGyro();
 

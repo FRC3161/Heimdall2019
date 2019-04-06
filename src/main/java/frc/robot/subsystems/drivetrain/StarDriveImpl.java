@@ -76,6 +76,7 @@ public class StarDriveImpl implements StarDrive {
         turnController.enable();
 
         setAngleTarget(0);
+        setCenterWheelsDeployed(false);
     }
 
     @Override
@@ -145,6 +146,11 @@ public class StarDriveImpl implements StarDrive {
     public boolean getCenterWheelsDeployed() {
         // all pods should be synchronized so just pick one arbitrarily
         return this.leftColson.isDeployed();
+    }
+
+    @Override
+    public void toggleCenterWheelsDeployed() {
+        setCenterWheelsDeployed(!getCenterWheelsDeployed());
     }
 
     @Override
