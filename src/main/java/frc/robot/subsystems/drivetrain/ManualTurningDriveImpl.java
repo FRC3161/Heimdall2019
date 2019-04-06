@@ -19,7 +19,7 @@ public class ManualTurningDriveImpl extends DriveImpl {
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
         if (this.speedLimited) {
-            final double limit = 0.30;
+            final double limit = 0.45;
             forwardRate = MathUtils.absClamp(forwardRate, limit);
             strafeRate = MathUtils.absClamp(strafeRate, limit);
             turnRate = MathUtils.absClamp(turnRate, limit);
