@@ -20,7 +20,7 @@ public class RawOmniPodImpl implements OmniPod {
 
     @Override
     public void set(double speed) {
-        this.talon.set(speed);
+        this.talon.set(scale(speed));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RawOmniPodImpl implements OmniPod {
 
     @Override
     public void pidWrite(double output) {
-        this.talon.pidWrite(output);
+        this.talon.pidWrite(scale(output));
     }
     
     @Override

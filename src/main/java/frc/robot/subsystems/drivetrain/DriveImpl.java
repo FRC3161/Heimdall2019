@@ -30,7 +30,7 @@ public class DriveImpl implements Drive {
 
     protected final PIDController turnController;
     protected boolean fieldCentric = true;
-    protected boolean speedLimited = true;
+    protected boolean speedLimited = false;
     protected double angleTarget;
     protected volatile double computedTurnPID;
     //ramps amount of output
@@ -100,9 +100,6 @@ public class DriveImpl implements Drive {
 
     @Override
     public void setAngleTarget(double angleTarget) {
-        // if (angleTarget < 0) {
-        //     angleTarget += 360;
-        // }
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
         SmartDashboard.putNumber("Angle Target", angleTarget);

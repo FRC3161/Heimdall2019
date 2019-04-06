@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.MathUtils;
 
 public class ManualTurningDriveImpl extends DriveImpl {
 
@@ -16,6 +17,13 @@ public class ManualTurningDriveImpl extends DriveImpl {
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         double currentAngle = this.angleSensor.pidGet();
         SmartDashboard.putNumber("Gyro:", currentAngle);
+
+        if (this.speedLimited) {
+            final double limit = 0.30;
+            forwardRate = MathUtils.absClamp(forwardRate, limit);
+            strafeRate = MathUtils.absClamp(strafeRate, limit);
+            turnRate = MathUtils.absClamp(turnRate, limit);
+        }
 
         if (this.getCenterWheelsDeployed()) {
             this.tankDrive.arcadeDrive(forwardRate ,turnRate);
