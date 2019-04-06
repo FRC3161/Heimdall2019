@@ -77,7 +77,10 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         int encoderTicks;
         if (position.equals(Position.GROUND)) {
             encoderTicks = WRIST_LOWERED_POSITION;
-        } else {
+        } else if (position.equals(Position.LEVEL_1)){
+            encoderTicks = 25;
+        }
+        else {
             encoderTicks = 0;
         }
         SmartDashboard.putNumber("Wrist encoder tick target", encoderTicks);
