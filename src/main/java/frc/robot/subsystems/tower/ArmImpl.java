@@ -114,6 +114,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void setSpeed(double speed) {
+        speed *= -1;
         if (Math.abs(speed) > 0.1) {
             this.manual = true;
             this.pid.setEnabled(false);
@@ -140,12 +141,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         this.bayTuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
+            reset();
         }
-
-        if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)) {
-            return;
-        }
-        reset();
     }
 
     @Override

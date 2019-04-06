@@ -116,10 +116,10 @@ class ElevatorImpl extends RepeatingPooledSubsystem implements Elevator {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
-        if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)){
-            return;
+        if (current.equals(LifecycleEvent.ON_INIT)) {
+            start();
+            reset();
         }
-        reset();
     }
 
     @Override

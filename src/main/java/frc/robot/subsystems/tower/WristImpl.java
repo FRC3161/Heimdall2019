@@ -126,12 +126,8 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.pidTuner.lifecycleStatusChanged(previous, current);
         if (current.equals(LifecycleEvent.ON_INIT)) {
             start();
+            reset();
         }
-
-        if (previous.equals(LifecycleEvent.ON_AUTO) && current.equals(LifecycleEvent.ON_TELEOP)) {
-            return;
-        }
-        reset();
     }
 
     @Override
