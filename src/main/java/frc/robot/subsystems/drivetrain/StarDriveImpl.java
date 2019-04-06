@@ -59,10 +59,12 @@ public class StarDriveImpl implements StarDrive {
 
         Solenoid colsonValve = Utils.safeInit("colsonValve", () -> new Solenoid(RobotMap.COLSON_SOLENOID));
         this.leftColson = Utils.safeInit("leftColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve));
+        this.leftColson.setInverted(true);
         this.rightColson = Utils.safeInit("rightColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve));
+        this.rightColson.setInverted(true);
 
         this.driveBase = new MecanumDrive(new SpeedControllerGroup(frontLeftDrive, leftColson), backLeftDrive,
-                new SpeedControllerGroup(frontRightDrive, rightColson), backRightDrive);
+                frontRightDrive, new SpeedControllerGroup(rightColson, backRightDrive));
 
         this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::pidGet);
         this.angleSensor.setInverted(false);
@@ -79,7 +81,7 @@ public class StarDriveImpl implements StarDrive {
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         if (this.speedLimited) {
-            final double limitFactor = 0.3;
+            final double limitFactor = 0.45;
             forwardRate *= limitFactor;
             strafeRate *= limitFactor;
             turnRate *= limitFactor;
