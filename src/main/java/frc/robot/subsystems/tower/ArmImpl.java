@@ -32,7 +32,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     private final SmartDashboardTuner levelTwoTuner;
     private final SmartDashboardTuner bayTuner;
     private volatile double pidSpeed;
-    private volatile boolean manual = true;
+    private volatile boolean manual = false;
     private Position targetPosition = Position.STARTING_CONFIG;
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
@@ -173,8 +173,8 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         if (manual) {
             return true;
         }
-        double tol = 10;
-        double target = getPositionTicks(this.targetPosition);
-        return Utils.between(target - tol, target, target + tol);
+        int tol = 30;
+        int target = getPositionTicks(this.targetPosition);
+        return Utils.between(target - tol, source.pidGet(), target + tol);
     }
 }

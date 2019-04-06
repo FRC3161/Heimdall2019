@@ -75,7 +75,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.manual = false;
         this.targetPosition = position;
         int encoderTicks;
-        if (position.equals(Position.GROUND)){
+        if (position.equals(Position.GROUND)) {
             encoderTicks = WRIST_LOWERED_POSITION;
         } else {
             encoderTicks = 0;
@@ -135,8 +135,11 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     public void task() {
         SmartDashboard.putNumber("Wrist encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("Wrist speed", pidSpeed);
-        if (pid.isEnabled() && targetPosition.equals(Position.BAY) && armAtTarget.get()) {
-            this.pid.setSetpoint(WRIST_LOWERED_POSITION);
+        SmartDashboard.putBoolean("Arm atTarget", this.armAtTarget.get());
+        if (!manual && targetPosition.equals(Position.BAY) && armAtTarget.get()) {
+            int newTickTarget = -210;
+            SmartDashboard.putNumber("Wrist encoder tick target", newTickTarget);
+            this.pid.setSetpoint(newTickTarget);
         }
         this.controller.set(pidSpeed);
     }
