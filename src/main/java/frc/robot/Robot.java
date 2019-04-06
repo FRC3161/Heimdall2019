@@ -18,6 +18,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechAxis;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechButton;
 import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -114,7 +115,6 @@ public class Robot extends TitanBot {
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(160, 120);
     camera.setFPS(24);
-
     this.tower.setBeakOpen(true);
   }
 

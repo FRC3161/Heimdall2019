@@ -76,8 +76,8 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         if (!positionTicks.containsKey(this.targetPosition)) {
             encoderTicks = positionTicks.getOrDefault(Position.STARTING_CONFIG, 0);
         } else {
-            if (position.equals(position.BAY)){
-                encoderTicks = 400;
+            if ((position.equals(position.BAY))|| (position.equals(position.GROUND))){
+                encoderTicks = -230;
             }
             else{
                 encoderTicks = 0;
