@@ -21,8 +21,6 @@ import frc.robot.subsystems.tower.Tower.Position;
 
 class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
-    private final BidiMap<Position, Integer> positionTicks;
-
     private final SpeedController controller;
     private final PIDController pid;
     private final TalonPIDSource source;
@@ -38,16 +36,13 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.controller = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
         this.source = new TalonPIDSource(sharedTalon);
 
-        // TODO determine ticks
-        positionTicks = new DualHashBidiMap<>();
-
-        final double kP = 0.0;
+        final double kP = 0.0058;
         final double kI = 0.0;
-        final double kD = 0.0;
+        final double kD = 0.005;
         final double kF = 0.0;
         final double ktolerance = 2;
-        maxOutputUp = 1;
-        maxOutputDown = -1;
+        maxOutputUp = 0.55;
+        maxOutputDown = -0.4;
         this.pid = new WPIPIDulum(kP, kI, kD, kF, source, this) {
             @Override
             public double getAngle() {
@@ -66,6 +61,8 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
             .absoluteTolerance(ktolerance)
             .outputRange(maxOutputDown, maxOutputUp)
             .build(pid);
+
+        setPosition(Position.STARTING_CONFIG);
     }
 
     @Override
@@ -73,15 +70,11 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.manual = false;
         this.targetPosition = position;
         int encoderTicks;
-        if (!positionTicks.containsKey(this.targetPosition)) {
-            encoderTicks = positionTicks.getOrDefault(Position.STARTING_CONFIG, 0);
-        } else {
-            if ((position.equals(position.BAY))|| (position.equals(position.GROUND))){
-                encoderTicks = -230;
-            }
-            else{
-                encoderTicks = 0;
-            }
+        if ((position.equals(position.BAY))|| (position.equals(position.GROUND))){
+            encoderTicks = -200;
+        }
+        else{
+            encoderTicks = 0;
         }
         SmartDashboard.putNumber("Wrist encoder tick target", encoderTicks);
         this.pid.setSetpoint(encoderTicks);
@@ -98,10 +91,10 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     public void setSpeed(double speed) {
         this.manual = true;
         this.pid.setEnabled(false);
-        if (speed < maxOutputDown) {
-            speed = maxOutputDown;
-        } else if (speed > maxOutputUp) {
-            speed = maxOutputUp;
+        if (this.source.pidGet() <= -320) {
+            if (speed > 0) {
+                speed = 0;
+            }
         }
         if (Math.abs(speed) < 0.1) {
             speed = 0;
@@ -113,6 +106,7 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     public void reset() {
         this.pid.reset();
         this.source.reset();
+        setPosition(Position.STARTING_CONFIG);
     }
 
     @Override
@@ -147,6 +141,6 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
     @Override
     public void pidWrite(double pid) {
-        this.pidSpeed = pid;
+        this.pidSpeed = -pid;
     }
 }

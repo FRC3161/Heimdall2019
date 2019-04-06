@@ -20,6 +20,7 @@ import ca.team3161.lib.utils.controls.LogitechDualAction.LogitechControl;
 import ca.team3161.lib.utils.controls.SquaredJoystickMode;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -113,8 +114,7 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(160, 120);
-    camera.setFPS(24);
+    camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 30);
     this.tower.setBeakOpen(true);
   }
 
@@ -258,6 +258,9 @@ public class Robot extends TitanBot {
 
     // TODO properly map out all tower positions
     if (operatorPad.getDpadDirection().equals(DpadDirection.DOWN)){
+      tower.setTowerPosition(Position.STARTING_CONFIG);
+    }
+    if (operatorPad.getDpadDirection().equals(DpadDirection.LEFT)){
       tower.setTowerPosition(Position.GROUND);
     }
     if (operatorPad.getDpadDirection().equals(DpadDirection.RIGHT)){
