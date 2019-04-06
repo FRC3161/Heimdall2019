@@ -5,20 +5,22 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import ca.team3161.lib.robot.motion.drivetrains.SpeedControllerGroup;
 import ca.team3161.lib.utils.Utils;
 import frc.robot.InvertiblePIDSource;
-import frc.robot.MathUtils;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveImpl implements Drive {
-    protected final MecanumDrive holoDrive;
-    protected final DifferentialDrive tankDrive;
+public class StarDriveImpl implements StarDrive {
+
+    private static final double MANUAL_TURNING_DEADBAND = 0.05;
+    private static final long UPDATE_WINDOW = 100;
+
+    protected final MecanumDrive driveBase;
     protected final OmniPod frontLeftDrive;
     protected final OmniPod frontRightDrive;
     protected final OmniPod backLeftDrive;
@@ -40,28 +42,29 @@ public class DriveImpl implements Drive {
     //gets larger as the speed increases
     protected final double kD = 0.008;
     protected float kToleranceDegrees = 2;
+    protected long lastUpdate = -1;
 
-    public DriveImpl() {
+    public StarDriveImpl() {
         this.frontLeftDrive = Utils.safeInit("frontLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_FRONT_TALON));
         frontLeftDrive.setInverted(true);
+
         this.frontRightDrive = Utils.safeInit("frontRightDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_FRONT_TALON));
         frontRightDrive.setInverted(true);
+
         this.backLeftDrive = Utils.safeInit("backLeftDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_LEFT_BACK_TALON));
         backLeftDrive.setInverted(true);
+
         this.backRightDrive = Utils.safeInit("backRightDrive", () -> new RawOmniPodImpl(RobotMap.DRIVETRAIN_RIGHT_BACK_TALON));
         backRightDrive.setInverted(true);
 
         Solenoid colsonValve = Utils.safeInit("colsonValve", () -> new Solenoid(RobotMap.COLSON_SOLENOID));
         this.leftColson = Utils.safeInit("leftColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_LEFT_COLSON, colsonValve));
+        this.leftColson.setInverted(true);
         this.rightColson = Utils.safeInit("rightColson", () -> new ColsonPodImpl(RobotMap.DRIVETRAIN_RIGHT_COLSON, colsonValve));
+        this.rightColson.setInverted(true);
 
-        this.holoDrive = new MecanumDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
-        this.tankDrive = new DifferentialDrive(
-            new SpeedControllerGroup(frontLeftDrive, leftColson, frontRightDrive),
-            new SpeedControllerGroup(backLeftDrive, rightColson, backRightDrive)
-        );
-        this.tankDrive.setSafetyEnabled(false);
-        this.holoDrive.setSafetyEnabled(false);
+        this.driveBase = new MecanumDrive(new SpeedControllerGroup(frontLeftDrive, leftColson), backLeftDrive,
+                frontRightDrive, new SpeedControllerGroup(rightColson, backRightDrive));
 
         this.angleSensor = new InvertiblePIDSource<>(new AHRS(SPI.Port.kMXP), AHRS::pidGet);
         this.angleSensor.setInverted(false);
@@ -77,32 +80,54 @@ public class DriveImpl implements Drive {
 
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
+        if (this.speedLimited) {
+            final double limitFactor = 0.45;
+            forwardRate *= limitFactor;
+            strafeRate *= limitFactor;
+            turnRate *= limitFactor;
+        }
+
+        if (getCenterWheelsDeployed()) {
+            driveTank(forwardRate, turnRate);
+        } else {
+            driveOmni(forwardRate, strafeRate, turnRate);
+        }
+    }
+
+    private void driveOmni(double forwardRate, double strafeRate, double turnRate) {
         double currentAngle = this.angleSensor.pidGet();
         SmartDashboard.putNumber("Gyro:", currentAngle);
 
-        if (this.speedLimited) {
-            final double limit = 0.30;
-            forwardRate = MathUtils.absClamp(forwardRate, limit);
-            strafeRate = MathUtils.absClamp(strafeRate, limit);
-            turnRate = MathUtils.absClamp(turnRate, limit);
+        final double effectiveTurnRate;
+        if (Math.abs(turnRate) < MANUAL_TURNING_DEADBAND) {
+            effectiveTurnRate = computedTurnPID;
+        } else {
+            if (this.turnController.isEnabled()) {
+                this.turnController.disable();
+            }
+            effectiveTurnRate = turnRate;
         }
 
-        if (this.getCenterWheelsDeployed()) {
-            this.tankDrive.arcadeDrive(forwardRate, turnRate);
-        } else {
-            if (!this.turnController.isEnabled()) {
-                this.turnController.enable();
-            }
-            this.setAngleTarget(this.angleTarget + turnRate * 180 * TimedRobot.kDefaultPeriod); // 180 degrees per second, divided by update rate
-            this.holoDrive.driveCartesian(forwardRate,strafeRate,computedTurnPID, fieldCentric ? currentAngle : 0);
-        }
+        this.driveBase.driveCartesian(forwardRate, strafeRate, effectiveTurnRate, fieldCentric ? currentAngle : 0);
+    }
+
+    private void driveTank(double forwardRate, double turnRate) {
+        this.driveBase.driveCartesian(forwardRate, 0, turnRate);
     }
 
     @Override
     public void setAngleTarget(double angleTarget) {
+        long now = System.currentTimeMillis();
+        if (lastUpdate + UPDATE_WINDOW > now) {
+            return;
+        }
+        lastUpdate = now;
         this.angleTarget = angleTarget % 360; // mod 360 to handle wraparound
         turnController.setSetpoint(angleTarget);
         SmartDashboard.putNumber("Angle Target", angleTarget);
+        if (!this.turnController.isEnabled()) {
+            this.turnController.enable();
+        }
     }
 
     @Override
