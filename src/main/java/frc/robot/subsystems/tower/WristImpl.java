@@ -1,6 +1,7 @@
 package frc.robot.subsystems.tower;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -21,20 +22,24 @@ import frc.robot.subsystems.tower.Tower.Position;
 
 class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
 
+    private static final int WRIST_LOWERED_POSITION = -200;
+
     private final SpeedController controller;
     private final PIDController pid;
     private final TalonPIDSource source;
     private final WPISmartPIDTuner pidTuner;
+    private final Supplier<Boolean> armAtTarget;
     private volatile double pidSpeed;
     private volatile boolean manual = true;
     private Position targetPosition = Position.STARTING_CONFIG;
     private volatile double maxOutputUp;
     private volatile double maxOutputDown;
 
-    WristImpl(int victorPort, WPI_TalonSRX sharedTalon) {
+    WristImpl(int victorPort, WPI_TalonSRX sharedTalon, Supplier<Boolean> armAtTarget) {
         super(50, TimeUnit.MILLISECONDS);
         this.controller = Utils.safeInit("wrist", () -> new  VictorSP(victorPort));
         this.source = new TalonPIDSource(sharedTalon);
+        this.armAtTarget = armAtTarget;
 
         final double kP = 0.0058;
         final double kI = 0.0;
@@ -70,10 +75,9 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.manual = false;
         this.targetPosition = position;
         int encoderTicks;
-        if ((position.equals(position.BAY))|| (position.equals(position.GROUND))){
-            encoderTicks = -200;
-        }
-        else{
+        if (position.equals(Position.GROUND)){
+            encoderTicks = WRIST_LOWERED_POSITION;
+        } else {
             encoderTicks = 0;
         }
         SmartDashboard.putNumber("Wrist encoder tick target", encoderTicks);
@@ -131,6 +135,9 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     public void task() {
         SmartDashboard.putNumber("Wrist encoder ticks", this.source.pidGet());
         SmartDashboard.putNumber("Wrist speed", pidSpeed);
+        if (pid.isEnabled() && targetPosition.equals(Position.BAY) && armAtTarget.get()) {
+            this.pid.setSetpoint(WRIST_LOWERED_POSITION);
+        }
         this.controller.set(pidSpeed);
     }
 

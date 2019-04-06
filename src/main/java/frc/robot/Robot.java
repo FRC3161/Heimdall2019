@@ -114,7 +114,7 @@ public class Robot extends TitanBot {
     registerLifecycleComponent(this.operatorPad);
     registerLifecycleComponent(this.tower);
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 30);
+    camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, 320, 240, 30);
     this.tower.setBeakOpen(true);
   }
 

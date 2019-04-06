@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.MathUtils;
 import frc.robot.subsystems.TalonPIDSource;
 import frc.robot.subsystems.tower.Tower.Position;
 
@@ -89,16 +90,21 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     public void setPosition(Position position) {
         this.manual = false;
         this.targetPosition = position;
+        int encoderTicks = getPositionTicks(position);
+        SmartDashboard.putNumber("encoder tick target arm", encoderTicks);
+        this.pid.setSetpoint(encoderTicks);
+        this.pid.setEnabled(true);
+        SmartDashboard.putString("arm Position", position.toString());
+    }
+
+    private int getPositionTicks(Position p) {
         int encoderTicks;
         if (!positionTicks.containsKey(this.targetPosition)) {
             encoderTicks = positionTicks.getOrDefault(Position.STARTING_CONFIG, 0);
         } else {
             encoderTicks = positionTicks.get(this.targetPosition);
         }
-        SmartDashboard.putNumber("encoder tick target arm", encoderTicks);
-        this.pid.setSetpoint(encoderTicks);
-        this.pid.setEnabled(true);
-        SmartDashboard.putString("arm Position", position.toString());
+        return encoderTicks;
     }
 
     @Override
@@ -160,5 +166,15 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
     @Override
     public void pidWrite(double pid) {
         this.pidSpeed = -pid;
+    }
+
+    @Override
+    public boolean atPosition() {
+        if (manual) {
+            return true;
+        }
+        double tol = 10;
+        double target = getPositionTicks(this.targetPosition);
+        return Utils.between(target - tol, target, target + tol);
     }
 }
