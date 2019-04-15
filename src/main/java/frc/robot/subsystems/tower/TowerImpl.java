@@ -11,6 +11,7 @@ import ca.team3161.lib.utils.Utils;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -23,6 +24,7 @@ public class TowerImpl implements Tower {
         // Direction to Roller PWM mapping
         rollerPwms.put(Direction.NONE, 0.);
         rollerPwms.put(Direction.IN, 0.7);
+        rollerPwms.put(Direction.HYPNOTIZE, 0.45);
         rollerPwms.put(Direction.OUT, -0.8);
         ROLLER_DIRECTIONS_PWM = UnmodifiableBidiMap.unmodifiableBidiMap(rollerPwms);
     }
@@ -38,6 +40,7 @@ public class TowerImpl implements Tower {
     private final GameTimerWatcher gameTimerWatcher;
     private final Relay relay;
     private Position position;
+    private LifecycleEvent currentMode = LifecycleEvent.NONE;
 
     public TowerImpl() {
         this.sharedElevatorWristTalon = Utils.safeInit("elevator-wrist talon", () -> new WPI_TalonSRX(RobotMap.ELEVATOR_SLAVE_CONTROLLER));
@@ -89,6 +92,10 @@ public class TowerImpl implements Tower {
             intake.set(0);
             return;
         }
+        double matchTime = Timer.getMatchTime();
+        if (currentMode.equals(LifecycleEvent.ON_TELEOP) && matchTime < 3 && matchTime >= 0) {
+            direction = Direction.HYPNOTIZE;
+        }
         intake.set(ROLLER_DIRECTIONS_PWM.get(direction));
     }
 
@@ -118,6 +125,7 @@ public class TowerImpl implements Tower {
 
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
+        this.currentMode = current;
         this.gamePieceWatcher.lifecycleStatusChanged(previous, current);
         this.gameTimerWatcher.lifecycleStatusChanged(previous, current);
         this.elevator.lifecycleStatusChanged(previous, current);

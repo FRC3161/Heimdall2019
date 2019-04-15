@@ -15,6 +15,7 @@ public interface Tower extends LifecycleListener {
     enum Direction {
         NONE,
         IN,
+        HYPNOTIZE,
         OUT,
     }
 

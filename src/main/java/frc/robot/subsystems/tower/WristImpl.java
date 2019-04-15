@@ -98,14 +98,14 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
     public void setSpeed(double speed) {
         this.manual = true;
         this.pid.setEnabled(false);
-        if (this.source.pidGet() <= -320) {
-            if (speed > 0) {
-                speed = 0;
-            }
-        }
-        if (Math.abs(speed) < 0.1) {
-            speed = 0;
-        }
+        // if (this.source.pidGet() <= -370) {
+        //     if (speed > 0) {
+        //         speed = 0;
+        //     }
+        // }
+        // if (Math.abs(speed) < 0.1) {
+        //     speed = 0;
+        // }
         this.pidSpeed = speed;
     }
 

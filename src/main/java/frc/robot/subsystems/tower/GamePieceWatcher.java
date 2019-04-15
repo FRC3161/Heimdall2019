@@ -48,7 +48,6 @@ public class GamePieceWatcher extends RepeatingPooledSubsystem implements Lifecy
     @Override
     public void lifecycleStatusChanged(LifecycleEvent previous, LifecycleEvent current) {
         switch (current) {
-            case ON_TEST:
             case ON_AUTO:
                 this.isTeleop = false;
                 this.start();

@@ -296,9 +296,7 @@ public class Robot extends TitanBot {
     if (operatorPad.getDpadDirection().equals(DpadDirection.LEFT)){
       tower.setTowerPosition(Position.GROUND);
     }
-    if (operatorPad.getDpadDirection().equals(DpadDirection.RIGHT)){
-      tower.setTowerPosition(Position.LEVEL_3);
-    }
+   
     if (operatorPad.getDpadDirection().equals(DpadDirection.UP)){
       toggleCompressor();
     }
@@ -324,6 +322,9 @@ public class Robot extends TitanBot {
     }
     if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
+    }
+    if (operatorPad.getDpadDirection().equals(DpadDirection.RIGHT)){
+      tower.setRollers(Direction.HYPNOTIZE);;
     }
   }
 

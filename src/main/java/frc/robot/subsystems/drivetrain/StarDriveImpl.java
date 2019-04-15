@@ -82,7 +82,7 @@ public class StarDriveImpl implements StarDrive {
     @Override
     public void drive(double forwardRate, double strafeRate, double turnRate) {
         if (this.speedLimited) {
-            final double limitFactor = 0.45;
+            final double limitFactor = 0.39;
             forwardRate *= limitFactor;
             strafeRate *= limitFactor;
             turnRate *= limitFactor;

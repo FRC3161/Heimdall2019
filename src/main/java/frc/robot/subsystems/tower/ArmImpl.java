@@ -48,7 +48,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         final int bayTicks = -120;
         positionTicks = new DualHashBidiMap<>();
         positionTicks.put(Position.STARTING_CONFIG, 0);
-        positionTicks.put(Position.GROUND, 1);
+        positionTicks.put(Position.GROUND, 17);
         positionTicks.put(Position.LEVEL_1, levelOneTicks);
         positionTicks.put(Position.BAY, bayTicks);
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
