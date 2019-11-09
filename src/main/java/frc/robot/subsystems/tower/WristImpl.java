@@ -41,10 +41,10 @@ class WristImpl extends RepeatingPooledSubsystem implements Wrist, PIDOutput {
         this.source = new TalonPIDSource(sharedTalon);
         this.armAtTarget = armAtTarget;
 
-        final double kP = 0.0;
-        final double kI = 0.0;
-        final double kD = 0.0;
-        final double kF = 0.0;
+        final double kP = 0.05;
+        final double kI = 0.0001;
+        final double kD = 0.07;
+        final double kF = 0;
         final double ktolerance = 2;
         maxOutputUp = 0.55;
         maxOutputDown = -0.4;
