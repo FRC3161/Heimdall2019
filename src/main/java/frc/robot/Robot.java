@@ -290,6 +290,7 @@ public class Robot extends TitanBot {
     }
 
     // TODO properly map out all tower positions
+    /*
     if (operatorPad.getDpadDirection().equals(DpadDirection.DOWN)){
       tower.setTowerPosition(Position.STARTING_CONFIG);
     }
@@ -311,16 +312,16 @@ public class Robot extends TitanBot {
     if (operatorPad.getButton(LogitechButton.Y)) {
       tower.setTowerPosition(Position.LEVEL_2);
     }
-
+    */
     //TODO hatch, rollers
     if ((!operatorPad.getButton(LogitechButton.LEFT_TRIGGER))&& (!operatorPad.getButton(LogitechButton.RIGHT_TRIGGER))) {
       tower.setRollers(Direction.NONE);
     }
-    if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER)) { //Dpad UP
+    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER)) { //Dpad UP
       tower.setRollers(Direction.OUT);
       this.easterEgg();
     }
-    if (operatorPad.getButton(LogitechButton.RIGHT_TRIGGER) ) { //Dpad DOWN
+    if (operatorPad.getButton(LogitechButton.LEFT_TRIGGER) ) { //Dpad DOWN
       tower.setRollers(Direction.IN);
     }
     if (operatorPad.getDpadDirection().equals(DpadDirection.RIGHT)){

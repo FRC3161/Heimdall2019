@@ -54,9 +54,9 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
         positionTicks.put(Position.LEVEL_2, levelTwoTicks);
         positionTicks.put(Position.LEVEL_3, 6);
 
-        final double kP = 0.05;
-        final double kI = 0.0001;
-        final double kD = 0.07;
+        final double kP = 0.0;
+        final double kI = 0.0;
+        final double kD = 0.0;
         final double kF = 0;
         final double ktolerance = 2;
         maxOutputUp = 0.275;
@@ -114,7 +114,7 @@ class ArmImpl extends RepeatingPooledSubsystem implements Arm, PIDOutput {
 
     @Override
     public void setSpeed(double speed) {
-        speed *= -1;
+        speed *= -0.7;
         if (Math.abs(speed) > 0.1) {
             if (speed < 0 ){
                 this.manual = true;
